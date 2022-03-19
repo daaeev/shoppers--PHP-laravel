@@ -83,6 +83,10 @@
                     </li>
                     <li><a href="{{route('catalog')}}">Shop</a></li>
                     <li><a href="{{route('contact')}}">Contact</a></li>
+
+                    @admin
+                        <li><a href="{{route('admin.users')}}">Admin Panel</a></li>
+                    @endadmin
                 </ul>
             </div>
         </nav>

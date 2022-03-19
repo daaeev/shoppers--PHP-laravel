@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,5 +29,19 @@ Route::get('/thanks', [SiteController::class, 'thanks'])->name('thanks');
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [SiteController::class, 'profile'])->name('profile');
 });
+
+// ---ADMIN ROUTES---
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    // ---CRUD ROUTES---
+
+    Route::post('/admin/user/role', [UserController::class, 'setRole'])->name('admin.users.role');
+
+    // !!!CRUD ROUTES!!!
+
+    Route::get('/admin/users', [AdminController::class, 'usersList'])->name('admin.users');
+});
+
+// !!!ADMIN ROUTES!!!
 
 Auth::routes(['verify' => true]);

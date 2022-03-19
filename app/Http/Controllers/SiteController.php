@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 
 class SiteController extends Controller
@@ -91,9 +92,9 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function profile()
+    public function profile(UserRepository $userRepository)
     {
-        $user = Auth::user();
+        $user = $userRepository->getAuthenticated();
 
         return view('profile', compact('user'));
     }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "94c8d29a8b898014ffd03b688276d8b2",
+    "content-hash": "b1bca63170e4322e7c4ff0c5d09e328d",
     "packages": [
         {
             "name": "brick/math",
@@ -65,6 +65,98 @@
                 }
             ],
             "time": "2021-08-15T20:50:18+00:00"
+        },
+        {
+            "name": "container-interop/container-interop",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/container-interop/container-interop.git",
+                "reference": "fc08354828f8fd3245f77a66b9e23a6bca48297e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/container-interop/container-interop/zipball/fc08354828f8fd3245f77a66b9e23a6bca48297e",
+                "reference": "fc08354828f8fd3245f77a66b9e23a6bca48297e",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Interop\\Container\\": "src/Interop/Container/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
+            "support": {
+                "issues": "https://github.com/container-interop/container-interop/issues",
+                "source": "https://github.com/container-interop/container-interop/tree/master"
+            },
+            "abandoned": "psr/container",
+            "time": "2014-12-30T15:22:37+00:00"
+        },
+        {
+            "name": "danielstjules/stringy",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/danielstjules/Stringy.git",
+                "reference": "fc39b709533d328380c9b436c9801c619669da09"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/danielstjules/Stringy/zipball/fc39b709533d328380c9b436c9801c619669da09",
+                "reference": "fc39b709533d328380c9b436c9801c619669da09",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/Create.php"
+                ],
+                "psr-4": {
+                    "Stringy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel St. Jules",
+                    "email": "danielst.jules@gmail.com",
+                    "homepage": "http://www.danielstjules.com"
+                }
+            ],
+            "description": "A string manipulation library with multibyte support",
+            "homepage": "https://github.com/danielstjules/Stringy",
+            "keywords": [
+                "UTF",
+                "helpers",
+                "manipulation",
+                "methods",
+                "multibyte",
+                "string",
+                "utf-8",
+                "utility",
+                "utils"
+            ],
+            "support": {
+                "issues": "https://github.com/danielstjules/Stringy/issues",
+                "source": "https://github.com/danielstjules/Stringy"
+            },
+            "time": "2015-12-21T00:49:59+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -436,6 +528,56 @@
                 }
             ],
             "time": "2021-10-11T09:18:27+00:00"
+        },
+        {
+            "name": "evenement/evenement",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/igorw/evenement.git",
+                "reference": "f6e843799fd4f4184d54d8fc7b5b3551c9fa803e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/igorw/evenement/zipball/f6e843799fd4f4184d54d8fc7b5b3551c9fa803e",
+                "reference": "f6e843799fd4f4184d54d8fc7b5b3551c9fa803e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Evenement": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Igor Wiedler",
+                    "email": "igor@wiedler.ch",
+                    "homepage": "http://wiedler.ch/igor/"
+                }
+            ],
+            "description": "Événement is a very simple event dispatching library for PHP",
+            "keywords": [
+                "event-dispatcher",
+                "event-emitter"
+            ],
+            "support": {
+                "issues": "https://github.com/igorw/evenement/issues",
+                "source": "https://github.com/igorw/evenement/tree/v2.0.0"
+            },
+            "time": "2012-11-02T14:49:47+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -1754,6 +1896,200 @@
                 }
             ],
             "time": "2022-03-14T12:44:37+00:00"
+        },
+        {
+            "name": "nayjest/collection",
+            "version": "v2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Nayjest/Collection.git",
+                "reference": "54ac4a0cec7638e3394a6c0f8c18b3323f66b95b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Nayjest/Collection/zipball/54ac4a0cec7638e3394a6c0f8c18b3323f66b95b",
+                "reference": "54ac4a0cec7638e3394a6c0f8c18b3323f66b95b",
+                "shasum": ""
+            },
+            "require": {
+                "evenement/evenement": "2.0.*",
+                "nayjest/manipulator": "^2||^3",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "danielstjules/stringy": "^1.9||^2",
+                "phpunit/phpunit": "^4||^5"
+            },
+            "suggest": {
+                "danielstjules/stringy": "Required to filter ObjectCollection by properties with getters"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nayjest\\Collection\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vitalii [Nayjest] Stepanenko",
+                    "email": "mail@vitaliy.in",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Collections for PHP",
+            "keywords": [
+                "collection",
+                "collections"
+            ],
+            "support": {
+                "email": "mail@vitaliy.in",
+                "issues": "https://github.com/Nayjest/Collection/issues",
+                "source": "https://github.com/Nayjest/Collection/tree/master"
+            },
+            "time": "2016-04-06T16:56:02+00:00"
+        },
+        {
+            "name": "nayjest/manipulator",
+            "version": "v3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Nayjest/manipulator.git",
+                "reference": "80423ec59548de4bec6de2e821b3993974a7b4cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Nayjest/manipulator/zipball/80423ec59548de4bec6de2e821b3993974a7b4cb",
+                "reference": "80423ec59548de4bec6de2e821b3993974a7b4cb",
+                "shasum": ""
+            },
+            "require": {
+                "nayjest/str-case-converter": "^1",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4||^5"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/mp.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vitalii Stepanenko",
+                    "email": "mail@vitaliy.in"
+                }
+            ],
+            "description": "Utilities for manipulating PHP objects",
+            "support": {
+                "issues": "https://github.com/Nayjest/manipulator/issues",
+                "source": "https://github.com/Nayjest/manipulator/tree/master"
+            },
+            "time": "2016-09-27T15:52:17+00:00"
+        },
+        {
+            "name": "nayjest/str-case-converter",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Nayjest/StrCaseConverter.git",
+                "reference": "e30f16afec3ed83e12369555e264263c23cf68bb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Nayjest/StrCaseConverter/zipball/e30f16afec3ed83e12369555e264263c23cf68bb",
+                "reference": "e30f16afec3ed83e12369555e264263c23cf68bb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vitalii Stepanenko",
+                    "email": "mail@vitaliy.in"
+                }
+            ],
+            "description": "Library for converting strings from camel case to snake case and vice versa.",
+            "support": {
+                "issues": "https://github.com/Nayjest/StrCaseConverter/issues",
+                "source": "https://github.com/Nayjest/StrCaseConverter/tree/v1.0.0"
+            },
+            "time": "2015-06-04T13:11:29+00:00"
+        },
+        {
+            "name": "nayjest/tree",
+            "version": "v3.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Nayjest/Tree.git",
+                "reference": "ee7457ae35c1c1bf7a4779feb88d572a8e3d6d32"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Nayjest/Tree/zipball/ee7457ae35c1c1bf7a4779feb88d572a8e3d6d32",
+                "reference": "ee7457ae35c1c1bf7a4779feb88d572a8e3d6d32",
+                "shasum": ""
+            },
+            "require": {
+                "nayjest/collection": "^2.1",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nayjest\\Tree\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vitalii [Nayjest] Stepanenko",
+                    "email": "mail@vitaliy.in",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Tree data structure for PHP",
+            "keywords": [
+                "data structure",
+                "hierarchy",
+                "tree",
+                "trees"
+            ],
+            "support": {
+                "email": "mail@vitaliy.in",
+                "issues": "https://github.com/Nayjest/Tree/issues",
+                "source": "https://github.com/Nayjest/Tree/tree/master"
+            },
+            "time": "2016-01-27T14:21:22+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -4929,6 +5265,178 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/2.2.4"
             },
             "time": "2021-12-08T09:12:39+00:00"
+        },
+        {
+            "name": "view-components/eloquent-data-processing",
+            "version": "v1.2.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/view-components/eloquent-data-processing.git",
+                "reference": "70319390d9b4c6359651b6fbb0d2b4f1f436f4aa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/view-components/eloquent-data-processing/zipball/70319390d9b4c6359651b6fbb0d2b4f1f436f4aa",
+                "reference": "70319390d9b4c6359651b6fbb0d2b4f1f436f4aa",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.5||^7||^8",
+                "view-components/view-components": "^0.24.2||^0.25||^0.26.6"
+            },
+            "require-dev": {
+                "illuminate/database": "*",
+                "view-components/testing-helpers": "^2.0.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ViewComponents\\Eloquent\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vitalii [Nayjest] Stepanenko",
+                    "email": "mail@vitaliy.in",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Eloquent ORM support for ViewComponents",
+            "homepage": "https://github.com/view-components/eloquent-data-processing",
+            "keywords": [
+                "laravel",
+                "laravel-4",
+                "laravel-5",
+                "laravel4",
+                "laravel5"
+            ],
+            "support": {
+                "email": "mail@vitaliy.in",
+                "issues": "https://github.com/view-components/eloquent-data-processing/issues",
+                "source": "https://github.com/view-components/eloquent-data-processing"
+            },
+            "time": "2021-07-06T16:24:25+00:00"
+        },
+        {
+            "name": "view-components/grids",
+            "version": "v0.5.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/view-components/grids.git",
+                "reference": "f0a1597270583c4c7abacc6b00dd50eeba9d7a69"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/view-components/grids/zipball/f0a1597270583c4c7abacc6b00dd50eeba9d7a69",
+                "reference": "f0a1597270583c4c7abacc6b00dd50eeba9d7a69",
+                "shasum": ""
+            },
+            "require": {
+                "nayjest/tree": "^3",
+                "php": "^5.5||^7||^8",
+                "view-components/view-components": "^0.25||^0.26.6"
+            },
+            "require-dev": {
+                "view-components/testing-helpers": "^2.0.1"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/bootstrap.php"
+                ],
+                "psr-4": {
+                    "ViewComponents\\Grids\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vitalii [Nayjest] Stepanenko",
+                    "email": "mail@vitaliy.in",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Flexible Framework-agnostic Data Grids for PHP",
+            "support": {
+                "email": "mail@vitaliy.in",
+                "issues": "https://github.com/view-components/grids/issues",
+                "source": "https://github.com/view-components/grids/tree/v0.5.10"
+            },
+            "time": "2021-07-06T16:23:10+00:00"
+        },
+        {
+            "name": "view-components/view-components",
+            "version": "v0.26.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/view-components/view-components.git",
+                "reference": "b5a2ac99953a97701270a9e624e95b9d4b5d4699"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/view-components/view-components/zipball/b5a2ac99953a97701270a9e624e95b9d4b5d4699",
+                "reference": "b5a2ac99953a97701270a9e624e95b9d4b5d4699",
+                "shasum": ""
+            },
+            "require": {
+                "container-interop/container-interop": "^1.1",
+                "danielstjules/stringy": "^1.9|~2.2.0",
+                "nayjest/collection": "^2.3",
+                "nayjest/manipulator": "^3.1.0",
+                "nayjest/tree": "^3",
+                "php": "^5.5||^7||^8"
+            },
+            "provide": {
+                "container-interop/container-interop-implementation": "^1.1"
+            },
+            "require-dev": {
+                "ext-curl": "*",
+                "squizlabs/php_codesniffer": "~2.3",
+                "view-components/testing-helpers": "^2.0.1"
+            },
+            "suggest": {
+                "league/uri": "Required by Pagination component",
+                "symfony/var-dumper": "Required by SymfonyVarDump component"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ViewComponents\\ViewComponents\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vitalii [Nayjest] Stepanenko",
+                    "email": "mail@vitaliy.in",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Flexible Framework-Agnostic UI for Enterprise Web Applications",
+            "homepage": "https://github.com/view-components/view-components",
+            "keywords": [
+                "Rendering",
+                "html",
+                "presenter",
+                "view",
+                "widgets"
+            ],
+            "support": {
+                "email": "mail@vitaliy.in",
+                "issues": "https://github.com/view-components/view-components/issues",
+                "source": "https://github.com/view-components/view-components"
+            },
+            "time": "2021-07-06T16:23:55+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
