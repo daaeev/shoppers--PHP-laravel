@@ -5,14 +5,11 @@ namespace Tests\Feature\Middlewares;
 use App\Models\User;
 use App\Services\Interfaces\UserRepositoryInterface;
 use App\Services\Repositories\UserRepository;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Route;
 
 class AdminAccessTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function testIfAdmin()
     {
         $user_mock = $this->getMockBuilder(User::class)
