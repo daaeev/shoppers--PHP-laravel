@@ -7,6 +7,7 @@ use App\Http\Requests\UserSetRole;
 use App\Services\Interfaces\UserRepositoryInterface;
 use App\Services\traits\ReturnWithRedirectAndFlash;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class UserController extends Controller
 {
@@ -35,7 +36,7 @@ class UserController extends Controller
         $role = $this->request->input('role');
 
         // Сохранение данных пользователя в БД
-        $user = $userRepository->getFistOrNull($user_id);
+        $user = $userRepository->getFirstOrNull($user_id);
         $user->status = $role;
         if (!$user->save()) {
             return $this->withRedirectAndFlash(

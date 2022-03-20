@@ -18,7 +18,7 @@ interface UserRepositoryInterface
      * если такой имеется - иначе null
      * @return \App\Models\User|Null
      */
-    public function getFistOrNull(int $id): User|null;
+    public function getFirstOrNull(int $id): User|null;
 
     /**
      * Метод возвращает список всех пользователей,
