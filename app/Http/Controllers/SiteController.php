@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Services\Repositories\UserRepository;
-use Illuminate\Support\Facades\Auth;
 
 class SiteController extends Controller
 {

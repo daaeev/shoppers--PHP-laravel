@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Interfaces;
+namespace App\Services\Interfaces\divided;
 
 use ViewComponents\Grids\Grid;
 use ViewComponents\ViewComponents\Input\InputSource;

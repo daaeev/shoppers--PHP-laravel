@@ -7,7 +7,6 @@ use App\Services\Interfaces\UserRepositoryInterface;
 use App\Services\Repositories\UserRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use ViewComponents\ViewComponents\Input\InputSource;
 
 class UserRepositoryTest extends TestCase
 {
@@ -53,12 +52,5 @@ class UserRepositoryTest extends TestCase
         $user_logged = $this->repository->getAuthenticated();
 
         $this->assertNull($user_logged);
-    }
-
-    public function testMakeGridSuccess()
-    {
-        $grid = $this->repository->getAllUsingGrid(new InputSource([]));
-
-        $this->assertNotNull($grid);
     }
 }

@@ -40,6 +40,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // !!!CRUD ROUTES!!!
 
     Route::get('/admin/users', [AdminController::class, 'usersList'])->name('admin.users');
+    Route::get('/admin/products', [AdminController::class, 'productsList'])->name('admin.products');
+    Route::get('/admin/categories', [AdminController::class, 'categoriesList'])->name('admin.categories');
+    Route::get('/admin/colors', [AdminController::class, 'colorsList'])->name('admin.colors');
+    Route::get('/admin/sizes', [AdminController::class, 'sizesList'])->name('admin.sizes');
 });
 
 // !!!ADMIN ROUTES!!!
