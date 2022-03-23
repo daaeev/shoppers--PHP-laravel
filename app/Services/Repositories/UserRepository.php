@@ -33,7 +33,7 @@ class UserRepository implements \App\Services\Interfaces\UserRepositoryInterface
         });
     }
 
-    public function getAllUsingGrid(InputSource $input, int $pageSize = 15): mixed
+    public function getAllUsingGrid(InputSource $input, int $pageSize = 15): Grid
     {
         $provider = new EloquentDataProvider(User::query());
 
