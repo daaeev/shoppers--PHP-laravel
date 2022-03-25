@@ -3,6 +3,7 @@
 namespace App\Services\Repositories;
 
 use App\Models\Product;
+use App\Services\Interfaces\divided\GetAllForeignInterface;
 use ViewComponents\Grids\Component\Column;
 use ViewComponents\Grids\Grid;
 use ViewComponents\ViewComponents\Component\Control\FilterControl;
@@ -24,6 +25,17 @@ class ProductRepository implements \App\Services\Interfaces\ProductRepositoryInt
         });
     }
 
+    public function getForeignDataForForm(GetAllForeignInterface ...$repositories): array
+    {
+        $array = [];
+
+        foreach ($repositories as $repository) {
+            $array[$repository->getForeignColumnName()] = $repository->getAll();
+        }
+
+        return $array;
+    }
+
     public function getAllUsingGrid(InputSource $input, int $pageSize = 15): Grid
     {
         $provider = new EloquentDataProvider(Product::query());
@@ -33,17 +45,31 @@ class ProductRepository implements \App\Services\Interfaces\ProductRepositoryInt
             new Column('name'),
             new Column('subname'),
             new Column('description'),
-            new Column('price'),
-            new Column('discount_price'),
-            new Column('category_id'),
-            new Column('size_id'),
-            new Column('color_id'),
+            (new Column('price'))->setValueFormatter(function ($value) {
+                return $value . ' ₴';
+            }),
+            (new Column('discount_price'))->setValueFormatter(function ($value) {
+                return ($value ? $value . '₴' : '0 ₴');
+            }),
+            (new Column('category_id'))->setValueFormatter(function ($value) {
+                return '<a href="' . route('admin.categories', ['filt_id' => $value]) . '">' . $value . '</a>';
+            }),
+            (new Column('size_id'))->setValueFormatter(function ($value) {
+                return '<a href="' . route('admin.sizes', ['filt_id' => $value]) . '">' . $value . '</a>';
+            }),
+            (new Column('color_id'))->setValueFormatter(function ($value) {
+                return '<a href="' . route('admin.colors', ['filt_id' => $value]) . '">' . $value . '</a>';
+            }),
             new Column('count'),
             (new Column('main_image'))->setValueFormatter(function ($value) {
                 return '<img src="' . asset('storage/products_images') . "/$value" . '" alt="product preview" width="150"';
             }),
             (new Column('preview_image'))->setValueFormatter(function ($value) {
-                return '<img src="' . asset('storage/products_images') . "/$value" . '" alt="product preview" width="150"';
+                if ($value) {
+                    return '<img src="' . asset('storage/products_images') . "/$value" . '" alt="product preview" width="150"';
+                }
+
+                return '';
             }),
             new PaginationControl($input->option('page', 1), $pageSize),
             new FilterControl('id', FilterOperation::OPERATOR_LIKE, $input->option('filt_id')),

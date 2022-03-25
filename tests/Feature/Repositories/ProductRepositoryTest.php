@@ -2,9 +2,13 @@
 
 namespace Tests\Feature\Repositories;
 
+use App\Models\Color;
 use App\Models\Product;
 use App\Services\Interfaces\ProductRepositoryInterface;
+use App\Services\Repositories\ColorRepository;
 use App\Services\Repositories\ProductRepository;
+use App\Services\Repositories\SizeRepository;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -16,8 +20,9 @@ class ProductRepositoryTest extends TestCase
 
     public function setUp(): void
     {
-        $this->repository = new ProductRepository();
         parent::setUp();
+
+        $this->repository = app(ProductRepository::class);
     }
 
     public function testFirstOrNullIfNotExist()
@@ -34,5 +39,41 @@ class ProductRepositoryTest extends TestCase
 
         $this->assertNotNull($user_found);
         $this->assertEquals($user_created->id, $user_found->id);
+    }
+
+    public function testGetForeignDataIfNoRepositoriesGive()
+    {
+        $data = $this->repository->getForeignDataForForm();
+
+        $this->assertEmpty($data);
+    }
+
+    public function testGetForeignDataIfRepositoriesGive()
+    {
+        $color = app(ColorRepository::class);
+        $size = app(SizeRepository::class);
+        $data = $this->repository->getForeignDataForForm($color, $size);
+
+        $this->assertNotEmpty($data);
+
+        $this->assertCount(2, $data);
+
+        $this->assertArrayHasKey($color->getForeignColumnName(), $data);
+        $this->assertArrayHasKey($size->getForeignColumnName(), $data);
+
+        $this->assertInstanceOf(Collection::class, $data[$color->getForeignColumnName()]);
+        $this->assertInstanceOf(Collection::class, $data[$size->getForeignColumnName()]);
+    }
+
+    public function testGetForeignDataIfRepositoriesGiveWithElements()
+    {
+        $color = app(ColorRepository::class);
+        Color::factory(2)->create();
+
+        $data = $this->repository->getForeignDataForForm($color);
+
+        $this->assertNotEmpty($data);
+        $this->assertArrayHasKey($color->getForeignColumnName(), $data);
+        $this->assertCount(2, $data[$color->getForeignColumnName()]);
     }
 }

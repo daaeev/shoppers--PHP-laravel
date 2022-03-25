@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Services\ImageProfiler;
 use App\Services\Interfaces\CategoryRepositoryInterface;
 use App\Services\Interfaces\ColorRepositoryInterface;
+use App\Services\Interfaces\ImageProfilerInterface;
 use App\Services\Interfaces\ProductRepositoryInterface;
 use App\Services\Interfaces\SizeRepositoryInterface;
 use App\Services\Interfaces\UserRepositoryInterface;
@@ -18,11 +20,15 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     public $bindings = [
+        // Repositories
         UserRepositoryInterface::class => UserRepository::class,
         ProductRepositoryInterface::class => ProductRepository::class,
         CategoryRepositoryInterface::class => CategoryRepository::class,
         SizeRepositoryInterface::class => SizeRepository::class,
         ColorRepositoryInterface::class => ColorRepository::class,
+
+        // Services
+        ImageProfilerInterface::class => ImageProfiler::class,
     ];
 
     /**

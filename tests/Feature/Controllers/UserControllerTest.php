@@ -14,9 +14,8 @@ class UserControllerTest extends TestCase
 
     public function testSetRoleSuccess()
     {
-        $repository = new UserRepository;
-        $role_to_set = User::$status_banned;
         $user_admin = User::factory()->createOne(['status' => User::$status_admin]);
+        $role_to_set = User::$status_banned;
 
         $repository_mock = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()
@@ -42,45 +41,14 @@ class UserControllerTest extends TestCase
 
         $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_success');
-        $this->assertEquals($role_to_set, $repository->getFirstOrNull($user_admin->id)->status);
-    }
 
-    /**
-     * @dataProvider postFailedDataProvider
-     */
-    public function testPostDataValidationFailed($id, $role)
-    {
-        $user_admin = User::factory()->createOne(['status' => User::$status_admin]);
-
-        $response = $this->actingAs($user_admin)
-            ->post(route('admin.users.role'), [
-                'id' => $id,
-                'role' => $role,
-            ])
-            ->assertRedirect(route('home'));
-
-        $response->assertSessionHasErrors();
-    }
-
-    public function postFailedDataProvider()
-    {
-        $role_to_set = User::$status_banned;
-
-        return [
-            ['string', $role_to_set],
-            [1, 'string'],
-            [123, $role_to_set],
-            [1, 123],
-            [1.2, $role_to_set],
-            [1, 1.2],
-            [null, $role_to_set],
-            [1, null],
-        ];
+        $user_data = $user_admin->attributesToArray();
+        $user_data['status'] = $role_to_set;
+        $this->assertDatabaseHas(User::class, $user_data);
     }
 
     public function testFailedDataSave()
     {
-        $repository = new UserRepository;
         $user_admin = User::factory()->createOne(['status' => User::$status_admin]);
         $role_to_set = User::$status_banned;
 
@@ -116,6 +84,9 @@ class UserControllerTest extends TestCase
             ->assertRedirect(route('admin.users'));
 
         $response->assertSessionHas('status_failed');
-        $this->assertNotEquals($role_to_set, $repository->getFirstOrNull($user_admin->id)->status);
+
+        $user_data = $user_admin->attributesToArray();
+        $user_data['status'] = $role_to_set;
+        $this->assertDatabaseMissing(User::class, $user_data);
     }
 }

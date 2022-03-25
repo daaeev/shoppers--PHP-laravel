@@ -2,23 +2,14 @@
 
 namespace App\Http\Controllers\admin;
 
-use \App\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\UserSetRole;
 use App\Services\Interfaces\UserRepositoryInterface;
 use App\Services\traits\ReturnWithRedirectAndFlash;
-use Illuminate\Http\Request;
-use PHPUnit\Framework\MockObject\MockObject;
 
 class UserController extends Controller
 {
     use ReturnWithRedirectAndFlash;
-
-    /**
-     * @param Request $request
-     */
-    public function __construct(protected Request $request)
-    {
-    }
 
     /**
      * Метод устанавливет статус определенному пользователю

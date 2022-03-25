@@ -10,8 +10,6 @@ use App\Models\User
 @endsection
 
 @section('content')
-    @include('admin.errors')
-
     <form action="{{route('admin.users.role')}}" method="post" class="mb-5">
         @csrf
 

@@ -10,6 +10,17 @@ use Illuminate\Support\Facades\Route;
 
 class AdminAccessTest extends TestCase
 {
+    protected string $route = '/admin-middleware-test-route';
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        Route::get($this->route, function () {
+            return true;
+        })->middleware('admin');
+    }
+
     public function testIfAdmin()
     {
         $user_mock = $this->getMockBuilder(User::class)
@@ -35,11 +46,7 @@ class AdminAccessTest extends TestCase
             $repository_mock
         );
 
-        Route::get('/admin-middleware-test', function () {
-            return true;
-        })->middleware('admin');
-
-        $this->get('/admin-middleware-test')
+        $this->get($this->route)
             ->assertOk();
     }
 
@@ -68,21 +75,13 @@ class AdminAccessTest extends TestCase
             $repository_mock
         );
 
-        Route::get('/admin-middleware-test', function () {
-            return true;
-        })->middleware('admin');
-
-        $this->get('/admin-middleware-test')
+        $this->get($this->route)
             ->assertRedirect(\route('home'));
     }
 
     public function testIfNotAuth()
     {
-        Route::get('/admin-middleware-test', function () {
-            return true;
-        })->middleware('admin');
-
-        $this->get('/admin-middleware-test')
+        $this->get($this->route)
             ->assertRedirect(\route('home'));
     }
 }

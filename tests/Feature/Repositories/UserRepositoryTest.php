@@ -16,8 +16,9 @@ class UserRepositoryTest extends TestCase
 
     public function setUp(): void
     {
-        $this->repository = new UserRepository;
         parent::setUp();
+
+        $this->repository = app(UserRepository::class);
     }
 
     public function testFirstOrNullIfNotExist()

@@ -29,6 +29,8 @@
 </header>
 
 <div class="container mt-5">
+    @include('admin.errors')
+
     @yield('content')
 </div>
 

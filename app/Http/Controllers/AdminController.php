@@ -13,13 +13,6 @@ use ViewComponents\ViewComponents\Input\InputSource;
 class AdminController extends Controller
 {
     /**
-     * @param Request $request
-     */
-    public function __construct(protected Request $request)
-    {
-    }
-
-    /**
      * Метод отвечает за рендер страницы 'Users' админ панели
      *
      * @param UserRepositoryInterface $userRepository
@@ -45,6 +38,27 @@ class AdminController extends Controller
         $grid = $productRepository->getAllUsingGrid($input);
 
         return view('admin.products', compact('grid'));
+    }
+
+    /**
+     * Метод отвечает за рендер страницы с формой создания продукта
+     *
+     * @return mixed
+     */
+    public function productCreateForm(
+        ProductRepositoryInterface $productRepository,
+        CategoryRepositoryInterface $categoryRepository,
+        ColorRepositoryInterface $colorRepository,
+        SizeRepositoryInterface $sizeRepository,
+    )
+    {
+        $foreign_data = $productRepository->getForeignDataForForm(
+            $categoryRepository,
+            $colorRepository,
+            $sizeRepository
+        );
+
+        return view('admin.product_create_form', compact('foreign_data'));
     }
 
     /**

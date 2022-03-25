@@ -3,6 +3,7 @@
 namespace App\Services\Repositories;
 
 use App\Models\Size;
+use Illuminate\Database\Eloquent\Collection;
 use ViewComponents\Eloquent\EloquentDataProvider;
 use ViewComponents\Grids\Component\Column;
 use ViewComponents\Grids\Grid;
@@ -14,6 +15,22 @@ use ViewComponents\ViewComponents\Input\InputSource;
 
 class SizeRepository implements \App\Services\Interfaces\SizeRepositoryInterface
 {
+    /**
+     * @inheritDoc
+     */
+    public function getAll(): Collection
+    {
+        return Size::all();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getForeignColumnName(): string
+    {
+        return 'size_id';
+    }
+
     /**
      * @inheritDoc
      */

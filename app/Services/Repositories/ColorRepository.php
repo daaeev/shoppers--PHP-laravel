@@ -3,6 +3,7 @@
 namespace App\Services\Repositories;
 
 use App\Models\Color;
+use Illuminate\Database\Eloquent\Collection;
 use ViewComponents\Eloquent\EloquentDataProvider;
 use ViewComponents\Grids\Component\Column;
 use ViewComponents\Grids\Grid;
@@ -14,6 +15,22 @@ use ViewComponents\ViewComponents\Input\InputSource;
 
 class ColorRepository implements \App\Services\Interfaces\ColorRepositoryInterface
 {
+    /**
+     * @inheritDoc
+     */
+    public function getAll(): Collection
+    {
+        return Color::all();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getForeignColumnName(): string
+    {
+        return 'color_id';
+    }
+
     /**
      * @inheritDoc
      */

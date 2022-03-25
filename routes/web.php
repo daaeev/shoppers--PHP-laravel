@@ -5,6 +5,7 @@ use \App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\admin\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,10 +38,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::post('/admin/user/role', [UserController::class, 'setRole'])->name('admin.users.role');
 
+    Route::post('/admin/product/create', [ProductController::class, 'createProduct'])->name('admin.product.create');
+    Route::post('/admin/product/delete', [ProductController::class, 'deleteProduct'])->name('admin.product.delete');
+
     // !!!CRUD ROUTES!!!
 
     Route::get('/admin/users', [AdminController::class, 'usersList'])->name('admin.users');
     Route::get('/admin/products', [AdminController::class, 'productsList'])->name('admin.products');
+    Route::get('/admin/products/create/form', [AdminController::class, 'productCreateForm'])->name('admin.products.create.form');
     Route::get('/admin/categories', [AdminController::class, 'categoriesList'])->name('admin.categories');
     Route::get('/admin/colors', [AdminController::class, 'colorsList'])->name('admin.colors');
     Route::get('/admin/sizes', [AdminController::class, 'sizesList'])->name('admin.sizes');

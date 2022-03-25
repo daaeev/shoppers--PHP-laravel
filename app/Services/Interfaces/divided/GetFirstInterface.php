@@ -4,7 +4,7 @@ namespace App\Services\Interfaces\divided;
 
 use Illuminate\Database\Eloquent\Model;
 
-interface GetterInterface
+interface GetFirstInterface
 {
     /**
      * Метод возвращает экземпляр модели с id = $id,

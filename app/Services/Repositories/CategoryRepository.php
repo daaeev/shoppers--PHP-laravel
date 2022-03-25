@@ -3,6 +3,7 @@
 namespace App\Services\Repositories;
 
 use App\Models\Category;
+use Illuminate\Database\Eloquent\Collection;
 use ViewComponents\Eloquent\EloquentDataProvider;
 use ViewComponents\Grids\Component\Column;
 use ViewComponents\Grids\Grid;
@@ -14,6 +15,22 @@ use ViewComponents\ViewComponents\Input\InputSource;
 
 class CategoryRepository implements \App\Services\Interfaces\CategoryRepositoryInterface
 {
+    /**
+     * @inheritDoc
+     */
+    public function getAll(): Collection
+    {
+        return Category::all();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getForeignColumnName(): string
+    {
+        return 'category_id';
+    }
+
     /**
      * @inheritDoc
      */

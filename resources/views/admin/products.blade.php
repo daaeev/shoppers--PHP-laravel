@@ -5,26 +5,24 @@
 @endsection
 
 @section('content')
-    @include('admin.errors')
-
     <form action="" method="post" class="mb-5">
         @csrf
 
         <label>Edit product</label>
-        <input name="id" type="number" min="1" placeholder="Product id" class="form-control mb-2" autocomplete="off" value="{{old('id')}}">
+        <input name="id" type="number" min="1" placeholder="Product id" class="form-control mb-2" autocomplete="off">
 
         <input type="submit" class="btn btn-success" value="Edit">
     </form>
 
-    <form action="" method="post" class="mb-5">
+    <form action="{{route('admin.product.delete')}}" method="post" class="mb-5">
         @csrf
 
         <label>Delete product</label>
-        <input name="id" type="number" min="1" placeholder="Product id" class="form-control mb-2" autocomplete="off" value="{{old('id')}}">
+        <input name="id" type="number" min="1" placeholder="Product id" class="form-control mb-2" autocomplete="off">
 
-        <input type="submit" class="btn btn-danger" value="Edit">
+        <input type="submit" class="btn btn-danger" value="Delete">
     </form>
 
-    <a class="btn btn-success text-white mb-1">Add product</a>
+    <a class="btn btn-success text-white mb-1" href="{{route('admin.products.create.form')}}">Add product</a>
     <?= $grid ?>
 @endsection
