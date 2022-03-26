@@ -20,13 +20,13 @@ return new class extends Migration
             $table->string('subname')->unique();
             $table->text('description');
             $table->integer('price');
-            $table->integer('discount_price');
+            $table->integer('discount_price')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('size_id');
             $table->unsignedBigInteger('color_id');
             $table->smallInteger('count');
             $table->string('main_image');
-            $table->string('preview_image');
+            $table->string('preview_image')->nullable();
             $table->timestamps();
 
             $table->foreign('category_id', 'fk-products-category_id')

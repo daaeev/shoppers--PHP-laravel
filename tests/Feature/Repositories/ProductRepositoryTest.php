@@ -27,18 +27,18 @@ class ProductRepositoryTest extends TestCase
 
     public function testFirstOrNullIfNotExist()
     {
-        $user = $this->repository->getFirstOrNull(1);
+        $product = $this->repository->getFirstOrNull(1);
 
-        $this->assertNull($user);
+        $this->assertNull($product);
     }
 
     public function testFirstOrNullIfExist()
     {
-        $user_created = Product::factory()->createOne();
-        $user_found = $this->repository->getFirstOrNull($user_created->id);
+        $product_created = Product::factory()->createOne();
+        $product_found = $this->repository->getFirstOrNull($product_created->id);
 
-        $this->assertNotNull($user_found);
-        $this->assertEquals($user_created->id, $user_found->id);
+        $this->assertNotNull($product_found);
+        $this->assertEquals($product_created->id, $product_found->id);
     }
 
     public function testGetForeignDataIfNoRepositoriesGive()
@@ -50,30 +50,30 @@ class ProductRepositoryTest extends TestCase
 
     public function testGetForeignDataIfRepositoriesGive()
     {
-        $color = app(ColorRepository::class);
-        $size = app(SizeRepository::class);
-        $data = $this->repository->getForeignDataForForm($color, $size);
+        $color_rep = app(ColorRepository::class);
+        $size_rep = app(SizeRepository::class);
+        $data = $this->repository->getForeignDataForForm($color_rep, $size_rep);
 
         $this->assertNotEmpty($data);
 
         $this->assertCount(2, $data);
 
-        $this->assertArrayHasKey($color->getForeignColumnName(), $data);
-        $this->assertArrayHasKey($size->getForeignColumnName(), $data);
+        $this->assertArrayHasKey($color_rep->getForeignColumnName(), $data);
+        $this->assertArrayHasKey($size_rep->getForeignColumnName(), $data);
 
-        $this->assertInstanceOf(Collection::class, $data[$color->getForeignColumnName()]);
-        $this->assertInstanceOf(Collection::class, $data[$size->getForeignColumnName()]);
+        $this->assertInstanceOf(Collection::class, $data[$color_rep->getForeignColumnName()]);
+        $this->assertInstanceOf(Collection::class, $data[$size_rep->getForeignColumnName()]);
     }
 
     public function testGetForeignDataIfRepositoriesGiveWithElements()
     {
-        $color = app(ColorRepository::class);
+        $color_rep = app(ColorRepository::class);
         Color::factory(2)->create();
 
-        $data = $this->repository->getForeignDataForForm($color);
+        $data = $this->repository->getForeignDataForForm($color_rep);
 
         $this->assertNotEmpty($data);
-        $this->assertArrayHasKey($color->getForeignColumnName(), $data);
-        $this->assertCount(2, $data[$color->getForeignColumnName()]);
+        $this->assertArrayHasKey($color_rep->getForeignColumnName(), $data);
+        $this->assertCount(2, $data[$color_rep->getForeignColumnName()]);
     }
 }
