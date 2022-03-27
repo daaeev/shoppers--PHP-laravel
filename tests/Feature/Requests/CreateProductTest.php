@@ -15,11 +15,24 @@ class CreateProductTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected string $route = '/check-set-role-validation-route';
+    protected string $route = '/check-create-product-validation-route';
     protected int $cat;
     protected int $col;
     protected int $size;
     protected UploadedFile $image;
+
+    public function __construct(?string $name = null, array $data = [], $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+
+        $this->image = new UploadedFile(
+            dirname(__DIR__) . '/test_files/image.png',
+            'image.png',
+            'image/*',
+            null,
+            true
+        );
+    }
 
     public function setUp(): void
     {
@@ -32,14 +45,6 @@ class CreateProductTest extends TestCase
         $this->cat = Category::factory()->createOne()->id;
         $this->col = Color::factory()->createOne()->id;
         $this->size = Size::factory()->createOne()->id;
-
-        $this->image = new UploadedFile(
-            dirname(__DIR__) . '/test_files/image.png',
-            'image.png',
-            'image/*',
-            null,
-            true
-        );
     }
 
     public function testSuccessData()
@@ -80,7 +85,7 @@ class CreateProductTest extends TestCase
                 'discount_price' => null,
                 'count' => 2,
                 'main_image' => $this->image,
-                'preview_image' => null,
+
             ],
             [
                 'name' => 'name',
@@ -106,7 +111,7 @@ class CreateProductTest extends TestCase
                 'discount_price' => 100,
                 'count' => 2,
                 'main_image' => $this->image,
-                'preview_image' => null,
+
             ],
         ];
     }
@@ -125,7 +130,7 @@ class CreateProductTest extends TestCase
                 'discount_price' => null,
                 'count' => 2,
                 'main_image' => $this->image,
-                'preview_image' => null,
+
             ],
             [
                 'name' => 'name',
@@ -138,7 +143,7 @@ class CreateProductTest extends TestCase
                 'discount_price' => null,
                 'count' => 2,
                 'main_image' => $this->image,
-                'preview_image' => null,
+
             ],
             [
                 'name' => 'name',
@@ -151,7 +156,7 @@ class CreateProductTest extends TestCase
                 'discount_price' => null,
                 'count' => 2,
                 'main_image' => $this->image,
-                'preview_image' => null,
+
             ],
             [
                 'name' => 'name',
@@ -164,7 +169,7 @@ class CreateProductTest extends TestCase
                 'discount_price' => null,
                 'count' => 2,
                 'main_image' => $this->image,
-                'preview_image' => null,
+
             ],
             [
                 'name' => 'name',
@@ -177,7 +182,7 @@ class CreateProductTest extends TestCase
                 'discount_price' => null,
                 'count' => 2,
                 'main_image' => $this->image,
-                'preview_image' => null,
+
             ],
             [
                 'name' => 'name',
@@ -190,7 +195,7 @@ class CreateProductTest extends TestCase
                 'discount_price' => null,
                 'count' => 2,
                 'main_image' => $this->image,
-                'preview_image' => null,
+
             ],
             [
                 'name' => 'name',
@@ -203,7 +208,7 @@ class CreateProductTest extends TestCase
                 'discount_price' => null,
                 'count' => 2,
                 'main_image' => $this->image,
-                'preview_image' => null,
+
             ],
             [
                 'name' => 'name',
@@ -216,7 +221,7 @@ class CreateProductTest extends TestCase
                 'discount_price' => null,
                 'count' => 2,
                 'main_image' => $this->image,
-                'preview_image' => null,
+
             ],
             [
                 'name' => 'name',
@@ -229,7 +234,7 @@ class CreateProductTest extends TestCase
                 'discount_price' => null,
                 'count' => 2,
                 'main_image' => $this->image,
-                'preview_image' => null,
+
             ],
             [
                 'name' => 'name',
@@ -242,7 +247,7 @@ class CreateProductTest extends TestCase
                 'discount_price' => null,
                 'count' => 2,
                 'main_image' => $this->image,
-                'preview_image' => null,
+
             ],
             [
                 'name' => 'name',
@@ -255,7 +260,7 @@ class CreateProductTest extends TestCase
                 'discount_price' => null,
                 'count' => 2,
                 'main_image' => $this->image,
-                'preview_image' => null,
+
             ],
             [
                 'name' => 'name',
@@ -268,7 +273,7 @@ class CreateProductTest extends TestCase
                 'discount_price' => -1,
                 'count' => 2,
                 'main_image' => $this->image,
-                'preview_image' => null,
+
             ],
             [
                 'name' => 'name',
@@ -281,7 +286,7 @@ class CreateProductTest extends TestCase
                 'discount_price' => 'string',
                 'count' => 2,
                 'main_image' => $this->image,
-                'preview_image' => null,
+
             ],
             [
                 'name' => 'name',
@@ -294,7 +299,6 @@ class CreateProductTest extends TestCase
                 'discount_price' => 121,
                 'count' => 2,
                 'main_image' => $this->image,
-                'preview_image' => null,
             ],
             [
                 'name' => 'name',
@@ -307,7 +311,6 @@ class CreateProductTest extends TestCase
                 'discount_price' => null,
                 'count' => -1,
                 'main_image' => $this->image,
-                'preview_image' => null,
             ],
             [
                 'name' => 'name',
@@ -320,7 +323,6 @@ class CreateProductTest extends TestCase
                 'discount_price' => null,
                 'count' => 'string',
                 'main_image' => $this->image,
-                'preview_image' => null,
             ],
             [
                 'name' => 'name',
@@ -333,7 +335,6 @@ class CreateProductTest extends TestCase
                 'discount_price' => null,
                 'count' => 1,
                 'main_image' => 'not file',
-                'preview_image' => null,
             ],
             [
                 'name' => 'name',
@@ -346,7 +347,6 @@ class CreateProductTest extends TestCase
                 'discount_price' => null,
                 'count' => 1,
                 'main_image' => null,
-                'preview_image' => null,
             ],
             [
                 'name' => 'name',

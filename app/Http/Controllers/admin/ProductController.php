@@ -176,9 +176,9 @@ class ProductController extends Controller
 
             if (!$new_main_image) {
                 return $this->withRedirectAndFlash(
-                    'status_error',
+                    'status_failed',
                     'New main image save failed',
-                    route('admin.products.edit.form', ['id' => $model->id]),
+                    route('admin.product.edit.form', ['id' => $model->id]),
                     $this->request
                 );
             }
@@ -191,19 +191,19 @@ class ProductController extends Controller
 
             // Если превью-изображение не созданно - удалить главное(если переданно)
             if (!$new_preview_image) {
-                if ($data['main_image'] && !$imgProfiler->deleteImage($data['main_image'])) {
+                if (isset($data['main_image']) && !$imgProfiler->deleteImage($data['main_image'])) {
                     return $this->withRedirectAndFlash(
-                        'status_error',
+                        'status_failed',
                         'New preview image save failed | New main image delete failed (' . $data['main_image'] . ')',
-                        route('admin.products.edit.form', ['id' => $model->id]),
+                        route('admin.product.edit.form', ['id' => $model->id]),
                         $this->request
                     );
                 }
 
                 return $this->withRedirectAndFlash(
-                    'status_error',
+                    'status_failed',
                     'New preview image save failed',
-                    route('admin.products.edit.form', ['id' => $model->id]),
+                    route('admin.product.edit.form', ['id' => $model->id]),
                     $this->request
                 );
             }
@@ -229,9 +229,9 @@ class ProductController extends Controller
             }
 
             return $this->withRedirectAndFlash(
-                'status_error',
+                'status_failed',
                 'Product save failed' . $delete_fails,
-                route('admin.products.edit.form', ['id' => $model->id]),
+                route('admin.product.edit.form', ['id' => $model->id]),
                 $this->request
             );
         }
