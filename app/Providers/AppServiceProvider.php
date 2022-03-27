@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Product;
 use App\Services\ImageProfiler;
 use App\Services\Interfaces\CategoryRepositoryInterface;
 use App\Services\Interfaces\ColorRepositoryInterface;
@@ -15,6 +16,7 @@ use App\Services\Repositories\ProductRepository;
 use App\Services\Repositories\SizeRepository;
 use App\Services\Repositories\UserRepository;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

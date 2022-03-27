@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductEditForm;
+use App\Models\Product;
 use App\Services\Interfaces\CategoryRepositoryInterface;
 use App\Services\Interfaces\ColorRepositoryInterface;
 use App\Services\Interfaces\ProductRepositoryInterface;
@@ -43,6 +45,10 @@ class AdminController extends Controller
     /**
      * Метод отвечает за рендер страницы с формой создания продукта
      *
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param ColorRepositoryInterface $colorRepository
+     * @param ProductRepositoryInterface $productRepository
+     * @param SizeRepositoryInterface $sizeRepository
      * @return mixed
      */
     public function productCreateForm(
@@ -59,6 +65,35 @@ class AdminController extends Controller
         );
 
         return view('admin.product_create_form', compact('foreign_data'));
+    }
+
+    /**
+     * Метод отвечает за рендер страницы с формой редактирования существующего продукта
+     *
+     * @param ProductRepositoryInterface $productRepository
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param ColorRepositoryInterface $colorRepository
+     * @param SizeRepositoryInterface $sizeRepository
+     * @param ProductEditForm $validation
+     * @return mixed
+     */
+    public function productEditForm(
+        ProductRepositoryInterface $productRepository,
+        CategoryRepositoryInterface $categoryRepository,
+        ColorRepositoryInterface $colorRepository,
+        SizeRepositoryInterface $sizeRepository,
+        ProductEditForm $validation
+    )
+    {
+        $model = $productRepository->getFirstOrNull($this->request->query('id'));
+
+        $foreign_data = $productRepository->getForeignDataForForm(
+            $categoryRepository,
+            $colorRepository,
+            $sizeRepository
+        );
+
+        return view('admin.product_edit_form', compact('model','foreign_data'));
     }
 
     /**

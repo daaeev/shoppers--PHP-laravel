@@ -40,12 +40,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::post('/admin/product/create', [ProductController::class, 'createProduct'])->name('admin.product.create');
     Route::post('/admin/product/delete', [ProductController::class, 'deleteProduct'])->name('admin.product.delete');
+    Route::post('/admin/product/edit', [ProductController::class, 'editProduct'])->name('admin.product.edit');
 
     // !!!CRUD ROUTES!!!
 
     Route::get('/admin/users', [AdminController::class, 'usersList'])->name('admin.users');
     Route::get('/admin/products', [AdminController::class, 'productsList'])->name('admin.products');
-    Route::get('/admin/products/create/form', [AdminController::class, 'productCreateForm'])->name('admin.products.create.form');
+    Route::get('/admin/product/create/form', [AdminController::class, 'productCreateForm'])->name('admin.product.create.form');
+    Route::get('/admin/product/edit/form', [AdminController::class, 'productEditForm'])->name('admin.product.edit.form');
     Route::get('/admin/categories', [AdminController::class, 'categoriesList'])->name('admin.categories');
     Route::get('/admin/colors', [AdminController::class, 'colorsList'])->name('admin.colors');
     Route::get('/admin/sizes', [AdminController::class, 'sizesList'])->name('admin.sizes');

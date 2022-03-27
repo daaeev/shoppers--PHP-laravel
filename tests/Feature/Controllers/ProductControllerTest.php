@@ -191,7 +191,7 @@ class ProductControllerTest extends TestCase
 
         $response = $this->actingAs($this->user_admin)
             ->post(route('admin.product.create'), $request_data)
-            ->assertRedirect(route('admin.products.create.form'));
+            ->assertRedirect(route('admin.product.create.form'));
 
         $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
@@ -241,7 +241,7 @@ class ProductControllerTest extends TestCase
 
         $response = $this->actingAs($this->user_admin)
             ->post(route('admin.product.create'), $request_data)
-            ->assertRedirect(route('admin.products.create.form'));
+            ->assertRedirect(route('admin.product.create.form'));
 
         $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
@@ -309,7 +309,7 @@ class ProductControllerTest extends TestCase
 
         $response = $this->actingAs($this->user_admin)
             ->post(route('admin.product.create'), $request_data)
-            ->assertRedirect(route('admin.products.create.form'));
+            ->assertRedirect(route('admin.product.create.form'));
 
         $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
@@ -392,7 +392,7 @@ class ProductControllerTest extends TestCase
 
         $response = $this->actingAs($this->user_admin)
             ->post(route('admin.product.create'), $request_data)
-            ->assertRedirect(route('admin.products.create.form'));
+            ->assertRedirect(route('admin.product.create.form'));
 
         $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
@@ -597,10 +597,15 @@ class ProductControllerTest extends TestCase
             ->onlyMethods(['deleteImage'])
             ->getMock();
 
-        $profiler_mock->expects($this->once())
+        $profiler_mock->expects($this->at(0))
             ->method('deleteImage')
             ->with($product->main_image)
             ->willReturn(false);
+
+        $profiler_mock->expects($this->at(1))
+            ->method('deleteImage')
+            ->with($product->preview_image)
+            ->willReturn(true);
 
         $this->instance(
             ProductRepositoryInterface::class,

@@ -9,14 +9,15 @@ use App\Services\Interfaces\divided\GridInterface;
 interface ProductRepositoryInterface extends GridInterface, GetFirstInterface
 {
     /**
-     * Метод возвращает массив с коллекциями из таблиц,
+     * Метод возвращает массив с коллекциями моделей из таблиц,
      * с которыми связан продукт (colors, sizes, categories...)
      *
-     * Результирующий массив должен иметь количество элементов
-     * равное количеству таблиц, с которыми связан продукт.
+     * Результирующий массив имеет количество элементов
+     * равное количеству переданных 'репозиториев'
      *
-     * Ключами элементов должны быть названия таблиц:
-     * ['colors' => ColorsCollection, ...]
+     * Ключами элементов будут имена связанных столбцов,
+     * которые беруться с функции интерфейса GetAllForeignInterface:
+     * [$repository->getForeignColumnName() => Collection] == ['colors_id' => ColorsCollection, ...]
      *
      * @return array
      */

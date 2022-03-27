@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <form action="" method="post" class="mb-5">
+    <form action="{{route('admin.product.edit.form')}}" method="get" class="mb-5">
         @csrf
 
         <label>Edit product</label>
@@ -23,6 +23,6 @@
         <input type="submit" class="btn btn-danger" value="Delete">
     </form>
 
-    <a class="btn btn-success text-white mb-1" href="{{route('admin.products.create.form')}}">Add product</a>
+    <a class="btn btn-success text-white mb-1" href="{{route('admin.product.create.form')}}">Add product</a>
     <?= $grid ?>
 @endsection
