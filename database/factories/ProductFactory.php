@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Color;
 use App\Models\Size;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
@@ -20,7 +21,7 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->sentence(5),
+            'name' => Str::random(),
             'subname' => $this->faker->sentence(5),
             'description' => $this->faker->text(),
             'price' => $this->faker->numberBetween(0, 100),

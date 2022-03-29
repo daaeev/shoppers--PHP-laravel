@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\ProductController;
+use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\ColorController;
+use App\Http\Controllers\admin\SizeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +44,15 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/product/create', [ProductController::class, 'createProduct'])->name('admin.product.create');
     Route::post('/admin/product/delete', [ProductController::class, 'deleteProduct'])->name('admin.product.delete');
     Route::post('/admin/product/edit', [ProductController::class, 'editProduct'])->name('admin.product.edit');
+
+    Route::post('/admin/category/create', [CategoryController::class, 'createCategory'])->name('admin.category.create');
+    Route::post('/admin/category/delete', [CategoryController::class, 'deleteCategory'])->name('admin.category.delete');
+
+    Route::post('/admin/color/create', [ColorController::class, 'createColor'])->name('admin.color.create');
+    Route::post('/admin/color/delete', [ColorController::class, 'deleteColor'])->name('admin.color.delete');
+
+    Route::post('/admin/size/create', [SizeController::class, 'createSize'])->name('admin.size.create');
+    Route::post('/admin/size/delete', [SizeController::class, 'deleteSize'])->name('admin.size.delete');
 
     // !!!CRUD ROUTES!!!
 

@@ -22,6 +22,22 @@ class CategoryRepositoryTest extends TestCase
         $this->repository = app(CategoryRepository::class);
     }
 
+    public function testFirstOrNullIfNotExist()
+    {
+        $cat = $this->repository->getFirstOrNull(1);
+
+        $this->assertNull($cat);
+    }
+
+    public function testFirstOrNullIfExist()
+    {
+        $cat_created = Category::factory()->createOne();
+        $cat_found = $this->repository->getFirstOrNull($cat_created->id);
+
+        $this->assertNotNull($cat_found);
+        $this->assertEquals($cat_created->id, $cat_found->id);
+    }
+
     public function testGetForeignColumnName()
     {
         $this->assertEquals('category_id', $this->repository->getForeignColumnName());

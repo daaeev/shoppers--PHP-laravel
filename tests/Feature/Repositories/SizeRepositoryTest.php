@@ -22,6 +22,22 @@ class SizeRepositoryTest extends TestCase
         $this->repository = app(SizeRepository::class);
     }
 
+    public function testFirstOrNullIfNotExist()
+    {
+        $col = $this->repository->getFirstOrNull(1);
+
+        $this->assertNull($col);
+    }
+
+    public function testFirstOrNullIfExist()
+    {
+        $size_created = Size::factory()->createOne();
+        $size_found = $this->repository->getFirstOrNull($size_created->id);
+
+        $this->assertNotNull($size_found);
+        $this->assertEquals($size_created->id, $size_found->id);
+    }
+
     public function testGetForeignColumnName()
     {
         $this->assertEquals('size_id', $this->repository->getForeignColumnName());

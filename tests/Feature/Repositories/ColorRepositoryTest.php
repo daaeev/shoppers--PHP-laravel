@@ -22,6 +22,22 @@ class ColorRepositoryTest extends TestCase
         $this->repository = app(ColorRepository::class);
     }
 
+    public function testFirstOrNullIfNotExist()
+    {
+        $col = $this->repository->getFirstOrNull(1);
+
+        $this->assertNull($col);
+    }
+
+    public function testFirstOrNullIfExist()
+    {
+        $col_created = Color::factory()->createOne();
+        $col_found = $this->repository->getFirstOrNull($col_created->id);
+
+        $this->assertNotNull($col_found);
+        $this->assertEquals($col_created->id, $col_found->id);
+    }
+
     public function testGetForeignColumnName()
     {
         $this->assertEquals('color_id', $this->repository->getForeignColumnName());

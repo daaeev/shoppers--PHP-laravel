@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Color>
@@ -17,7 +18,7 @@ class ColorFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->unique()->colorName,
+            'name' => Str::random(),
         ];
     }
 }

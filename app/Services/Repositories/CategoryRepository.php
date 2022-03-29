@@ -4,6 +4,7 @@ namespace App\Services\Repositories;
 
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use ViewComponents\Eloquent\EloquentDataProvider;
 use ViewComponents\Grids\Component\Column;
 use ViewComponents\Grids\Grid;
@@ -50,5 +51,15 @@ class CategoryRepository implements \App\Services\Interfaces\CategoryRepositoryI
         $styles->apply($grid);
 
         return $grid;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getFirstOrNull(int $id): Category|null
+    {
+        return Category::where('id', $id)->firstOr(function () {
+            return null;
+        });
     }
 }

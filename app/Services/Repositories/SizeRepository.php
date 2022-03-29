@@ -51,4 +51,14 @@ class SizeRepository implements \App\Services\Interfaces\SizeRepositoryInterface
 
         return $grid;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getFirstOrNull(int $id): Size|null
+    {
+        return Size::where('id', $id)->firstOr(function () {
+            return null;
+        });
+    }
 }

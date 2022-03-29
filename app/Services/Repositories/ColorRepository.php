@@ -51,4 +51,14 @@ class ColorRepository implements \App\Services\Interfaces\ColorRepositoryInterfa
 
         return $grid;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getFirstOrNull(int $id): Color|null
+    {
+        return Color::where('id', $id)->firstOr(function () {
+            return null;
+        });
+    }
 }
