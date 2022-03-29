@@ -13,6 +13,13 @@ class ColorController extends Controller
 {
     use ReturnWithRedirectAndFlash;
 
+    /**
+     * Создание цвета
+     *
+     * @param Color $model
+     * @param CreateColor $validate
+     * @return mixed
+     */
     public function createColor(Color $model, CreateColor $validate)
     {
         $name = $validate->validated('name');
@@ -36,6 +43,13 @@ class ColorController extends Controller
         );
     }
 
+    /**
+     * Удаление цвета
+     *
+     * @param ColorRepositoryInterface $colorRepository
+     * @param DeleteColor $validate
+     * @return mixed
+     */
     public function deleteColor(
         ColorRepositoryInterface $colorRepository,
         DeleteColor $validate

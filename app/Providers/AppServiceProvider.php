@@ -15,6 +15,7 @@ use App\Services\Repositories\ColorRepository;
 use App\Services\Repositories\ProductRepository;
 use App\Services\Repositories\SizeRepository;
 use App\Services\Repositories\UserRepository;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
@@ -40,6 +41,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(UserRepositoryInterface $userRepository)
     {
+        Paginator::defaultView('layouts.pagination');
+
         // РЕГИСТРАЦИЯ BLADE ДИРЕКТИВ
 
         Blade::if('admin', function () use ($userRepository) {

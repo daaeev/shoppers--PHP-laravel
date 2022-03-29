@@ -49,35 +49,34 @@
             </div>
             <div class="row mb-5">
 
-              <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-                <div class="block-4 text-center border">
-                  <figure class="block-4-image">
-                    <a href="shop-single.html"><img src="{{asset('images/cloth_1.jpg')}}" alt="Image placeholder" class="img-fluid"></a>
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a href="shop-single.html">Tank Top</a></h3>
-                    <p class="mb-0">Finding perfect t-shirt</p>
-                    <p class="text-primary font-weight-bold">$50</p>
-                  </div>
-                </div>
-              </div>
+                @if(!empty($catalog))
+                    @foreach($catalog as $product)
+                        <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
+                            <div class="block-4 text-center border">
+                                  <figure class="block-4-image">
+                                        <a href="#"><img src="{{asset('storage/products_images/' . ($product->preview_image ?? $product->main_image))}}" alt="Image placeholder" class="img-thumbnail" style="border-left: none;border-right: none;border-top: none;"></a>
+                                  </figure>
+                                  <div class="block-4-text p-4">
+                                        <h3><a href="shop-single.html">{{$product->name}}</a></h3>
+                                        <p class="mb-0">{{$product->subname}}</p>
+
+                                        @if($product->discount_price)
+                                            <p class="text-primary font-weight-bold"><span class="text-warning">Discount!</span> <s>{{$product->price}}₴</s> {{$product->discount_price}}₴</p>
+                                        @else
+                                          <p class="text-primary font-weight-bold">{{$product->price}}₴</p>
+                                        @endif
+                                  </div>
+                            </div>
+                      </div>
+                    @endforeach
+                @else
+                    <h3 class="w-100 text-center">Empty</h3>
+                @endif
 
             </div>
-            <div class="row" data-aos="fade-up">
-              <div class="col-md-12 text-center">
-                <div class="site-block-27">
-                  <ul>
-                    <li><a href="#">&lt;</a></li>
-                    <li class="active"><span>1</span></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">&gt;</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+
+              {{$catalog->links()}}
+
           </div>
 
           <div class="col-md-3 order-1 mb-5 mb-md-0">

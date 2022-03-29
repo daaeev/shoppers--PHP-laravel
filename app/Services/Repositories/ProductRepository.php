@@ -4,6 +4,7 @@ namespace App\Services\Repositories;
 
 use App\Models\Product;
 use App\Services\Interfaces\divided\GetAllForeignInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use ViewComponents\Grids\Component\Column;
 use ViewComponents\Grids\Grid;
 use ViewComponents\ViewComponents\Component\Control\FilterControl;
@@ -25,6 +26,9 @@ class ProductRepository implements \App\Services\Interfaces\ProductRepositoryInt
         });
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getForeignDataForForm(GetAllForeignInterface ...$repositories): array
     {
         $array = [];
@@ -36,6 +40,17 @@ class ProductRepository implements \App\Services\Interfaces\ProductRepositoryInt
         return $array;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getCatalogWithPag(int $pageSize = 15): LengthAwarePaginator
+    {
+        return Product::where([['count', '>', 0]])->paginate($pageSize);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getAllUsingGrid(InputSource $input, int $pageSize = 15): Grid
     {
         $provider = new EloquentDataProvider(Product::query());

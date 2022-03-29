@@ -15,6 +15,13 @@ class CategoryController extends Controller
 {
     use ReturnWithRedirectAndFlash;
 
+    /**
+     * Создание категории
+     *
+     * @param Category $model
+     * @param CreateCategory $validate
+     * @return mixed
+     */
     public function createCategory(Category $model, CreateCategory $validate)
     {
         $name = $validate->validated('name');
@@ -38,6 +45,13 @@ class CategoryController extends Controller
         );
     }
 
+    /**
+     *
+     * Удаление категории
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param DeleteCategory $validate
+     * @return mixed
+     */
     public function deleteCategory(
         CategoryRepositoryInterface $categoryRepository,
         DeleteCategory $validate

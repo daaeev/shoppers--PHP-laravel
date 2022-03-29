@@ -13,6 +13,13 @@ class SizeController extends Controller
 {
     use ReturnWithRedirectAndFlash;
 
+    /**
+     * Создание размера
+     *
+     * @param Size $model
+     * @param CreateSize $validate
+     * @return mixed
+     */
     public function createSize(Size $model, CreateSize $validate)
     {
         $name = $validate->validated('name');
@@ -36,6 +43,13 @@ class SizeController extends Controller
         );
     }
 
+    /**
+     * Удаление размера
+     *
+     * @param SizeRepositoryInterface $sizeRepository
+     * @param DeleteSize $validate
+     * @return mixed
+     */
     public function deleteSize(
         SizeRepositoryInterface $sizeRepository,
         DeleteSize $validate

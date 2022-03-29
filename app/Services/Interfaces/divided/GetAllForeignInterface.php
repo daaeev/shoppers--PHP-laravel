@@ -4,16 +4,8 @@ namespace App\Services\Interfaces\divided;
 
 use Illuminate\Database\Eloquent\Collection;
 
-interface GetAllForeignInterface
+interface GetAllForeignInterface extends GetAllInterface
 {
-    /**
-     * Возвращает все существующие элементы модели,
-     * с которой работает репозиторий
-     *
-     * @return Collection
-     */
-    public function getAll(): Collection;
-
     /**
      * Возвращает имя столбца из таблицы продуктов,
      * который связан с таблицей модели,

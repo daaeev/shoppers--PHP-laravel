@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Services\Interfaces\ProductRepositoryInterface;
 use App\Services\Repositories\UserRepository;
 
 class SiteController extends Controller
@@ -52,9 +53,11 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function catalog()
+    public function catalog(ProductRepositoryInterface $productRepository)
     {
-        return view('catalog');
+        $catalog = $productRepository->getCatalogWithPag();
+
+        return view('catalog', compact('catalog'));
     }
 
     /**
