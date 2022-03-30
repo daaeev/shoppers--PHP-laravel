@@ -19,6 +19,7 @@ class ColorFactory extends Factory
     {
         return [
             'name' => Str::random(),
+            'hex' => $this->faker->hexColor(),
         ];
     }
 }

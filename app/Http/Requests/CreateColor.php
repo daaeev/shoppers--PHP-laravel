@@ -25,6 +25,7 @@ class CreateColor extends FormRequest
     {
         return [
             'name' => 'bail|required|max:255|unique:\App\Models\Color,name',
+            'hex' => 'bail|required|max:10|unique:\App\Models\Color,hex',
         ];
     }
 }

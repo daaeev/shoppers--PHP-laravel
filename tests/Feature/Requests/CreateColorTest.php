@@ -27,9 +27,11 @@ class CreateColorTest extends TestCase
     public function testSuccessData()
     {
         $name = Str::random();
+        $hex = '#000000';
 
         $response = $this->post($this->route, [
             'name' => $name,
+            'hex' => $hex,
         ])->assertOk();
 
         $response->assertSessionHasNoErrors();
@@ -40,16 +42,19 @@ class CreateColorTest extends TestCase
         $col = Color::factory()->createOne();
 
         $data = [
-            null,
-            $col->name,
-            Str::random(256),
+            [null, $col->hex],
+            [$col->name, $col->hex],
+            [Str::random(256), $col->hex],
+            [$col->name, null],
+            [$col->name, $col->hex],
+            [$col->name, Str::random(11)],
         ];
 
-        foreach ($data as $name_el) {
+        foreach ($data as list($name, $hex)) {
             $response = $this->post($this->route, [
-                'name' => $name_el,
-            ])
-                ->assertRedirect(route('home'));
+                'name' => $name,
+                'hex' => $hex,
+            ])->assertRedirect(route('home'));
 
             $response->assertSessionHasErrors();
         }

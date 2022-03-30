@@ -23,7 +23,7 @@ class ColorControllerTest extends TestCase
 
     public function testSuccessCreate()
     {
-        $data = ['name' => Str::random()];
+        $data = ['name' => Str::random(), 'hex' => '#' . Str::random(6)];
 
         $this->assertDatabaseMissing(Color::class, $data);
 
@@ -53,7 +53,7 @@ class ColorControllerTest extends TestCase
             $model_mock
         );
 
-        $data = ['name' => Str::random()];
+        $data = ['name' => Str::random(), 'hex' => '#' . Str::random(6)];
 
         $response = $this->actingAs($this->user_admin)
             ->post(route('admin.color.create'), $data)

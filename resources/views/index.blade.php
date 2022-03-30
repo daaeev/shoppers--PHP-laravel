@@ -59,7 +59,7 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0" data-aos="fade" data-aos-delay="">
-            <a class="block-2-item" href="#">
+            <div class="block-2-item" href="#">
               <figure class="image">
                 <img src="{{asset('images/women.jpg')}}" alt="" class="img-fluid">
               </figure>
@@ -67,10 +67,10 @@
                 <span class="text-uppercase">Collections</span>
                 <h3>Women</h3>
               </div>
-            </a>
+            </div>
           </div>
           <div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="100">
-            <a class="block-2-item" href="#">
+            <div class="block-2-item" href="#">
               <figure class="image">
                 <img src="{{asset('images/children.jpg')}}" alt="" class="img-fluid">
               </figure>
@@ -78,10 +78,10 @@
                 <span class="text-uppercase">Collections</span>
                 <h3>Children</h3>
               </div>
-            </a>
+            </div>
           </div>
           <div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
-            <a class="block-2-item" href="#">
+            <div class="block-2-item" href="#">
               <figure class="image">
                 <img src="{{asset('images/men.jpg')}}" alt="" class="img-fluid">
               </figure>
@@ -89,7 +89,7 @@
                 <span class="text-uppercase">Collections</span>
                 <h3>Men</h3>
               </div>
-            </a>
+            </div>
           </div>
         </div>
       </div>
@@ -171,7 +171,7 @@
       </div>
     </div>
 
-    <div class="site-section block-8">
+<!--    <div class="site-section block-8">
       <div class="container">
         <div class="row justify-content-center  mb-5">
           <div class="col-md-7 site-section-heading text-center pt-4">
@@ -190,5 +190,5 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>-->
 @endsection

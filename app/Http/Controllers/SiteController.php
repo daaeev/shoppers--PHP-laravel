@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Services\Interfaces\FilterProcessingInterface;
 use App\Services\Interfaces\ProductRepositoryInterface;
 use App\Services\Repositories\UserRepository;
 
@@ -51,13 +52,29 @@ class SiteController extends Controller
     /**
      * Рендер страницы каталога товаров
      *
+     * @param ProductRepositoryInterface $productRepository
+     * @param FilterProcessingInterface $filterProcessing
      * @return mixed
      */
-    public function catalog(ProductRepositoryInterface $productRepository)
+    public function catalog(
+        ProductRepositoryInterface $productRepository,
+        FilterProcessingInterface $filterProcessing
+    )
     {
-        $catalog = $productRepository->getCatalogWithPag();
+        $get_params = $this->request->query();
+        $filters_data = $productRepository->getFiltersData();
+        $pageSize = 15;
+        $catalog = [];
 
-        return view('catalog', compact('catalog'));
+        if ($filterProcessing->arrayHasFilters($this->request->query())) {
+            $filters = $filterProcessing->getFiltersFromArray($this->request->query());
+            $filters = $filterProcessing->processFiltersArray($filters);
+            $catalog = $productRepository->getCatalogWithPagAndFilters($filters, $pageSize);
+        } else {
+            $catalog = $productRepository->getCatalogWithPag($pageSize);
+        }
+
+        return view('catalog', compact('catalog', 'get_params', 'filters_data'));
     }
 
     /**

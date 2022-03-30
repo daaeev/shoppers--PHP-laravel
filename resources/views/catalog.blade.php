@@ -23,25 +23,15 @@
               <div class="col-md-12 mb-5">
                 <div class="float-md-left mb-4"><h2 class="text-black h5">Shop All</h2></div>
                 <div class="d-flex">
-                  <div class="dropdown mr-1 ml-md-auto">
-                    <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Latest
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
-                      <a class="dropdown-item" href="#">Men</a>
-                      <a class="dropdown-item" href="#">Women</a>
-                      <a class="dropdown-item" href="#">Children</a>
-                    </div>
-                  </div>
+                  <div class="ml-md-auto"></div>
                   <div class="btn-group">
                     <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" id="dropdownMenuReference" data-toggle="dropdown">Reference</button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
-                      <a class="dropdown-item" href="#">Relevance</a>
-                      <a class="dropdown-item" href="#">Name, A to Z</a>
-                      <a class="dropdown-item" href="#">Name, Z to A</a>
+                      <a class="dropdown-item" href="?{{http_build_query(array_merge($get_params, ['order' => 'name_asc']))}}">Name, A to Z</a>
+                      <a class="dropdown-item" href="?{{http_build_query(array_merge($get_params, ['order' => 'name_desc']))}}">Name, Z to A</a>
                       <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Price, low to high</a>
-                      <a class="dropdown-item" href="#">Price, high to low</a>
+                      <a class="dropdown-item" href="?{{http_build_query(array_merge($get_params, ['order' => 'price_asc']))}}">Price, low to high</a>
+                      <a class="dropdown-item" href="?{{http_build_query(array_merge($get_params, ['order' => 'price_desc']))}}">Price, high to low</a>
                     </div>
                   </div>
                 </div>
@@ -49,7 +39,7 @@
             </div>
             <div class="row mb-5">
 
-                @if(!empty($catalog))
+                @if(!empty($catalog->items()))
                     @foreach($catalog as $product)
                         <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
                             <div class="block-4 text-center border">
@@ -80,103 +70,48 @@
           </div>
 
           <div class="col-md-3 order-1 mb-5 mb-md-0">
-            <div class="border p-4 rounded mb-4">
-              <h3 class="mb-3 h6 text-uppercase text-black d-block">Categories</h3>
-              <ul class="list-unstyled mb-0">
-                <li class="mb-1"><a href="#" class="d-flex"><span>Men</span> <span class="text-black ml-auto">(2,220)</span></a></li>
-                <li class="mb-1"><a href="#" class="d-flex"><span>Women</span> <span class="text-black ml-auto">(2,550)</span></a></li>
-                <li class="mb-1"><a href="#" class="d-flex"><span>Children</span> <span class="text-black ml-auto">(2,124)</span></a></li>
-              </ul>
-            </div>
+
+              @if(!empty($filters_data['Categories']))
+                <div class="border p-4 rounded mb-4">
+                  <h3 class="mb-3 h6 text-uppercase text-black d-block">Categories</h3>
+                  <ul class="list-unstyled mb-0">
+                      @foreach($filters_data['Categories'] as $category)
+                            <li class="mb-1"><a href="?{{http_build_query(array_merge($get_params, ['filt_category' => $category->id]))}}" class="d-flex"><span {{(isset($get_params['filt_category']) && $get_params['filt_category'] == $category->id) ? 'class=text-warning' : ''}}>{{$category->name}}</span> <span class="text-black ml-auto">({{$category->products_count}})</span></a></li>
+                      @endforeach
+                  </ul>
+                </div>
+              @endif
 
             <div class="border p-4 rounded mb-4">
-              <div class="mb-4">
-                <h3 class="mb-3 h6 text-uppercase text-black d-block">Filter by Price</h3>
-                <div id="slider-range" class="border-primary"></div>
-                <input type="text" name="text" id="amount" class="form-control border-0 pl-0 bg-white" disabled="" />
-              </div>
 
+
+            @if(!empty($filters_data['Sizes']))
               <div class="mb-4">
                 <h3 class="mb-3 h6 text-uppercase text-black d-block">Size</h3>
-                <label for="s_sm" class="d-flex">
-                  <input type="checkbox" id="s_sm" class="mr-2 mt-1"> <span class="text-black">Small (2,319)</span>
-                </label>
-                <label for="s_md" class="d-flex">
-                  <input type="checkbox" id="s_md" class="mr-2 mt-1"> <span class="text-black">Medium (1,282)</span>
-                </label>
-                <label for="s_lg" class="d-flex">
-                  <input type="checkbox" id="s_lg" class="mr-2 mt-1"> <span class="text-black">Large (1,392)</span>
-                </label>
+                  <ul class="list-unstyled mb-0">
+                      @foreach($filters_data['Sizes'] as $size)
+                        <li class="mb-1"><a href="?{{http_build_query(array_merge($get_params, ['filt_size' => $size->id]))}}" class="d-flex"><span {{(isset($get_params['filt_size']) && $get_params['filt_size'] == $size->id) ? 'class=text-warning' : ''}}>{{$size->name}}</span> <span class="text-black ml-auto">({{$size->products_count}})</span></a></li>
+                      @endforeach
+                  </ul>
               </div>
+            @endif
 
+            @if(!empty($filters_data['Colors']))
               <div class="mb-4">
                 <h3 class="mb-3 h6 text-uppercase text-black d-block">Color</h3>
-                <a href="#" class="d-flex color-item align-items-center" >
-                  <span class="bg-danger color d-inline-block rounded-circle mr-2"></span> <span class="text-black">Red (2,429)</span>
-                </a>
-                <a href="#" class="d-flex color-item align-items-center" >
-                  <span class="bg-success color d-inline-block rounded-circle mr-2"></span> <span class="text-black">Green (2,298)</span>
-                </a>
-                <a href="#" class="d-flex color-item align-items-center" >
-                  <span class="bg-info color d-inline-block rounded-circle mr-2"></span> <span class="text-black">Blue (1,075)</span>
-                </a>
-                <a href="#" class="d-flex color-item align-items-center" >
-                  <span class="bg-primary color d-inline-block rounded-circle mr-2"></span> <span class="text-black">Purple (1,075)</span>
-                </a>
+
+                @foreach($filters_data['Colors'] as $color)
+                    <a href="?{{http_build_query(array_merge($get_params, ['filt_color' => $color->id]))}}" class="d-flex color-item align-items-center" >
+                      <span class="color d-inline-block rounded-circle mr-2" style="background-color: {{$color->hex}}"></span> <span {{(isset($get_params['filt_color']) && $get_params['filt_color'] == $color->id) ? 'class=text-warning' : 'class=text-black'}}>{{$color->name}} ({{$color->products_count}})</span>
+                    </a>
+                @endforeach
               </div>
+            @endif
+                <a href="{{route('catalog')}}" class="btn btn-primary">Reset filters</a>
 
             </div>
           </div>
         </div>
-
-        <div class="row">
-          <div class="col-md-12">
-            <div class="site-section site-blocks-2">
-                <div class="row justify-content-center text-center mb-5">
-                  <div class="col-md-7 site-section-heading pt-4">
-                    <h2>Categories</h2>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0" data-aos="fade" data-aos-delay="">
-                    <a class="block-2-item" href="#">
-                      <figure class="image">
-                        <img src="{{asset('images/women.jpg')}}" alt="" class="img-fluid">
-                      </figure>
-                      <div class="text">
-                        <span class="text-uppercase">Collections</span>
-                        <h3>Women</h3>
-                      </div>
-                    </a>
-                  </div>
-                  <div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="100">
-                    <a class="block-2-item" href="#">
-                      <figure class="image">
-                        <img src="{{asset('images/children.jpg')}}" alt="" class="img-fluid">
-                      </figure>
-                      <div class="text">
-                        <span class="text-uppercase">Collections</span>
-                        <h3>Children</h3>
-                      </div>
-                    </a>
-                  </div>
-                  <div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
-                    <a class="block-2-item" href="#">
-                      <figure class="image">
-                        <img src="{{asset('images/men.jpg')}}" alt="" class="img-fluid">
-                      </figure>
-                      <div class="text">
-                        <span class="text-uppercase">Collections</span>
-                        <h3>Men</h3>
-                      </div>
-                    </a>
-                  </div>
-                </div>
-
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
 @endsection

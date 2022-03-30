@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Models\Product;
+use App\Services\FiltersProcessing;
 use App\Services\ImageProfiler;
 use App\Services\Interfaces\CategoryRepositoryInterface;
 use App\Services\Interfaces\ColorRepositoryInterface;
+use App\Services\Interfaces\FilterProcessingInterface;
 use App\Services\Interfaces\ImageProfilerInterface;
 use App\Services\Interfaces\ProductRepositoryInterface;
 use App\Services\Interfaces\SizeRepositoryInterface;
@@ -32,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Services
         ImageProfilerInterface::class => ImageProfiler::class,
+        FilterProcessingInterface::class => FiltersProcessing::class,
     ];
 
     /**

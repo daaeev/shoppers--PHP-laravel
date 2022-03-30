@@ -2,9 +2,14 @@
 
 namespace App\Services\Repositories;
 
+use App\Models\Category;
+use App\Models\Color;
 use App\Models\Product;
+use App\Models\Size;
 use App\Services\Interfaces\divided\GetAllForeignInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use ViewComponents\Grids\Component\Column;
 use ViewComponents\Grids\Grid;
 use ViewComponents\ViewComponents\Component\Control\FilterControl;
@@ -46,6 +51,65 @@ class ProductRepository implements \App\Services\Interfaces\ProductRepositoryInt
     public function getCatalogWithPag(int $pageSize = 15): LengthAwarePaginator
     {
         return Product::where([['count', '>', 0]])->paginate($pageSize);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCatalogWithPagAndFilters(array $filters, int $pageSize = 15): LengthAwarePaginator
+    {
+        $query = Product::where([['count', '>', 0]]);
+
+        if (isset($filters['where'])) {
+            foreach ($filters['where'] as $column => $value) {
+                $query->where([[$column, '=', $value]]);
+            }
+        }
+
+        if (isset($filters['order'])) {
+            $query->orderBy($filters['order']['column'], $filters['order']['sort']);
+        }
+
+        return $query->paginate($pageSize);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCategoriesFilterData(): Collection
+    {
+        return Category::withCount(['products' => function (Builder $query) {
+            $query->where([['count', '>', 0]]);
+        }])->get();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getColorsFilterData(): Collection
+    {
+        return Color::withCount(['products' => function (Builder $query) {
+            $query->where([['count', '>', 0]]);
+        }])->get();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSizesFilterData(): Collection
+    {
+        return Size::withCount(['products' => function (Builder $query) {
+            $query->where([['count', '>', 0]]);
+        }])->get();
+    }
+
+    public function getFiltersData(): array
+    {
+        return [
+            'Categories' => $this->getCategoriesFilterData(),
+            'Colors' => $this->getColorsFilterData(),
+            'Sizes' => $this->getSizesFilterData(),
+        ];
     }
 
     /**
