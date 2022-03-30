@@ -60,6 +60,10 @@ class ProductRepository implements \App\Services\Interfaces\ProductRepositoryInt
     {
         $query = Product::where([['count', '>', 0]]);
 
+        if (empty($filters)) {
+            return $query->paginate($pageSize);
+        }
+
         if (isset($filters['where'])) {
             foreach ($filters['where'] as $column => $value) {
                 $query->where([[$column, '=', $value]]);
@@ -103,6 +107,9 @@ class ProductRepository implements \App\Services\Interfaces\ProductRepositoryInt
         }])->get();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getFiltersData(): array
     {
         return [

@@ -29,7 +29,7 @@ class ProductFactory extends Factory
             'category_id' => Category::factory(),
             'color_id' => Color::factory(),
             'size_id' => Size::factory(),
-            'count' => $this->faker->numberBetween(0, 10),
+            'count' => $this->faker->numberBetween(1, 10),
             'main_image' => $this->faker->image(public_path('storage/products_images'), 640, 480, null, false),
             'preview_image' => $this->faker->image(public_path('storage/products_images'), 640, 480, null, false),
         ];
