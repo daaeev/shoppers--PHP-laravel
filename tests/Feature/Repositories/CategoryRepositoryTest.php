@@ -36,6 +36,7 @@ class CategoryRepositoryTest extends TestCase
 
         $this->assertNotNull($cat_found);
         $this->assertEquals($cat_created->id, $cat_found->id);
+        $this->assertInstanceOf(Category::class, $cat_found);
     }
 
     public function testGetForeignColumnName()
@@ -57,7 +58,10 @@ class CategoryRepositoryTest extends TestCase
         $data = $this->repository->getAll();
 
         $this->assertInstanceOf(Collection::class, $data);
-        $this->assertNotEmpty($data);
         $this->assertCount(2, $data);
+
+        array_map(function ($element) {
+            $this->assertInstanceOf(Category::class, $element);
+        }, $data->all());
     }
 }

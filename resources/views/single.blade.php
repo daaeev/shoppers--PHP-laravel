@@ -44,10 +44,10 @@
         </div>
         <div class="row">
           <div class="col-md-12">
+            <div class="nonloop-block-3 owl-carousel">
 
               @if(!empty($similar))
                   @foreach($similar as $item)
-                     <div class="nonloop-block-3 owl-carousel">
                       <div class="item">
                         <div class="block-4 text-center">
                           <figure class="block-4-image">
@@ -56,16 +56,16 @@
                           <div class="block-4-text p-4">
                             <h3><a href="{{route('catalog.single', ['product' => $item->slug])}}">{{$item->name}}</a></h3>
                             <p class="mb-0">{{$item->subname}}</p>
-                            <p class="text-primary font-weight-bold"><span class="text-warning">Discount!</span> <s>{{$product->price}}₴</s> {{$product->discount_price}}₴</p>
+                            <p class="text-primary font-weight-bold"><span class="text-warning">Discount!</span> <s>{{$item->price}}₴</s> {{$item->discount_price}}₴</p>
                           </div>
                         </div>
                       </div>
-                     </div>
                     @endforeach
                 @else
                     <h3 class="pt-3 w-100 text-center">Empty</h3>
                 @endif
 
+            </div>
           </div>
         </div>
       </div>

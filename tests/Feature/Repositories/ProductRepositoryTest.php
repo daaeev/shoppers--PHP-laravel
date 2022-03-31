@@ -41,6 +41,7 @@ class ProductRepositoryTest extends TestCase
         $product_found = $this->repository->getFirstOrNull($product_created->id);
 
         $this->assertNotNull($product_found);
+        $this->assertInstanceOf(Product::class, $product_found);
         $this->assertEquals($product_created->id, $product_found->id);
     }
 
@@ -97,6 +98,10 @@ class ProductRepositoryTest extends TestCase
         $this->assertCount(2, $data->items());
         $this->assertEquals(15, $data->perPage());
 
+        array_map(function ($element) {
+            $this->assertInstanceOf(Product::class, $element);
+        }, $data->all());
+
         $data = $this->repository->getCatalogWithPag(1);
 
         $this->assertEquals(1, $data->perPage());
@@ -125,6 +130,10 @@ class ProductRepositoryTest extends TestCase
 
         $this->assertCount(1, $data->items());
         $this->assertEquals($products[0]->id, ($data->items())[0]->id);
+
+        array_map(function ($element) {
+            $this->assertInstanceOf(Product::class, $element);
+        }, $data->all());
 
         $filters = ['where' => ['size_id' => $products[0]->size_id]];
         $data = $this->repository->getCatalogWithPagAndFilters($filters);
@@ -170,9 +179,12 @@ class ProductRepositoryTest extends TestCase
 
         $data = $this->repository->getCategoriesFilterData();
 
-        $this->assertInstanceOf(Collection::class, $data);
         $this->assertCount(1, $data);
         $this->assertEquals(1, $data[0]->products_count);
+
+        array_map(function ($element) {
+            $this->assertInstanceOf(Category::class, $element);
+        }, $data->all());
 
         Product::factory()->createOne(['category_id' => $category->id]);
 
@@ -201,9 +213,12 @@ class ProductRepositoryTest extends TestCase
 
         $data = $this->repository->getColorsFilterData();
 
-        $this->assertInstanceOf(Collection::class, $data);
         $this->assertCount(1, $data);
         $this->assertEquals(1, $data[0]->products_count);
+
+        array_map(function ($element) {
+            $this->assertInstanceOf(Color::class, $element);
+        }, $data->all());
 
         Product::factory()->createOne(['color_id' => $color->id]);
 
@@ -235,6 +250,10 @@ class ProductRepositoryTest extends TestCase
         $this->assertCount(1, $data);
         $this->assertEquals(1, $data[0]->products_count);
 
+        array_map(function ($element) {
+            $this->assertInstanceOf(Size::class, $element);
+        }, $data->all());
+
         Product::factory()->createOne(['size_id' => $size->id]);
 
         $data = $this->repository->getSizesFilterData();
@@ -260,5 +279,60 @@ class ProductRepositoryTest extends TestCase
         $this->assertInstanceOf(Collection::class, $data['Categories']);
         $this->assertInstanceOf(Collection::class, $data['Colors']);
         $this->assertInstanceOf(Collection::class, $data['Sizes']);
+    }
+
+    public function testGetSimilarProducts()
+    {
+        $product = Product::factory()->createOne();
+
+        $data = $this->repository->getSimilarInSizeProducts($product);
+
+        $this->assertNotNull($data);
+        $this->assertInstanceOf(Collection::class, $data);
+        $this->assertEmpty($data);
+
+        Product::factory(2)->create(['size_id' => $product->size_id]);
+        Product::factory()->createOne();
+
+        $data = $this->repository->getSimilarInSizeProducts($product, 1);
+
+        $this->assertCount(1, $data);
+        $this->assertNotEquals($data[0]->id, $product->id);
+        $this->assertEquals($data[0]->size_id, $product->size_id);
+        $this->assertGreaterThan(0, $data[0]->count);
+
+        array_map(function ($element) {
+            $this->assertInstanceOf(Product::class, $element);
+        }, $data->all());
+
+        $data = $this->repository->getSimilarInSizeProducts($product);
+
+        $this->assertCount(2, $data);
+        $this->assertEquals($data[0]->size_id, $product->size_id);
+        $this->assertEquals($data[1]->size_id, $product->size_id);
+    }
+
+    public function testGetRandomElements()
+    {
+        $data = $this->repository->getRandom();
+
+        $this->assertNotNull($data);
+        $this->assertInstanceOf(Collection::class, $data);
+        $this->assertEmpty($data);
+
+        $products = Product::factory(2)->create();
+
+        $data = $this->repository->getRandom(1);
+
+        $this->assertCount(1, $data);
+        $this->assertTrue(in_array($data[0]->id, [$products[0]->id, $products[1]->id]));
+
+        array_map(function ($element) {
+            $this->assertInstanceOf(Product::class, $element);
+        }, $data->all());
+
+        $data = $this->repository->getRandom();
+
+        $this->assertCount(2, $data);
     }
 }

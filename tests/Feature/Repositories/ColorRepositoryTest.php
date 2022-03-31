@@ -35,6 +35,7 @@ class ColorRepositoryTest extends TestCase
         $col_found = $this->repository->getFirstOrNull($col_created->id);
 
         $this->assertNotNull($col_found);
+        $this->assertInstanceOf(Color::class, $col_found);
         $this->assertEquals($col_created->id, $col_found->id);
     }
 
@@ -59,5 +60,9 @@ class ColorRepositoryTest extends TestCase
         $this->assertInstanceOf(Collection::class, $data);
         $this->assertNotEmpty($data);
         $this->assertCount(2, $data);
+
+        array_map(function ($element) {
+            $this->assertInstanceOf(Color::class, $element);
+        }, $data->all());
     }
 }

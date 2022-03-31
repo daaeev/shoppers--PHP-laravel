@@ -99,72 +99,32 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-md-7 site-section-heading text-center pt-4">
-            <h2>Featured Products</h2>
+            <h2>Recommended Products</h2>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
             <div class="nonloop-block-3 owl-carousel">
-              <div class="item">
-                <div class="block-4 text-center">
-                  <figure class="block-4-image">
-                    <img src="{{asset('images/cloth_1.jpg')}}" alt="Image placeholder" class="img-fluid">
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a href="#">Tank Top</a></h3>
-                    <p class="mb-0">Finding perfect t-shirt</p>
-                    <p class="text-primary font-weight-bold">$50</p>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="block-4 text-center">
-                  <figure class="block-4-image">
-                    <img src="{{asset('images/shoe_1.jpg')}}" alt="Image placeholder" class="img-fluid">
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a href="#">Corater</a></h3>
-                    <p class="mb-0">Finding perfect products</p>
-                    <p class="text-primary font-weight-bold">$50</p>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="block-4 text-center">
-                  <figure class="block-4-image">
-                    <img src="{{asset('images/cloth_2.jpg')}}" alt="Image placeholder" class="img-fluid">
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a href="#">Polo Shirt</a></h3>
-                    <p class="mb-0">Finding perfect products</p>
-                    <p class="text-primary font-weight-bold">$50</p>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="block-4 text-center">
-                  <figure class="block-4-image">
-                    <img src="{{asset('images/cloth_3.jpg')}}" alt="Image placeholder" class="img-fluid">
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a href="#">T-Shirt Mockup</a></h3>
-                    <p class="mb-0">Finding perfect products</p>
-                    <p class="text-primary font-weight-bold">$50</p>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="block-4 text-center">
-                  <figure class="block-4-image">
-                    <img src="{{asset('images/shoe_1.jpg')}}" alt="Image placeholder" class="img-fluid">
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a href="#">Corater</a></h3>
-                    <p class="mb-0">Finding perfect products</p>
-                    <p class="text-primary font-weight-bold">$50</p>
-                  </div>
-                </div>
-              </div>
+
+              @if(!empty($recommendations))
+                  @foreach($recommendations as $item)
+                          <div class="item">
+                              <div class="block-4 text-center">
+                                  <figure class="block-4-image">
+                                      <a href="{{route('catalog.single', ['product' => $item->slug])}}"><img src="{{asset('storage/products_images/' . ($item->preview_image ?? $item->main_image))}}" alt="Image placeholder" class="img-fluid"></a>
+                                  </figure>
+                                  <div class="block-4-text p-4">
+                                      <h3><a href="{{route('catalog.single', ['product' => $item->slug])}}">{{$item->name}}</a></h3>
+                                      <p class="mb-0">{{$item->subname}}</p>
+                                      <p class="text-primary font-weight-bold"><span class="text-warning">Discount!</span> <s>{{$item->price}}₴</s> {{$item->discount_price}}₴</p>
+                                  </div>
+                              </div>
+                          </div>
+                  @endforeach
+              @else
+                  <h3 class="pt-3 w-100 text-center">Empty</h3>
+              @endif
+
             </div>
           </div>
         </div>

@@ -35,6 +35,7 @@ class SizeRepositoryTest extends TestCase
         $size_found = $this->repository->getFirstOrNull($size_created->id);
 
         $this->assertNotNull($size_found);
+        $this->assertInstanceOf(Size::class, $size_found);
         $this->assertEquals($size_created->id, $size_found->id);
     }
 
@@ -59,5 +60,9 @@ class SizeRepositoryTest extends TestCase
         $this->assertInstanceOf(Collection::class, $data);
         $this->assertNotEmpty($data);
         $this->assertCount(2, $data);
+
+        array_map(function ($element) {
+            $this->assertInstanceOf(Size::class, $element);
+        }, $data->all());
     }
 }

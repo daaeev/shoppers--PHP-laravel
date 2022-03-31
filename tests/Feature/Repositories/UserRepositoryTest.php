@@ -34,6 +34,7 @@ class UserRepositoryTest extends TestCase
         $user_found = $this->repository->getFirstOrNull($user_created->id);
 
         $this->assertNotNull($user_found);
+        $this->assertInstanceOf(User::class, $user_found);
         $this->assertEquals($user_created->id, $user_found->id);
     }
 
@@ -45,6 +46,7 @@ class UserRepositoryTest extends TestCase
         $user_logged = $this->repository->getAuthenticated();
 
         $this->assertNotNull($user_logged);
+        $this->assertInstanceOf(User::class, $user_logged);
         $this->assertEquals($user_created->id, $user_logged->id);
     }
 

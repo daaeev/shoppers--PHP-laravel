@@ -12,11 +12,14 @@ class SiteController extends Controller
     /**
      * Рендер главное страницы
      *
+     * @param ProductRepositoryInterface $productRepository
      * @return mixed
      */
-    public function index()
+    public function index(ProductRepositoryInterface $productRepository)
     {
-        return view('index');
+        $recommendations = $productRepository->getRandom();
+
+        return view('index', compact('recommendations'));
     }
 
     /**

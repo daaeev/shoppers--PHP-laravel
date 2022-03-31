@@ -7,6 +7,7 @@ use App\Services\Interfaces\divided\GetAllForeignInterface;
 use App\Services\Interfaces\divided\GetCatalogPaginationInterface;
 use App\Services\Interfaces\divided\GetFiltersDataInterface;
 use App\Services\Interfaces\divided\GetFirstInterface;
+use App\Services\Interfaces\divided\GetRandomInterface;
 use App\Services\Interfaces\divided\GridInterface;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -14,7 +15,8 @@ interface ProductRepositoryInterface extends
     GridInterface,
     GetFirstInterface,
     GetCatalogPaginationInterface,
-    GetFiltersDataInterface
+    GetFiltersDataInterface,
+    GetRandomInterface
 {
     /**
      * Метод возвращает массив с коллекциями моделей из таблиц,
