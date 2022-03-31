@@ -50,7 +50,7 @@ class ProductRepository implements \App\Services\Interfaces\ProductRepositoryInt
      */
     public function getCatalogWithPag(int $pageSize = 15): LengthAwarePaginator
     {
-        return Product::where([['count', '>', 0]])->paginate($pageSize);
+        return Product::where([['count', '>', 0]])->with('size')->paginate($pageSize);
     }
 
     /**
@@ -58,7 +58,7 @@ class ProductRepository implements \App\Services\Interfaces\ProductRepositoryInt
      */
     public function getCatalogWithPagAndFilters(array $filters, int $pageSize = 15): LengthAwarePaginator
     {
-        $query = Product::where([['count', '>', 0]]);
+        $query = Product::where([['count', '>', 0]])->with('size');
 
         if (empty($filters)) {
             return $query->paginate($pageSize);
@@ -117,6 +117,22 @@ class ProductRepository implements \App\Services\Interfaces\ProductRepositoryInt
             'Colors' => $this->getColorsFilterData(),
             'Sizes' => $this->getSizesFilterData(),
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSimilarInSizeProducts(Product $product, int $count = 6): Collection
+    {
+        return Product::where([
+            ['count', '>', 0],
+            ['id', '!=', $product->id],
+            ['size_id', '=', $product->size_id],
+        ])
+            ->with('size')
+            ->limit($count)
+            ->inRandomOrder()
+            ->get();
     }
 
     /**

@@ -44,10 +44,10 @@
                         <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
                             <div class="block-4 text-center border">
                                   <figure class="block-4-image">
-                                        <a href="#"><img src="{{asset('storage/products_images/' . ($product->preview_image ?? $product->main_image))}}" alt="Image placeholder" class="img-thumbnail" style="border-left: none;border-right: none;border-top: none;"></a>
+                                        <a href="{{route('catalog.single', ['product' => $product->slug])}}"><img src="{{asset('storage/products_images/' . ($product->preview_image ?? $product->main_image))}}" alt="Image placeholder" class="img-thumbnail" style="border-left: none;border-right: none;border-top: none;"></a>
                                   </figure>
                                   <div class="block-4-text p-4">
-                                        <h3><a href="shop-single.html">{{$product->name}}</a></h3>
+                                        <h3><a href="{{route('catalog.single', ['product' => $product->slug])}}">{{$product->name}} ({{$product->size->name}})</a></h3>
                                         <p class="mb-0">{{$product->subname}}</p>
 
                                         @if($product->discount_price)

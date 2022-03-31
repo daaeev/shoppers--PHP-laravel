@@ -90,11 +90,18 @@ class SiteController extends Controller
     /**
      * Рендер страницы просмотра товара
      *
+     * @param Product $product
+     * @param ProductRepositoryInterface $productRepository
      * @return mixed
      */
-    public function single()
+    public function single(
+        Product $product,
+        ProductRepositoryInterface $productRepository
+    )
     {
-        return view('single');
+        $similar = $productRepository->getSimilarInSizeProducts($product);
+
+        return view('single', compact('product', 'similar'));
     }
 
     /**
