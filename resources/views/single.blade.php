@@ -56,7 +56,11 @@
                           <div class="block-4-text p-4">
                             <h3><a href="{{route('catalog.single', ['product' => $item->slug])}}">{{$item->name}}</a></h3>
                             <p class="mb-0">{{$item->subname}}</p>
-                            <p class="text-primary font-weight-bold"><span class="text-warning">Discount!</span> <s>{{$item->price}}₴</s> {{$item->discount_price}}₴</p>
+                              @if($item->discount_price)
+                                  <p class="text-primary font-weight-bold"><span class="text-warning">Discount!</span> <s>{{$item->price}}₴</s> {{$item->discount_price}}₴</p>
+                              @else
+                                  <p class="text-primary font-weight-bold">{{$item->price}}₴</p>
+                              @endif
                           </div>
                         </div>
                       </div>
