@@ -43,4 +43,13 @@ interface ProductRepositoryInterface extends
      * @return Collection
      */
     public function getSimilarInSizeProducts(Product $product, int $count = 6): Collection;
+
+    /**
+     * Метод возвращает коллекцию из моделей продукта,
+     * идентификаторы которых указаны в массиве $products_ids
+     *
+     * @param array $products_ids массив идентификаторов
+     * @return Collection
+     */
+    public function getProductsByIds(array $products_ids): Collection;
 }

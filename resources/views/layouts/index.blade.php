@@ -4,6 +4,7 @@
     <title>@yield('title')</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
 
@@ -43,16 +44,18 @@
                             <ul>
                                 @auth
                                     <li><a href="{{route('profile')}}"><span class="icon icon-person"></span></a></li>
-                                    <li><a href="#"><span class="icon icon-heart-o"></span></a></li>
-                                    <li>
-                                        <a href="{{route('cart')}}" class="site-cart">
-                                            <span class="icon icon-shopping_cart"></span>
-                                            <span class="count">2</span>
-                                        </a>
-                                    </li>
                                 @else
                                     <li><a href="{{route('login')}}">Login</a></li>
                                 @endauth
+
+                                <li>
+                                    <a href="{{route('cart')}}" class="site-cart">
+                                        <span class="icon icon-shopping_cart"></span>
+                                        @if ($cart_elements_count)
+                                            <span class="count" id="cart-elements-count">{{$cart_elements_count}}</span>
+                                        @endif
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -177,6 +180,7 @@
 <script src="{{asset('js/jquery.magnific-popup.min.js')}}"></script>
 <script src="{{asset('js/aos.js')}}"></script>
 <script src="{{asset('js/main.js')}}"></script>
+<script src="{{asset('js/cart-btns.js')}}"></script>
 
 </body>
 </html>

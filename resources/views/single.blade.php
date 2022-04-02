@@ -28,7 +28,7 @@
                 <p><strong class="text-primary h4">{{$product->price}}₴</strong></p>
             @endif
 
-            <p><a href="cart.html" class="buy-now btn btn-sm btn-primary">Add To Cart</a></p>
+            <p id="button_add-to-card_block"><button id="add-to-cart-btn" data-href="{{route('ajax.cart.add', ['product_id' => $product->id])}}" class="buy-now btn btn-sm btn-primary">Add To Cart</button></p>
 
           </div>
         </div>
@@ -46,7 +46,7 @@
           <div class="col-md-12">
             <div class="nonloop-block-3 owl-carousel">
 
-              @if(!empty($similar))
+              @if(!empty($similar->all())))
                   @foreach($similar as $item)
                       <div class="item">
                         <div class="block-4 text-center">

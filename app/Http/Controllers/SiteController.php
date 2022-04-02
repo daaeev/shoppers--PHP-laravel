@@ -6,6 +6,8 @@ use App\Models\Product;
 use App\Services\Interfaces\FilterProcessingInterface;
 use App\Services\Interfaces\ProductRepositoryInterface;
 use App\Services\Repositories\UserRepository;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class SiteController extends Controller
 {
@@ -25,11 +27,19 @@ class SiteController extends Controller
     /**
      * Рендер страницы просмотра корзины
      *
+     * @param ProductRepositoryInterface $productRepository
      * @return mixed
      */
-    public function cart()
+    public function cart(ProductRepositoryInterface $productRepository)
     {
-        return view('cart');
+        $products = new Collection();
+        $cart_array = unserialize($this->request->cookie('cart'));
+
+        if (is_array($cart_array)) {
+            $products = $productRepository->getProductsByIds(array_keys($cart_array));
+        }
+
+        return view('cart', compact('products', 'cart_array'));
     }
 
     /**
@@ -67,7 +77,7 @@ class SiteController extends Controller
         $get_params = $this->request->query();
         $filters_data = $productRepository->getFiltersData();
         $pageSize = 15;
-        $catalog = [];
+        $catalog = new LengthAwarePaginator([], 0, $pageSize);
 
         if ($filterProcessing->arrayHasFilters($this->request->query())) {
             $filters = $filterProcessing->getFiltersFromArray($this->request->query());

@@ -135,12 +135,23 @@ class ProductRepository implements \App\Services\Interfaces\ProductRepositoryInt
             ->get();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getRandom(int $count = 6): Collection
     {
         return Product::with('size')
             ->limit($count)
             ->inRandomOrder()
             ->get();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getProductsByIds(array $products_ids): Collection
+    {
+        return Product::whereIn('id', $products_ids)->with('size')->get();
     }
 
     /**

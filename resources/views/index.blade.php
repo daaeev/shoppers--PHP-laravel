@@ -106,7 +106,7 @@
           <div class="col-md-12">
             <div class="nonloop-block-3 owl-carousel">
 
-              @if(!empty($recommendations))
+              @if(!empty($recommendations->all()))
                   @foreach($recommendations as $item)
                           <div class="item">
                               <div class="block-4 text-center">
