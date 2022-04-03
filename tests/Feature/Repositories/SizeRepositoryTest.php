@@ -58,11 +58,6 @@ class SizeRepositoryTest extends TestCase
         $data = $this->repository->getAll();
 
         $this->assertInstanceOf(Collection::class, $data);
-        $this->assertNotEmpty($data);
         $this->assertCount(2, $data);
-
-        array_map(function ($element) {
-            $this->assertInstanceOf(Size::class, $element);
-        }, $data->all());
     }
 }

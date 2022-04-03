@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ajax\Cart;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AjaxController extends Controller
 {
@@ -55,8 +56,8 @@ class AjaxController extends Controller
         $cart_array = unserialize($this->request->cookie('cart'));
 
         // Если кука не массив или пустой массив
-        if (is_array($cart_array) && empty($cart_array)) {
-            throw new \Exception('', 404);
+        if (!is_array($cart_array) || (is_array($cart_array) && empty($cart_array))) {
+            throw new HttpException(404);
         }
 
         // Если в массиве имеется продукт с переданным идентификатором -
@@ -70,7 +71,7 @@ class AjaxController extends Controller
 
             return (new Response($product_id))->withCookie($new_product_cart_cookie)->withCookie($cart_count_cookie);
         } else {
-            throw new \Exception('', 404);
+            throw new HttpException(404);
         }
     }
 }

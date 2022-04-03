@@ -4,6 +4,7 @@ namespace App\Http\Requests\ajax;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Cart extends FormRequest
 {
@@ -31,6 +32,6 @@ class Cart extends FormRequest
 
     public function failedValidation(Validator $validator)
     {
-        throw new \Exception('', 404);
+        throw new HttpException(404);
     }
 }

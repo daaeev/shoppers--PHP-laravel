@@ -149,20 +149,16 @@ class ProductRepositoryTest extends TestCase
         $data = $this->repository->getCatalogWithPagAndFilters($filters);
 
         $this->assertCount(2, $data->items());
-        $this->assertGreaterThan($data[1]->price, $data[0]->price);
+        $this->assertGreaterThanOrEqual($data[1]->price, $data[0]->price);
 
         $filters = ['order' => ['column' => 'price', 'sort' => 'asc']];
         $data = $this->repository->getCatalogWithPagAndFilters($filters);
 
-        $this->assertLessThan($data[1]->price, $data[0]->price);
+        $this->assertLessThanOrEqual($data[1]->price, $data[0]->price);
 
         $data = $this->repository->getCatalogWithPagAndFilters([]);
 
         $this->assertCount(2, $data->items());
-
-        array_map(function ($element) {
-            $this->assertInstanceOf(Product::class, $element);
-        }, $data->all());
     }
 
     public function testGetCategoriesFiltersData()
@@ -193,10 +189,6 @@ class ProductRepositoryTest extends TestCase
         $data = $this->repository->getCategoriesFilterData();
 
         $this->assertCount(2, $data);
-
-        array_map(function ($element) {
-            $this->assertInstanceOf(Category::class, $element);
-        }, $data->all());
     }
 
     public function testGetColorsFiltersData()
@@ -227,10 +219,6 @@ class ProductRepositoryTest extends TestCase
         $data = $this->repository->getColorsFilterData();
 
         $this->assertCount(2, $data);
-
-        array_map(function ($element) {
-            $this->assertInstanceOf(Color::class, $element);
-        }, $data->all());
     }
 
     public function testGetSizesFiltersData()
@@ -261,10 +249,6 @@ class ProductRepositoryTest extends TestCase
         $data = $this->repository->getSizesFilterData();
 
         $this->assertCount(2, $data);
-
-        array_map(function ($element) {
-            $this->assertInstanceOf(Size::class, $element);
-        }, $data->all());
     }
 
     public function testGetFiltersData()
@@ -306,10 +290,6 @@ class ProductRepositoryTest extends TestCase
         $this->assertCount(2, $data);
         $this->assertEquals($data[0]->size_id, $product->size_id);
         $this->assertEquals($data[1]->size_id, $product->size_id);
-
-        array_map(function ($element) {
-            $this->assertInstanceOf(Product::class, $element);
-        }, $data->all());
     }
 
     public function testGetRandomElements()
@@ -330,9 +310,28 @@ class ProductRepositoryTest extends TestCase
         $data = $this->repository->getRandom();
 
         $this->assertCount(2, $data);
+    }
 
-        array_map(function ($element) {
-            $this->assertInstanceOf(Product::class, $element);
-        }, $data->all());
+    public function testGetProductsById()
+    {
+        $ids = [];
+        $data = $this->repository->getProductsByIds($ids);
+
+        $this->assertNotNull($data);
+        $this->assertInstanceOf(Collection::class, $data);
+        $this->assertEmpty($data);
+
+        $ids = [123, 221];
+        $data = $this->repository->getProductsByIds($ids);
+
+        $this->assertEmpty($data);
+
+        $products = Product::factory(2)->create();
+        $ids = [$products[0]->id, $products[1]->id];
+        $data = $this->repository->getProductsByIds($ids);
+
+        $this->assertCount(2, $data);
+        $this->assertTrue(in_array($data[0]->id, $ids));
+        $this->assertTrue(in_array($data[1]->id, $ids));
     }
 }

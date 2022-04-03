@@ -48,8 +48,7 @@ class CreateCategoryTest extends TestCase
         foreach ($data as $name_el) {
             $response = $this->post($this->route, [
                 'name' => $name_el,
-            ])
-                ->assertRedirect(route('home'));
+            ])->assertRedirect(route('home'));
 
             $response->assertSessionHasErrors();
         }
