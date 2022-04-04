@@ -43,20 +43,20 @@
                           <td>
                               <div class="input-group mx-auto mb-3" style="max-width: 120px;">
                                   <div class="input-group-prepend">
-                                      <button class="btn btn-outline-primary js-btn-minus" type="button">&minus;</button>
+                                      <button class="btn btn-outline-primary js-btn-minus product-count-minus-btn" data-product="{{$product->id}}" data-href="{{route('ajax.cart.product.minus', ['product_id' => $product->id])}}" type="button">&minus;</button>
                                   </div>
-                                  <input type="text" class="form-control text-center" value="{{$cart_array[$product->id]['count']}}" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                                  <input type="text" class="form-control text-center product-count" value="{{$cart_array[$product->id]['count']}}" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
                                   <div class="input-group-append">
-                                      <button class="btn btn-outline-primary js-btn-plus" type="button">&plus;</button>
+                                      <button class="btn btn-outline-primary js-btn-plus product-count-plus-btn" data-product="{{$product->id}}" data-href="{{route('ajax.cart.product.plus', ['product_id' => $product->id])}}" type="button">&plus;</button>
                                   </div>
                               </div>
 
                           </td>
                         <td>
                             @if($product->discount_price)
-                                <s>{{$product->price}}₴</s> <span class="product_price">{{$product->discount_price}}</span>₴
+                                <s>{{number_format($product->price, 2)}}₴</s> <span class="product-price">{{number_format($product->discount_price, 2)}}</span>₴
                             @else
-                                <span class="product_price">{{$product->price}}</span>₴
+                                <span class="product-price">{{number_format($product->price, 2)}}</span>₴
                             @endif
                         </td>
                         <td><button data-href="{{route('ajax.cart.remove', ['product_id' => $product->id])}}" class="btn btn-primary btn-sm remove-from-cart-btn">X</button></td>
@@ -74,7 +74,33 @@
         </div>
 
         <div class="row">
-          <div class="col-md-8 pl-5">
+            <div class="col-md-6">
+                <div class="row mb-5">
+
+                    @if(!empty($products->all()))
+                        <div class="col-md-6 mb-3 mb-md-0 block-update-cart-btn">
+                            <button class="btn btn-primary btn-sm btn-block update-cart-btn" data-href="{{route('ajax.cart.update')}}">Update Cart</button>
+                        </div>
+                    @endif
+
+                    <div class="col-md-6">
+                        <a href="{{route('catalog')}}" class="btn btn-outline-primary btn-sm btn-block">Continue Shopping</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="text-black h4" for="coupon">Coupon</label>
+                        <p>Enter your coupon code if you have one.</p>
+                    </div>
+                    <div class="col-md-8 mb-3 mb-md-0">
+                        <input type="text" class="form-control py-3" id="coupon" placeholder="Coupon Code">
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary btn-sm">Apply Coupon</button>
+                    </div>
+                </div>
+            </div>
+          <div class="col-md-6">
             <div class="row justify-content-end">
               <div class="col-md-7">
                 <div class="row">
@@ -87,7 +113,7 @@
                     <span class="text-black">Subtotal</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <strong class="text-black">230.00₴</strong>
+                    <strong class="text-black"><span class="subtotal-price">0.00</span>₴</strong>
                   </div>
                 </div>
                 <div class="row mb-5">
@@ -95,7 +121,7 @@
                     <span class="text-black">Total</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <strong class="text-black">230.00₴</strong>
+                    <strong class="text-black"><span class="total-price">0.00</span>₴</strong>
                   </div>
                 </div>
 
@@ -110,4 +136,6 @@
         </div>
       </div>
     </div>
+
+    <script src="{{asset('js/cart-page.js')}}"></script>
 @endsection

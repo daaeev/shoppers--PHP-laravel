@@ -64,6 +64,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 Route::group(['prefix' => 'ajax'], function () {
     Route::get('/cart/add', [AjaxController::class, 'addToCart'])->name('ajax.cart.add');
     Route::get('/cart/remove', [AjaxController::class, 'removeFromCart'])->name('ajax.cart.remove');
+    Route::get('/cart/update', [AjaxController::class, 'updateCart'])->name('ajax.cart.update');
+
+    Route::get('/cart/product/plus', [AjaxController::class, 'productCountPlus'])->name('ajax.cart.product.plus');
+    Route::get('/cart/product/minus', [AjaxController::class, 'productCountMinus'])->name('ajax.cart.product.minus');
 });
 
 // !!!AJAX!!!

@@ -51,9 +51,9 @@
                                         <p class="mb-0">{{$product->subname}}</p>
 
                                         @if($product->discount_price)
-                                            <p class="text-primary font-weight-bold"><span class="text-warning">Discount!</span> <s>{{$product->price}}₴</s> {{$product->discount_price}}₴</p>
+                                            <p class="text-primary font-weight-bold"><span class="text-warning">Discount!</span> <s>{{number_format($product->price, 2)}}₴</s> {{number_format($product->discount_price, 2)}}₴</p>
                                         @else
-                                          <p class="text-primary font-weight-bold">{{$product->price}}₴</p>
+                                          <p class="text-primary font-weight-bold">{{number_format($product->price, 2)}}₴</p>
                                         @endif
                                   </div>
                             </div>

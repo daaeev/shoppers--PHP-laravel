@@ -19,12 +19,12 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('subname')->unique();
             $table->text('description');
-            $table->integer('price');
-            $table->integer('discount_price')->nullable();
+            $table->unsignedFloat('price');
+            $table->unsignedFloat('discount_price')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('size_id');
             $table->unsignedBigInteger('color_id');
-            $table->smallInteger('count');
+            $table->unsignedSmallInteger('count');
             $table->string('main_image');
             $table->string('preview_image')->nullable();
             $table->timestamps();

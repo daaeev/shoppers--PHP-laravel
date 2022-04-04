@@ -31,7 +31,7 @@ class AjaxController extends Controller
         $product_id = $validate->validated('product_id');
 
         // Если в массиве товаров нет переданного идентификатора товара
-        if (!in_array($product_id, $cart_array)) {
+        if (!array_key_exists($product_id, $cart_array)) {
             $cart_array[$product_id] = ['count' => 1];
         }
 
@@ -63,7 +63,7 @@ class AjaxController extends Controller
         // Если в массиве имеется продукт с переданным идентификатором -
         // то удалить его, создать новую куку и возвратить идентификатор удаленного продукта,
         // иначе сгенерировать исключение
-        if (isset($cart_array[$product_id])) {
+        if (array_key_exists($product_id, $cart_array)) {
             unset($cart_array[$product_id]);
 
             $new_product_cart_cookie = cookie()->forever('cart', serialize($cart_array));
@@ -73,5 +73,72 @@ class AjaxController extends Controller
         } else {
             throw new HttpException(404);
         }
+    }
+
+    /**
+     * Очищение корзины пользователя
+     *
+     * @return Response
+     */
+    public function updateCart()
+    {
+        return (new Response())
+            ->withCookie(cookie()->forget('cart'))
+            ->withCookie(cookie()->forget('cart_count'));
+    }
+
+    /**
+     * Уменьшение количества товаров
+     *
+     * @return Response
+     */
+    public function productCountPlus(Cart $validate)
+    {
+        $product_id = $validate->validated('product_id');
+
+        $cart_array = unserialize($this->request->cookie('cart'));
+
+        // Если кука не массив или пустой массив
+        if (!is_array($cart_array) || (is_array($cart_array) && empty($cart_array))) {
+            throw new HttpException(404);
+        }
+
+        // Если в массиве товаров нет переданного идентификатора товара
+        if (!array_key_exists($product_id, $cart_array)) {
+            throw new HttpException(404);
+        }
+
+        $product_count = &$cart_array[$product_id]['count'];
+
+        $product_count++;
+
+        return (new Response($product_count))->withCookie(cookie()->forever('cart', serialize($cart_array)));
+    }
+
+    public function productCountMinus(Cart $validate)
+    {
+        $product_id = $validate->validated('product_id');
+
+        $cart_array = unserialize($this->request->cookie('cart'));
+
+        // Если кука не массив или пустой массив
+        if (!is_array($cart_array) || (is_array($cart_array) && empty($cart_array))) {
+            throw new HttpException(404);
+        }
+
+        // Если в массиве товаров нет переданного идентификатора товара
+        if (!array_key_exists($product_id, $cart_array)) {
+            throw new HttpException(404);
+        }
+
+        $product_count = &$cart_array[$product_id]['count'];
+
+        if ($product_count == 1) {
+            return (new Response(1));
+        }
+
+        $product_count--;
+
+        return (new Response($product_count))->withCookie(cookie()->forever('cart', serialize($cart_array)));
     }
 }
