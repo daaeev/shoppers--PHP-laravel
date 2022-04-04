@@ -22,12 +22,11 @@ class AjaxController extends Controller
         // массив с идентификаторами продуктов или false
         $cart_cookie = unserialize($this->request->cookie('cart'));
 
-        // Если имеется кука - присвоить результат $cart_array
+        // Если имеется кука и она является массивом - присвоить результат $cart_array
         if (is_array($cart_cookie)) {
             $cart_array = $cart_cookie;
         }
 
-        // Занесение переданного идентификатора товара в массив
         $product_id = $validate->validated('product_id');
 
         // Если в массиве товаров нет переданного идентификатора товара
@@ -52,7 +51,7 @@ class AjaxController extends Controller
     {
         $product_id = $validate->validated('product_id');
 
-        // Массив товаров в корзине
+        // Массив товаров 'в корзине'
         $cart_array = unserialize($this->request->cookie('cart'));
 
         // Если кука не массив или пустой массив
@@ -88,14 +87,16 @@ class AjaxController extends Controller
     }
 
     /**
-     * Уменьшение количества товаров
+     * Увеличение количества товара в корзине
      *
+     * @param Cart $validate
      * @return Response
      */
     public function productCountPlus(Cart $validate)
     {
         $product_id = $validate->validated('product_id');
 
+        // Массив из товаров 'в корзине'
         $cart_array = unserialize($this->request->cookie('cart'));
 
         // Если кука не массив или пустой массив
@@ -115,10 +116,16 @@ class AjaxController extends Controller
         return (new Response($product_count))->withCookie(cookie()->forever('cart', serialize($cart_array)));
     }
 
+    /**
+     * Уменьшение количества товара в корзине
+     * @param Cart $validate
+     * @return Response
+     */
     public function productCountMinus(Cart $validate)
     {
         $product_id = $validate->validated('product_id');
 
+        // Массив из товаров 'в корзине'
         $cart_array = unserialize($this->request->cookie('cart'));
 
         // Если кука не массив или пустой массив
@@ -133,6 +140,7 @@ class AjaxController extends Controller
 
         $product_count = &$cart_array[$product_id]['count'];
 
+        // Количество товара не может быть меньше 1
         if ($product_count == 1) {
             return (new Response(1));
         }
