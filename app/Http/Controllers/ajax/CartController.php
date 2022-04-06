@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ajax;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ajax\Cart;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use function cookie;
 
-class AjaxController extends Controller
+class CartController extends Controller
 {
     /**
      * Добавление продукта в корзину

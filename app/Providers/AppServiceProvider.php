@@ -7,6 +7,7 @@ use App\Services\FiltersProcessing;
 use App\Services\ImageProfiler;
 use App\Services\Interfaces\CategoryRepositoryInterface;
 use App\Services\Interfaces\ColorRepositoryInterface;
+use App\Services\Interfaces\CouponsRepositoryInterface;
 use App\Services\Interfaces\FilterProcessingInterface;
 use App\Services\Interfaces\ImageProfilerInterface;
 use App\Services\Interfaces\ProductRepositoryInterface;
@@ -14,6 +15,7 @@ use App\Services\Interfaces\SizeRepositoryInterface;
 use App\Services\Interfaces\UserRepositoryInterface;
 use App\Services\Repositories\CategoryRepository;
 use App\Services\Repositories\ColorRepository;
+use App\Services\Repositories\CouponsRepository;
 use App\Services\Repositories\ProductRepository;
 use App\Services\Repositories\SizeRepository;
 use App\Services\Repositories\UserRepository;
@@ -31,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
         CategoryRepositoryInterface::class => CategoryRepository::class,
         SizeRepositoryInterface::class => SizeRepository::class,
         ColorRepositoryInterface::class => ColorRepository::class,
+        CouponsRepositoryInterface::class => CouponsRepository::class,
 
         // Services
         ImageProfilerInterface::class => ImageProfiler::class,

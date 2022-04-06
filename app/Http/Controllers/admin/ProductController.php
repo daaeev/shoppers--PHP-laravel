@@ -70,7 +70,7 @@ class ProductController extends Controller
         // Присвоение данных модели
         $data['main_image'] = $main_image_name;
         $data['preview_image'] = $preview_image_name;
-        $this->setModelAttributes($model, $data);
+        $model->setRawAttributes($data);
 
         // Сохранение данных модели
         if (!$model->save()) {
@@ -212,7 +212,7 @@ class ProductController extends Controller
         }
 
         // Присвоение новый свойств модели
-        $this->setModelAttributes($model, $data);
+        $model->setRawAttributes($data);
 
         // Если сохранение модели провалено - удалить новосозданные, если имеются
         if (!$model->save()) {
@@ -266,20 +266,5 @@ class ProductController extends Controller
             route('admin.products'),
             $this->request
         );
-    }
-
-    /**
-     * Метод устанавливает свойства из ассоциативного массива $data
-     * модели $model
-     *
-     * @param Model $model
-     * @param array $data
-     * @return void
-     */
-    protected function setModelAttributes(Model &$model, array $data) {
-        foreach ($data as $attr => $value) {
-            unset($data['id']);
-            $model->setAttribute($attr, $value);
-        }
     }
 }

@@ -22,9 +22,7 @@ class SizeController extends Controller
      */
     public function createSize(Size $model, CreateSize $validate)
     {
-        $name = $validate->validated('name');
-
-        $model->name = $name;
+        $model->setRawAttributes($validate->validated());
 
         if (!$model->save()) {
             return $this->withRedirectAndFlash(

@@ -37,13 +37,7 @@ class CreateCategoryTest extends TestCase
 
     public function testFailedData()
     {
-        $category = Category::factory()->createOne();
-
-        $data = [
-            null,
-            $category->name,
-            Str::random(256),
-        ];
+        $data = $this->failedData();
 
         foreach ($data as $name_el) {
             $response = $this->post($this->route, [
@@ -52,5 +46,16 @@ class CreateCategoryTest extends TestCase
 
             $response->assertSessionHasErrors();
         }
+    }
+
+    protected function failedData()
+    {
+        $category = Category::factory()->createOne();
+
+        return [
+            null,
+            $category->name,
+            Str::random(256),
+        ];
     }
 }

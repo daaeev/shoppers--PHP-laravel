@@ -2,33 +2,33 @@
 
 namespace Tests\Feature\Requests;
 
-use App\Http\Requests\DeleteSize;
-use App\Models\Size;
+use App\Http\Requests\DeleteCoupon;
+use App\Models\Coupon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
-class DeleteSizeTest extends TestCase
+class DeleteCouponTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected string $route = '/check-delete-size-validation-route';
+    protected string $route = '/delete-coupon-validation-route';
 
     public function setUp(): void
     {
         parent::setUp();
 
-        Route::post($this->route, function (DeleteSize $validate) {
+        Route::post($this->route, function (DeleteCoupon $validate) {
             return true;
         });
     }
 
     public function testSuccessData()
     {
-        $category = Size::factory()->createOne();
+        $coupon = Coupon::factory()->createOne();
 
         $response = $this->post($this->route, [
-            'id' => $category->id,
+            'id' => $coupon->id
         ])->assertOk();
 
         $response->assertSessionHasNoErrors();
@@ -40,7 +40,7 @@ class DeleteSizeTest extends TestCase
     public function testFailedData($id)
     {
         $response = $this->post($this->route, [
-            'id' => $id,
+            'id' => $id
         ])->assertRedirect(route('home'));
 
         $response->assertSessionHasErrors();
@@ -49,11 +49,10 @@ class DeleteSizeTest extends TestCase
     public function failedData()
     {
         return [
+            [null],
             [1.2],
             [-1],
-            [123],
-            ['string'],
-            [null],
+            [123]
         ];
     }
 }

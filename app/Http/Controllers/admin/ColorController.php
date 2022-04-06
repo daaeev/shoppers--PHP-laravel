@@ -22,11 +22,7 @@ class ColorController extends Controller
      */
     public function createColor(Color $model, CreateColor $validate)
     {
-        $name = $validate->validated('name');
-        $hex = $validate->validated('hex');
-
-        $model->name = $name;
-        $model->hex = $hex;
+        $model->setRawAttributes($validate->validated());
 
         if (!$model->save()) {
             return $this->withRedirectAndFlash(

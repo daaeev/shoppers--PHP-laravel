@@ -41,8 +41,7 @@ class DeleteProductTest extends TestCase
     {
         $response = $this->post($this->route, [
             'id' => $id,
-        ])
-            ->assertRedirect(route('home'));
+        ])->assertRedirect(route('home'));
 
         $response->assertSessionHasErrors();
     }

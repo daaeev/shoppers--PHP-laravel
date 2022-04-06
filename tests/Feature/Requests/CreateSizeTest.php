@@ -37,13 +37,7 @@ class CreateSizeTest extends TestCase
 
     public function testFailedData()
     {
-        $size = Size::factory()->createOne();
-
-        $data = [
-            null,
-            $size->name,
-            Str::random(256),
-        ];
+        $data = $this->failedData();
 
         foreach ($data as $name_el) {
             $response = $this->post($this->route, [
@@ -53,5 +47,16 @@ class CreateSizeTest extends TestCase
 
             $response->assertSessionHasErrors();
         }
+    }
+
+    protected function failedData()
+    {
+        $size = Size::factory()->createOne();
+
+        return [
+            null,
+            $size->name,
+            Str::random(256),
+        ];
     }
 }

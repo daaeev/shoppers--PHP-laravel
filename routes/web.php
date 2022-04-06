@@ -1,16 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use \App\Http\Controllers\SiteController;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\admin\UserController;
-use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\ColorController;
+use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\SizeController;
-use App\Http\Controllers\AjaxController;
-
+use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ajax\CartController;
+use App\Http\Controllers\SiteController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\admin\CouponController;
 
 
 Route::get('/', [SiteController::class, 'index'])->name('home');
@@ -37,6 +37,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/product/delete', [ProductController::class, 'deleteProduct'])->name('admin.product.delete');
     Route::post('/product/edit', [ProductController::class, 'editProduct'])->name('admin.product.edit');
 
+    Route::post('/coupon/create', [CouponController::class, 'createCoupon'])->name('admin.coupon.create');
+    Route::post('/coupon/delete', [CouponController::class, 'deleteCoupon'])->name('admin.coupon.delete');
+
     Route::post('/category/create', [CategoryController::class, 'createCategory'])->name('admin.category.create');
     Route::post('/category/delete', [CategoryController::class, 'deleteCategory'])->name('admin.category.delete');
 
@@ -52,6 +55,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/products', [AdminController::class, 'productsList'])->name('admin.products');
     Route::get('/product/create/form', [AdminController::class, 'productCreateForm'])->name('admin.product.create.form');
     Route::get('/product/edit/form', [AdminController::class, 'productEditForm'])->name('admin.product.edit.form');
+    Route::get('/coupons', [AdminController::class, 'couponsList'])->name('admin.coupons');
     Route::get('/categories', [AdminController::class, 'categoriesList'])->name('admin.categories');
     Route::get('/colors', [AdminController::class, 'colorsList'])->name('admin.colors');
     Route::get('/sizes', [AdminController::class, 'sizesList'])->name('admin.sizes');
@@ -62,12 +66,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 // ---AJAX---
 
 Route::group(['prefix' => 'ajax'], function () {
-    Route::get('/cart/add', [AjaxController::class, 'addToCart'])->name('ajax.cart.add');
-    Route::get('/cart/remove', [AjaxController::class, 'removeFromCart'])->name('ajax.cart.remove');
-    Route::get('/cart/update', [AjaxController::class, 'updateCart'])->name('ajax.cart.update');
+    Route::get('/cart/add', [CartController::class, 'addToCart'])->name('ajax.cart.add');
+    Route::get('/cart/remove', [CartController::class, 'removeFromCart'])->name('ajax.cart.remove');
+    Route::get('/cart/update', [CartController::class, 'updateCart'])->name('ajax.cart.update');
 
-    Route::get('/cart/product/plus', [AjaxController::class, 'productCountPlus'])->name('ajax.cart.product.plus');
-    Route::get('/cart/product/minus', [AjaxController::class, 'productCountMinus'])->name('ajax.cart.product.minus');
+    Route::get('/cart/product/plus', [CartController::class, 'productCountPlus'])->name('ajax.cart.product.plus');
+    Route::get('/cart/product/minus', [CartController::class, 'productCountMinus'])->name('ajax.cart.product.minus');
 });
 
 // !!!AJAX!!!

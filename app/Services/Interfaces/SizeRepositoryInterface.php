@@ -6,7 +6,10 @@ use App\Services\Interfaces\divided\GetAllForeignInterface;
 use App\Services\Interfaces\divided\GetFirstInterface;
 use App\Services\Interfaces\divided\GridInterface;
 
-interface SizeRepositoryInterface extends GridInterface, GetAllForeignInterface, GetFirstInterface
+interface SizeRepositoryInterface extends
+    GridInterface,
+    GetAllForeignInterface,
+    GetFirstInterface
 {
 
 }

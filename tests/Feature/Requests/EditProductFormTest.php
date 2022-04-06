@@ -40,19 +40,18 @@ class EditProductFormTest extends TestCase
         }
     }
 
-    public function testFailedData()
+    /**
+     * @dataProvider getFailedData
+     */
+    public function testFailedData($id)
     {
-        $data = $this->getFailedData();
+        $response = $this->post($this->route, ['id' => $id])
+            ->assertRedirect();
 
-        foreach ($data as $req_data) {
-            $response = $this->post($this->route, $req_data)
-                ->assertRedirect();
-
-            $response->assertSessionHasErrors();
-        }
+        $response->assertSessionHasErrors();
     }
 
-    public function getSuccessData()
+    protected function getSuccessData()
     {
         return [
             ['id' => $this->id],
@@ -62,9 +61,9 @@ class EditProductFormTest extends TestCase
     public function getFailedData()
     {
         return [
-            ['id' => 123],
-            ['id' => 'string'],
-            ['id' => null],
+            [123],
+            ['string'],
+            [null],
         ];
     }
 }

@@ -21,6 +21,7 @@
             <a class="btn btn-primary mx-3" href="{{route('home')}}">Home</a>
             <a class="btn btn-primary mx-3" href="{{route('admin.users')}}">Users</a>
             <a class="btn btn-primary mx-3" href="{{route('admin.products')}}">Products</a>
+            <a class="btn btn-primary mx-3" href="{{route('admin.coupons')}}">Coupons</a>
             <a class="btn btn-primary mx-3" href="{{route('admin.categories')}}">Categories</a>
             <a class="btn btn-primary mx-3" href="{{route('admin.sizes')}}">Sizes</a>
             <a class="btn btn-primary mx-3" href="{{route('admin.colors')}}">Colors</a>

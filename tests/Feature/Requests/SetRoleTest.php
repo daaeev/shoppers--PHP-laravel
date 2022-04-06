@@ -23,33 +23,35 @@ class SetRoleTest extends TestCase
         });
     }
 
-    /**
-     * @dataProvider postFailedDataProvider
-     */
-    public function testPostDataValidationFailed($id, $role)
+    public function testPostDataValidationFailed()
     {
-        $response = $this->post($this->route, [
+        $data = $this->postFailedDataProvider();
+
+        foreach ($data as list($id, $role)) {
+            $response = $this->post($this->route, [
                 'id' => $id,
                 'role' => $role,
             ])
-            ->assertRedirect(route('home'));
+                ->assertRedirect(route('home'));
 
-        $response->assertSessionHasErrors();
+            $response->assertSessionHasErrors();
+        }
     }
 
-    public function postFailedDataProvider()
+    protected function postFailedDataProvider()
     {
         $role_to_set = User::$status_banned;
+        $id = User::factory()->createOne()->id;
 
         return [
             ['string', $role_to_set],
-            [1, 'string'],
+            [$id, 'string'],
             [123, $role_to_set],
-            [1, 123],
+            [$id, 123],
             [1.2, $role_to_set],
-            [1, 1.2],
+            [$id, 1.2],
             [null, $role_to_set],
-            [1, null],
+            [$id, null],
         ];
     }
 

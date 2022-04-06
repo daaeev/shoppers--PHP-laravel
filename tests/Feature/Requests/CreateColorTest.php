@@ -39,16 +39,7 @@ class CreateColorTest extends TestCase
 
     public function testFailedData()
     {
-        $col = Color::factory()->createOne();
-
-        $data = [
-            [null, $col->hex],
-            [$col->name, $col->hex],
-            [Str::random(256), $col->hex],
-            [$col->name, null],
-            [$col->name, $col->hex],
-            [$col->name, Str::random(11)],
-        ];
+        $data = $this->failedData();
 
         foreach ($data as list($name, $hex)) {
             $response = $this->post($this->route, [
@@ -58,5 +49,19 @@ class CreateColorTest extends TestCase
 
             $response->assertSessionHasErrors();
         }
+    }
+
+    protected function failedData()
+    {
+        $col = Color::factory()->createOne();
+
+        return [
+            [null, $col->hex],
+            [$col->name, $col->hex],
+            [Str::random(256), $col->hex],
+            [$col->name, null],
+            [$col->name, $col->hex],
+            [$col->name, Str::random(11)],
+        ];
     }
 }

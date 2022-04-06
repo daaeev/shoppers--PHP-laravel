@@ -24,9 +24,7 @@ class CategoryController extends Controller
      */
     public function createCategory(Category $model, CreateCategory $validate)
     {
-        $name = $validate->validated('name');
-
-        $model->name = $name;
+        $model->setRawAttributes($validate->validated());
 
         if (!$model->save()) {
             return $this->withRedirectAndFlash(

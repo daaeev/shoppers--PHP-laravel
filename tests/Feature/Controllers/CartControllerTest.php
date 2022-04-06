@@ -6,7 +6,7 @@ use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class AjaxControllerTest extends TestCase
+class CartControllerTest extends TestCase
 {
     use RefreshDatabase;
 

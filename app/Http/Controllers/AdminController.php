@@ -6,6 +6,7 @@ use App\Http\Requests\ProductEditForm;
 use App\Models\Product;
 use App\Services\Interfaces\CategoryRepositoryInterface;
 use App\Services\Interfaces\ColorRepositoryInterface;
+use App\Services\Interfaces\CouponsRepositoryInterface;
 use App\Services\Interfaces\ProductRepositoryInterface;
 use App\Services\Interfaces\SizeRepositoryInterface;
 use App\Services\Interfaces\UserRepositoryInterface;
@@ -136,5 +137,19 @@ class AdminController extends Controller
         $grid = $colorRepository->getAllUsingGrid($input);
 
         return view('admin.colors', compact('grid'));
+    }
+
+    /**
+     * Метод отвечает за рендер страницы 'Coupons' админ панели
+     *
+     * @param CouponsRepositoryInterface $couponRepository
+     * @return mixed
+     */
+    public function couponsList(CouponsRepositoryInterface $couponRepository)
+    {
+        $input = new InputSource($this->request->query());
+        $grid = $couponRepository->getAllUsingGrid($input);
+
+        return view('admin.coupons', compact('grid'));
     }
 }
