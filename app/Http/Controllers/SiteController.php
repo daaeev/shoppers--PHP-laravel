@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Services\Interfaces\FilterProcessingInterface;
 use App\Services\Interfaces\ProductRepositoryInterface;
+use App\Services\Interfaces\UserRepositoryInterface;
 use App\Services\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -28,10 +29,15 @@ class SiteController extends Controller
      * Рендер страницы просмотра корзины
      *
      * @param ProductRepositoryInterface $productRepository
+     * @param UserRepositoryInterface $userRepository
      * @return mixed
      */
-    public function cart(ProductRepositoryInterface $productRepository)
+    public function cart(
+        ProductRepositoryInterface $productRepository,
+        UserRepositoryInterface $userRepository
+    )
     {
+        $user = $userRepository->getAuthenticated();
         $products = new Collection();
         $cart_array = unserialize($this->request->cookie('cart'));
 
@@ -39,7 +45,7 @@ class SiteController extends Controller
             $products = $productRepository->getProductsByIds(array_keys($cart_array));
         }
 
-        return view('cart', compact('products', 'cart_array'));
+        return view('cart', compact('products', 'cart_array', 'user'));
     }
 
     /**

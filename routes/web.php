@@ -11,6 +11,7 @@ use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\CouponController;
+use App\Http\Controllers\ajax\CouponController as AjaxCouponController;
 
 
 Route::get('/', [SiteController::class, 'index'])->name('home');
@@ -72,6 +73,10 @@ Route::group(['prefix' => 'ajax'], function () {
 
     Route::get('/cart/product/plus', [CartController::class, 'productCountPlus'])->name('ajax.cart.product.plus');
     Route::get('/cart/product/minus', [CartController::class, 'productCountMinus'])->name('ajax.cart.product.minus');
+
+    Route::post('/coupon/activate', [AjaxCouponController::class, 'activateCoupon'])
+        ->name('ajax.coupon.activate')
+        ->middleware(['auth']);
 });
 
 // !!!AJAX!!!

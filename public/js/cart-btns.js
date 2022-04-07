@@ -32,7 +32,7 @@ $('#add-to-cart-btn').click(function () {
     let button = $(this);
 
     $.ajax({
-        url: $(this).data('href'),
+        url: button.data('href'),
         method: 'GET',
         beforeSend: function() {
             button.attr('disabled', true);
@@ -67,7 +67,7 @@ $('.remove-from-cart-btn').click(function () {
 
                 // Установка цен
                 let totalCost = (Number(totalPriceDOM.text()) - Number($('#product-' + product_id + ' .product-price').text()) * Number($('#product-' + product_id + ' .product-count').val())).toFixed(2);
-                let discountPercent = 0; // TODO
+                let discountPercent = (document.querySelector('.coupon-percent')) ? Number(document.querySelector('.coupon-percent').textContent) : 0;
 
                 setTotal(totalCost);
                 setSubtotal(totalCost, discountPercent);
@@ -109,10 +109,11 @@ $('.product-count-plus-btn').click(function () {
     const productDOM = $('#product-' + product_id);
 
     $.ajax({
-        url: $(this).data('href'),
+        url: button.data('href'),
         method: 'GET',
         beforeSend: function () {
             button.attr('disabled', true);
+            setTimeout(() => button.attr('disabled', false), 3000);
         },
         success: function(product_count) {
 
@@ -120,8 +121,6 @@ $('.product-count-plus-btn').click(function () {
             if (product_count != productDOM.find('.product-count').val()) {
                 error();
             }
-
-            setTimeout(() => button.attr('disabled', false), 1000);
 
             // Расчет цен
             init();
@@ -137,10 +136,11 @@ $('.product-count-minus-btn').click(function () {
     const productDOM = $('#product-' + product_id);
 
     $.ajax({
-        url: $(this).data('href'),
+        url: button.data('href'),
         method: 'GET',
         beforeSend: function () {
             button.attr('disabled', true);
+            setTimeout(() => button.attr('disabled', false), 3000);
         },
         success: function(product_count) {
 
@@ -149,11 +149,83 @@ $('.product-count-minus-btn').click(function () {
                 error();
             }
 
-            setTimeout(() => button.attr('disabled', false), 1000);
-
             // Расчет цен
             init();
         },
         error: error
+    });
+});
+
+// Реализация кнопки использования купона
+$('.apply-coupon-btn').click(function () {
+    const coupon_token = $('#coupon-token-input').val();
+
+    if (coupon_token.length == 0) {
+
+        if ($('.coupon-input-error').length == 0) {
+            $('.coupon-input-block').append('<label class="coupon-input-required text-danger">This field is required</label>');
+        }
+
+        return;
+    }
+
+    if (coupon_token.length > 30) {
+        error();
+    }
+
+    const button = $(this);
+
+    $.ajax({
+        url: button.data('href'),
+        method: 'POST',
+        data: {token: coupon_token},
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        beforeSend: function () {
+            button.attr('disabled', true);
+            setTimeout(() => button.attr('disabled', false), 3000);
+        },
+        success: function(coupon_percent) {
+            // Очищение блока
+            $('.coupon-block').empty();
+
+            // Блок с информацией о активированном купоне
+            let couponInfo = `
+                <div class="user-coupon-block">
+                    <div class="col-md-12">
+                        <label class="text-black h4" htmlFor="coupon">Coupon</label>
+                        <h3><span class="text-danger">` + coupon_token + `</span> <span
+                            class="text-success coupon-percent">` + coupon_percent + `</span><span
+                            class="text-success">%</span></h3>
+                    </div>
+                </div>`;
+
+            // Блок с уведомлением о том, что купон успешно активирован
+            let couponApplied = `
+                <div class="user-coupon-block">
+                    <div class="col-md-12">
+                        <label class="text-black h4" htmlFor="coupon">Coupon</label>
+                        <h3><span class="text-success">Coupon applied</span></h3>
+                    </div>
+                </div>`;
+
+            $('.coupon-block').append(couponApplied);
+
+            setTimeout(function () {
+                $('.coupon-block').empty();
+                $('.coupon-block').append(couponInfo);
+
+                // Расчет цен
+                init();
+            }, 2000);
+        },
+        error: function () {
+            if ($('.coupon-input-error').length) {
+                $('.coupon-input-error').remove();
+            }
+
+            $('.coupon-input-block').append('<label class="coupon-input-required text-danger">Coupon does not exist</label>');
+        }
     });
 });

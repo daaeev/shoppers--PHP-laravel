@@ -57,4 +57,11 @@ class User extends Authenticatable
         return $this->status;
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function coupon()
+    {
+        return $this->belongsTo(Coupon::class);
+    }
 }

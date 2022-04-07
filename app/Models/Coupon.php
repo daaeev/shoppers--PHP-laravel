@@ -22,4 +22,9 @@ class Coupon extends Model
         'activated' => 'boolean',
         'used' => 'boolean',
     ];
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }

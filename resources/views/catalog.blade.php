@@ -47,8 +47,8 @@
                                         <a href="{{route('catalog.single', ['product' => $product->slug])}}"><img src="{{asset('storage/products_images/' . ($product->preview_image ?? $product->main_image))}}" alt="Image placeholder" class="img-thumbnail" style="border-left: none;border-right: none;border-top: none;"></a>
                                   </figure>
                                   <div class="block-4-text p-4">
-                                        <h3><a href="{{route('catalog.single', ['product' => $product->slug])}}">{{$product->name}} ({{$product->size->name}})</a></h3>
-                                        <p class="mb-0">{{$product->subname}}</p>
+                                        <h3 style="overflow: hidden; text-overflow: ellipsis;"><a href="{{route('catalog.single', ['product' => $product->slug])}}">{{$product->name}} ({{$product->size->name}})</a></h3>
+                                        <p class="mb-0" style="overflow: hidden; text-overflow: ellipsis;">{{$product->subname}}</p>
 
                                         @if($product->discount_price)
                                             <p class="text-primary font-weight-bold"><span class="text-warning">Discount!</span> <s>{{number_format($product->price, 2)}}₴</s> {{number_format($product->discount_price, 2)}}₴</p>

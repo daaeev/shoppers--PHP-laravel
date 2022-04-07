@@ -27,6 +27,20 @@ class CouponsRepository implements \App\Services\Interfaces\CouponsRepositoryInt
     /**
      * @inheritDoc
      */
+    public function getFirstNotActivatedByTokenOrNull(string $token): Coupon|null
+    {
+        return Coupon::where([
+            ['token', '=', $token],
+            ['activated', '=', false],
+            ['used', '=', false]
+        ])->firstOr(function () {
+            return null;
+        });
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getAllUsingGrid(InputSource $input, int $pageSize = 15): Grid
     {
         $provider = new EloquentDataProvider(Coupon::query());

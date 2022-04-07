@@ -114,8 +114,8 @@
                                       <a href="{{route('catalog.single', ['product' => $item->slug])}}"><img src="{{asset('storage/products_images/' . ($item->preview_image ?? $item->main_image))}}" alt="Image placeholder" class="img-fluid"></a>
                                   </figure>
                                   <div class="block-4-text p-4">
-                                      <h3><a href="{{route('catalog.single', ['product' => $item->slug])}}">{{$item->name}} ({{$item->size->name}})</a></h3>
-                                      <p class="mb-0">{{$item->subname}}</p>
+                                      <h3 style="overflow: hidden; text-overflow: ellipsis;"><a href="{{route('catalog.single', ['product' => $item->slug])}}">{{$item->name}} ({{$item->size->name}})</a></h3>
+                                      <p class="mb-0" style="overflow: hidden; text-overflow: ellipsis;">{{$item->subname}}</p>
                                       @if($item->discount_price)
                                           <p class="text-primary font-weight-bold"><span class="text-warning">Discount!</span> <s>{{number_format($item->price, 2)}}₴</s> {{number_format($item->discount_price, 2)}}₴</p>
                                       @else

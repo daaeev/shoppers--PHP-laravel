@@ -4,7 +4,7 @@ const init = () => {
 
     [...document.querySelectorAll('.cart-product')].forEach((product) => {
         totalCost += Number(product.querySelector('.product-price').textContent) * Number(product.querySelector('.product-count').value);
-        discountPercent = 0; // TODO
+        discountPercent = (document.querySelector('.coupon-percent')) ? Number(document.querySelector('.coupon-percent').textContent) : 0;
         subtotalCost = totalCost - (totalCost / 100 * discountPercent);
     });
 

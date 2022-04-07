@@ -87,17 +87,30 @@
                         <a href="{{route('catalog')}}" class="btn btn-outline-primary btn-sm btn-block">Continue Shopping</a>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <label class="text-black h4" for="coupon">Coupon</label>
-                        <p>Enter your coupon code if you have one.</p>
-                    </div>
-                    <div class="col-md-8 mb-3 mb-md-0">
-                        <input type="text" class="form-control py-3" id="coupon" placeholder="Coupon Code">
-                    </div>
-                    <div class="col-md-4">
-                        <button class="btn btn-primary btn-sm">Apply Coupon</button>
-                    </div>
+                <div class="row coupon-block">
+
+                    @if($user?->coupon_id)
+                        <div class="col-md-12">
+                            <label class="text-black h4" for="coupon">Coupon</label>
+                            <h3><span class="text-danger">{{$user->coupon->token}}</span> <span class="text-success coupon-percent">{{$user->coupon->percent}}</span><span class="text-success">%</span></h3>
+                        </div>
+                    @elseif($user)
+                        <div class="col-md-12">
+                            <label class="text-black h4" for="coupon">Coupon</label>
+                            <p>Enter your coupon code if you have one.</p>
+                        </div>
+                        <div class="col-md-8 mb-3 mb-md-0 coupon-input-block">
+                            <input type="text" class="form-control py-3" id="coupon-token-input" placeholder="Coupon Code" maxlength="30">
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary btn-sm apply-coupon-btn" data-href="{{route('ajax.coupon.activate')}}">Apply Coupon</button>
+                        </div>
+                    @else
+                        <div class="col-md-12">
+                            <label class="text-black h4" for="coupon">Coupon</label>
+                            <h3><a class="h3" href="{{route('login')}}">To apply coupon you must authorize</a></h3>
+                        </div>
+                    @endif
                 </div>
             </div>
           <div class="col-md-6">
