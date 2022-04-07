@@ -36,8 +36,9 @@ class CouponController
             $user->coupon_id = $coupon->id;
             $coupon->activated = true;
 
-            $user->save();
-            $coupon->save();
+            if (!$user->save() || !$coupon->save()) {
+                throw new HttpException(500);
+            }
         });
 
         return (new Response($coupon->percent));
