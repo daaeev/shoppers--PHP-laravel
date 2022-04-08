@@ -117,9 +117,9 @@
                                       <h3 style="overflow: hidden; text-overflow: ellipsis;"><a href="{{route('catalog.single', ['product' => $item->slug])}}">{{$item->name}} ({{$item->size->name}})</a></h3>
                                       <p class="mb-0" style="overflow: hidden; text-overflow: ellipsis;">{{$item->subname}}</p>
                                       @if($item->discount_price)
-                                          <p class="text-primary font-weight-bold"><span class="text-warning">Discount!</span> <s>{{number_format($item->price, 2)}}₴</s> {{number_format($item->discount_price, 2)}}₴</p>
+                                          <p class="text-primary font-weight-bold"><span class="text-warning">Discount!</span> <s>{{number_format($item->price, 2)}} {{$item->currency}}</s> {{number_format($item->discount_price, 2)}} {{$item->currency}}</p>
                                       @else
-                                          <p class="text-primary font-weight-bold">{{number_format($item->price, 2)}}₴</p>
+                                          <p class="text-primary font-weight-bold">{{number_format($item->price, 2)}} {{$item->currency}}</p>
                                       @endif
                                   </div>
                               </div>

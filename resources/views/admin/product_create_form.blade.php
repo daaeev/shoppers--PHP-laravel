@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <form action="{{route('admin.product.create')}}" method="post" enctype="multipart/form-data">
+    <form action="{{route('admin.product.create')}}" method="post" enctype="multipart/form-data" class="mb-5">
         @csrf
 
         <h3>Create product</h3>
@@ -28,8 +28,16 @@
             </select>
         @endforeach
 
+        <label>Currency</label>
+        <select class="form-control mb-2" name="currency" required>
+            <option value="UAH">UAH</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+        </select>
+
         <input name="price" type="number" step="any" min="0" placeholder="Price (grivna)" class="form-control mb-2" autocomplete="off" required value="{{old('price')}}">
         <input name="discount_price" type="number" step="any" min="0" placeholder="Discount price (grivna)" class="form-control mb-2" autocomplete="off" value="{{old('discount_price')}}">
+
         <input name="count" type="number" min="0" placeholder="Count" class="form-control mb-2" autocomplete="off" required value="{{old('count')}}">
 
         <input name="main_image" id="main_image" type="file" class="form-control mb-2" autocomplete="off" accept="image/*" required>

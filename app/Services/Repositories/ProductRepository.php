@@ -166,12 +166,9 @@ class ProductRepository implements \App\Services\Interfaces\ProductRepositoryInt
             new Column('name'),
             new Column('subname'),
             new Column('description'),
-            (new Column('price'))->setValueFormatter(function ($value) {
-                return $value . ' ₴';
-            }),
-            (new Column('discount_price'))->setValueFormatter(function ($value) {
-                return ($value ? $value . '₴' : '0 ₴');
-            }),
+            new Column('price'),
+            new Column('discount_price'),
+            new Column('currency'),
             (new Column('category_id'))->setValueFormatter(function ($value) {
                 return '<a href="' . route('admin.categories', ['filt_id' => $value]) . '">' . $value . '</a>';
             }),

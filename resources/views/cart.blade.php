@@ -54,9 +54,9 @@
                           </td>
                         <td>
                             @if($product->discount_price)
-                                <s>{{number_format($product->price, 2)}}₴</s> <span class="product-price">{{number_format($product->discount_price, 2)}}</span>₴
+                                <s>{{number_format($product->price, 2)}} {{$product->currency}}</s> <span class="product-price">{{number_format($product->discount_price, 2)}}</span> <span class="product-currency">{{$product->currency}}</span>
                             @else
-                                <span class="product-price">{{number_format($product->price, 2)}}</span>₴
+                                <span class="product-price">{{number_format($product->price, 2)}}</span> <span class="product-currency">{{$product->currency}}</span>
                             @endif
                         </td>
                         <td><button data-href="{{route('ajax.cart.remove', ['product_id' => $product->id])}}" class="btn btn-primary btn-sm remove-from-cart-btn">X</button></td>
@@ -126,7 +126,7 @@
                     <span class="text-black">Subtotal</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <strong class="text-black"><span class="subtotal-price">0.00</span>₴</strong>
+                    <strong class="text-black"><span class="subtotal-price">0.00</span> UAH</strong>
                   </div>
                 </div>
                 <div class="row mb-5">
@@ -134,7 +134,7 @@
                     <span class="text-black">Total</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <strong class="text-black"><span class="total-price">0.00</span>₴</strong>
+                    <strong class="text-black"><span class="total-price">0.00</span> UAH</strong>
                   </div>
                 </div>
 
@@ -150,5 +150,7 @@
       </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="{{asset('js/cart-page.js')}}"></script>
+
 @endsection

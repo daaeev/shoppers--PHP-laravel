@@ -31,6 +31,13 @@
             </select>
         @endforeach
 
+        <label>Currency</label>
+        <select class="form-control mb-2" name="currency" required>
+            <option value="UAH">UAH</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+        </select>
+
         <input name="price" type="number" step="any" min="0" placeholder="Price (grivna)" class="form-control mb-2" autocomplete="off" required value="{{$model->price}}">
         <input name="discount_price" type="number" step="any" min="0" placeholder="Discount price (grivna)" class="form-control mb-2" autocomplete="off" value="{{$model->discount_price}}">
         <input name="count" type="number" min="0" placeholder="Count" class="form-control mb-2" autocomplete="off" required value="{{$model->count}}">

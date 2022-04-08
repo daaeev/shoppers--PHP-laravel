@@ -24,6 +24,7 @@ class ProductFactory extends Factory
             'name' => Str::random(),
             'subname' => $this->faker->sentence(5),
             'description' => $this->faker->text(),
+            'currency' => 'UAH',
             'price' => $this->faker->numberBetween(0, 100),
             'discount_price' => 0,
             'category_id' => Category::factory(),

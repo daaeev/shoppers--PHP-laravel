@@ -30,6 +30,7 @@ class CreateProduct extends FormRequest
             'category_id' => 'bail|required|exists:\App\Models\Category,id',
             'color_id' => 'bail|required|exists:\App\Models\Color,id',
             'size_id' => 'bail|required|exists:\App\Models\Size,id',
+            'currency' => 'required|string|max:5',
             'price' => 'required|numeric|min:0',
             'discount_price' => 'nullable|numeric|min:0|lt:price',
             'count' => 'required|integer|min:0',

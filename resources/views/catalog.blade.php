@@ -51,9 +51,9 @@
                                         <p class="mb-0" style="overflow: hidden; text-overflow: ellipsis;">{{$product->subname}}</p>
 
                                         @if($product->discount_price)
-                                            <p class="text-primary font-weight-bold"><span class="text-warning">Discount!</span> <s>{{number_format($product->price, 2)}}₴</s> {{number_format($product->discount_price, 2)}}₴</p>
+                                            <p class="text-primary font-weight-bold"><span class="text-warning">Discount!</span> <s>{{number_format($product->price, 2)}} {{$product->currency}}</s> {{number_format($product->discount_price, 2)}} {{$product->currency}}</p>
                                         @else
-                                          <p class="text-primary font-weight-bold">{{number_format($product->price, 2)}}₴</p>
+                                          <p class="text-primary font-weight-bold">{{number_format($product->price, 2)}} {{$product->currency}}</p>
                                         @endif
                                   </div>
                             </div>
