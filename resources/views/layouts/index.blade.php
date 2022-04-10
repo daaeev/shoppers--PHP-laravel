@@ -180,7 +180,6 @@
 <script src="{{asset('js/jquery.magnific-popup.min.js')}}"></script>
 <script src="{{asset('js/aos.js')}}"></script>
 <script src="{{asset('js/main.js')}}"></script>
-<script src="{{asset('js/cart-btns.js')}}"></script>
 
 </body>
 </html>

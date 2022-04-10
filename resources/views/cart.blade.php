@@ -95,20 +95,27 @@
                             <h3><span class="text-danger">{{$user->coupon->token}}</span> <span class="text-success coupon-percent">{{$user->coupon->percent}}</span><span class="text-success">%</span></h3>
                         </div>
                     @elseif($user)
-                        <div class="col-md-12">
-                            <label class="text-black h4" for="coupon">Coupon</label>
-                            <p>Enter your coupon code if you have one.</p>
-                        </div>
-                        <div class="col-md-8 mb-3 mb-md-0 coupon-input-block">
-                            <input type="text" class="form-control py-3" id="coupon-token-input" placeholder="Coupon Code" maxlength="30">
-                        </div>
-                        <div class="col-md-4">
-                            <button class="btn btn-primary btn-sm apply-coupon-btn" data-href="{{route('ajax.coupon.activate')}}">Apply Coupon</button>
-                        </div>
+                        @if($user->hasVerifiedEmail())
+                            <div class="col-md-12">
+                                <label class="text-black h4" for="coupon">Coupon</label>
+                                <p>Enter your coupon code if you have one.</p>
+                            </div>
+                            <div class="col-md-8 mb-3 mb-md-0 coupon-input-block">
+                                <input type="text" class="form-control py-3" id="coupon-token-input" placeholder="Coupon Code" maxlength="30">
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-primary btn-sm apply-coupon-btn" data-href="{{route('ajax.coupon.activate')}}">Apply Coupon</button>
+                            </div>
+                        @else
+                            <div class="col-md-12">
+                                <label class="text-black h4" for="coupon">Coupon</label>
+                                <h3><a class="h3" href="{{route('profile')}}">To apply coupon you must confirm your email</a></h3>
+                            </div>
+                        @endif
                     @else
                         <div class="col-md-12">
                             <label class="text-black h4" for="coupon">Coupon</label>
-                            <h3><a class="h3" href="{{route('login')}}">To apply coupon you must authorize</a></h3>
+                            <h3><a class="h3" href="{{route('login')}}">To apply coupon you must authorize and confirm your email</a></h3>
                         </div>
                     @endif
                 </div>
@@ -140,7 +147,15 @@
 
                 <div class="row">
                   <div class="col-md-12">
-                    <button class="btn btn-primary btn-lg py-3 btn-block" onclick="window.location='checkout.html'">Proceed To Checkout</button>
+                      @auth
+                          @if($user->hasVerifiedEmail())
+                            <a class="btn btn-primary btn-lg py-3 btn-block" href="{{route('cart.buy')}}">Proceed To Checkout</a>
+                          @else
+                            <h3><a class="h3" href="{{route('profile')}}">To purchase, you need to confirm your email</a></h3>
+                          @endif
+                      @else
+                          <h3><a class="h3" href="{{route('login')}}">To purchase, you need to log in and confirm your email</a></h3>
+                      @endauth
                   </div>
                 </div>
               </div>
@@ -151,6 +166,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="{{asset('js/cart-page.js')}}"></script>
-
+    <script src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
+    <script src="{{asset('js/calculate-costs.js')}}"></script>
+    <script src="{{asset('js/cart-btns.js')}}"></script>
 @endsection

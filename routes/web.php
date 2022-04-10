@@ -17,14 +17,18 @@ use App\Http\Controllers\ajax\CouponController as AjaxCouponController;
 Route::get('/', [SiteController::class, 'index'])->name('home');
 Route::get('/about', [SiteController::class, 'about'])->name('about');
 Route::get('/cart', [SiteController::class, 'cart'])->name('cart');
-Route::get('/cart/buy', [SiteController::class, 'buy'])->name('cart.but');
 Route::get('/contact', [SiteController::class, 'contact'])->name('contact');
 Route::get('/catalog', [SiteController::class, 'catalog'])->name('catalog');
 Route::get('/catalog/{product:slug}', [SiteController::class, 'single'])->name('catalog.single');
-Route::get('/thanks', [SiteController::class, 'thanks'])->name('thanks');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [SiteController::class, 'profile'])->name('profile');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/cart/buy', [SiteController::class, 'buy'])->middleware('haveProductsInCart')->name('cart.buy');
+    Route::get('/payment/thanks', [SiteController::class, 'payThanks'])->name('pay.thanks');
+    Route::get('/payment/error', [SiteController::class, 'payError'])->name('pay.error');
 });
 
 // ---ADMIN ROUTES---

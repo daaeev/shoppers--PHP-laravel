@@ -53,9 +53,16 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function buy()
+    public function buy(
+        UserRepositoryInterface $userRepository,
+        ProductRepositoryInterface $productRepository
+    )
     {
-        return view('buy');
+        $user = $userRepository->getAuthenticated();
+        $cart_array = unserialize($this->request->cookie('cart'));
+        $products = $productRepository->getProductsByIds(array_keys($cart_array));
+
+        return view('buy', compact('user', 'products', 'cart_array'));
     }
 
     /**
@@ -128,9 +135,19 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function thanks()
+    public function payThanks()
     {
-        return view('thanks');
+        return view('paythanks');
+    }
+
+    /**
+     * Рендер страницы ошибки оплаты товара
+     *
+     * @return mixed
+     */
+    public function payError()
+    {
+        return view('payerror');
     }
 
     /**

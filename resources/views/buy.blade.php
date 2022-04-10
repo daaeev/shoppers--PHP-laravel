@@ -15,13 +15,6 @@
 
     <div class="site-section">
       <div class="container">
-        <div class="row mb-5">
-          <div class="col-md-12">
-            <div class="border p-4 rounded" role="alert">
-              Returning customer? <a href="#">Click here</a> to login
-            </div>
-          </div>
-        </div>
         <div class="row">
           <div class="col-md-6 mb-5 mb-md-0">
             <h2 class="h3 mb-3 text-black">Billing Details</h2>
@@ -192,19 +185,30 @@
           <div class="col-md-6">
 
             <div class="row mb-5">
-              <div class="col-md-12">
+              <div class="col-md-12 coupon-block">
                 <h2 class="h3 mb-3 text-black">Coupon Code</h2>
-                <div class="p-3 p-lg-5 border">
 
-                  <label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
-                  <div class="input-group w-75">
-                    <input type="text" class="form-control" id="c_code" placeholder="Coupon Code" aria-label="Coupon Code" aria-describedby="button-addon2">
-                    <div class="input-group-append">
-                      <button class="btn btn-primary btn-sm" type="button" id="button-addon2">Apply</button>
-                    </div>
-                  </div>
+                  @if($user->coupon_id)
+                      <div class="p-3 p-lg-5 border">
+                          <h3>
+                              <span class="text-danger">{{$user->coupon->token}}</span>
+                              <span class="text-success coupon-percent">{{$user->coupon->percent}}</span><span class="text-success">%</span>
+                          </h3>
+                      </div>
+                  @else
+                      <div class="p-3 p-lg-5 border">
 
-                </div>
+                          <label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
+                          <div class="input-group w-75">
+                              <input type="text" class="form-control" id="coupon-token-input" placeholder="Coupon Code" aria-label="Coupon Code" aria-describedby="button-addon2">
+                              <div class="input-group-append">
+                                  <button class="btn btn-primary btn-sm buy-page-apply-coupon-btn" data-href="{{route('ajax.coupon.activate')}}">Apply</button>
+                              </div>
+                          </div>
+                          <div class="coupon-input-block"></div>
+                      </div>
+                  @endif
+
               </div>
             </div>
 
@@ -218,21 +222,26 @@
                       <th>Total</th>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Top Up T-Shirt <strong class="mx-2">x</strong> 1</td>
-                        <td>$250.00</td>
+                    @foreach($products as $product)
+                      <tr class="cart-product">
+                        <td><a href="{{route('catalog.single', ['product' => $product->slug])}}">{{$product->name}}</a><strong class="mx-2">x</strong> <input type="hidden" class="product-count" value="{{$cart_array[$product->id]['count']}}"> {{$cart_array[$product->id]['count']}}</td>
+
+                        @if($product->discount_price)
+                            <td><s>{{$product->price}} {{$product->currency}}</s> <span class="product-price">{{$product->discount_price}}</span> <span class="product-currency">{{$product->currency}}</span></td>
+                        @else
+                              <td><span class="product-price">{{$product->price}}</span> <span class="product-currency">{{$product->currency}}</span></td>
+                        @endif
+
                       </tr>
-                      <tr>
-                        <td>Polo Shirt <strong class="mx-2">x</strong>   1</td>
-                        <td>$100.00</td>
-                      </tr>
+                    @endforeach
+
                       <tr>
                         <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
-                        <td class="text-black">$350.00</td>
+                        <td class="text-black font-weight-bold"><span class="subtotal-price">0.00</span> UAH</td>
                       </tr>
                       <tr>
                         <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
-                        <td class="text-black font-weight-bold"><strong>$350.00</strong></td>
+                        <td class="text-black font-weight-bold"><span class="total-price">0.00</span> UAH</td>
                       </tr>
                     </tbody>
                   </table>
@@ -280,4 +289,8 @@
         <!-- </form> -->
       </div>
     </div>
+
+    <script src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
+    <script src="{{asset('js/calculate-costs.js')}}"></script>
+    <script src="{{asset('js/buy-btns.js')}}"></script>
 @endsection

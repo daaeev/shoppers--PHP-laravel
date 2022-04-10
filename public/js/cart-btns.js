@@ -162,9 +162,11 @@ $('.apply-coupon-btn').click(function () {
 
     if (coupon_token.length == 0) {
 
-        if ($('.coupon-input-error').length == 0) {
-            $('.coupon-input-block').append('<label class="coupon-input-required text-danger">This field is required</label>');
+        if ($('.coupon-input-error').length > 0) {
+            $('.coupon-input-error').remove();
         }
+
+        $('.coupon-input-block').append('<label class="coupon-input-error text-danger">This field is required</label>');
 
         return;
     }
@@ -221,11 +223,11 @@ $('.apply-coupon-btn').click(function () {
             }, 2000);
         },
         error: function () {
-            if ($('.coupon-input-error').length) {
+            if ($('.coupon-input-error').length > 0) {
                 $('.coupon-input-error').remove();
             }
 
-            $('.coupon-input-block').append('<label class="coupon-input-required text-danger">Coupon does not exist</label>');
+            $('.coupon-input-block').append('<label class="coupon-input-error text-danger">Coupon does not exist</label>');
         }
     });
 });

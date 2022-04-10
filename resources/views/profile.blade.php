@@ -9,7 +9,7 @@
     <div class="container py-md-5">
         <div class="row text-center">
             <div class="col-12">
-                <p><h3>{{$user->name}}</h3></p>
+                <p><h2>{{$user->name}}</h2></p>
                 <p>
                     <strong>Email:</strong>
                     {{$user->email}}
