@@ -168,5 +168,4 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
     <script src="{{asset('js/calculate-costs.js')}}"></script>
-    <script src="{{asset('js/cart-btns.js')}}"></script>
 @endsection
