@@ -11,12 +11,12 @@ class ImageProfiler implements Interfaces\ImageProfilerInterface
     /**
      * @var string идентификатор файлового хранилища
      */
-    public $storage_disk = 'public';
+    protected string $storage_disk;
 
     /**
      * @var string директория относительно файлового хранилища для хранения изображений
      */
-    public $image_store_dir = 'products_images';
+    protected string $image_store_dir;
 
     /**
      * @inheritDoc
@@ -73,5 +73,25 @@ class ImageProfiler implements Interfaces\ImageProfilerInterface
         }
 
         return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function directory(string $dir): self
+    {
+        $this->image_store_dir = $dir;
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function disk(string $disk): self
+    {
+        $this->storage_disk = $disk;
+
+        return $this;
     }
 }

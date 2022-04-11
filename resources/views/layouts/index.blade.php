@@ -78,11 +78,8 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="has-children">
+                    <li>
                         <a href="{{route('about')}}">About</a>
-                        <ul class="dropdown">
-                            <li><a href="#">Menu One</a></li>
-                        </ul>
                     </li>
                     <li><a href="{{route('catalog')}}">Shop</a></li>
                     <li><a href="{{route('contact')}}">Contact</a></li>

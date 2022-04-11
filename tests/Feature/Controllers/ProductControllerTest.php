@@ -13,6 +13,7 @@ use App\Services\Interfaces\ProductRepositoryInterface;
 use App\Services\Repositories\ProductRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ProductControllerTest extends TestCase
@@ -66,13 +67,21 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['saveImage'])
+            ->onlyMethods(['saveImage', 'disk', 'directory'])
             ->getMock();
 
         $profiler_mock->expects($this->once())
             ->method('saveImage')
             ->with($request_data['main_image'])
             ->willReturn('image_hash.png');
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $this->instance(
             ImageProfilerInterface::class,
@@ -112,13 +121,21 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['saveTwoImages'])
+            ->onlyMethods(['saveTwoImages', 'disk', 'directory'])
             ->getMock();
 
         $profiler_mock->expects($this->once())
             ->method('saveTwoImages')
             ->with($request_data['main_image'], $request_data['preview_image'])
             ->willReturn(['image1_hash.png', 'image2_hash.png']);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $this->instance(
             ImageProfilerInterface::class,
@@ -159,13 +176,21 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['saveTwoImages'])
+            ->onlyMethods(['saveTwoImages', 'disk', 'directory'])
             ->getMock();
 
         $profiler_mock->expects($this->once())
             ->method('saveTwoImages')
             ->with($request_data['main_image'], $request_data['preview_image'])
             ->willReturn(false);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $this->instance(
             ImageProfilerInterface::class,
@@ -201,13 +226,21 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['saveImage'])
+            ->onlyMethods(['saveImage', 'disk', 'directory'])
             ->getMock();
 
         $profiler_mock->expects($this->once())
             ->method('saveImage')
             ->with($request_data['main_image'])
             ->willReturn(false);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $this->instance(
             ImageProfilerInterface::class,
@@ -243,7 +276,7 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['saveImage', 'deleteImage'])
+            ->onlyMethods(['saveImage', 'deleteImage', 'disk', 'directory'])
             ->getMock();
 
         $profiler_mock->expects($this->once())
@@ -254,6 +287,14 @@ class ProductControllerTest extends TestCase
         $profiler_mock->expects($this->once())
             ->method('deleteImage')
             ->with('image_hash.png');
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $this->instance(
             ImageProfilerInterface::class,
@@ -307,7 +348,7 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['saveTwoImages', 'deleteImage'])
+            ->onlyMethods(['saveTwoImages', 'deleteImage', 'disk', 'directory'])
             ->getMock();
 
         $profiler_mock->expects($this->once())
@@ -315,15 +356,23 @@ class ProductControllerTest extends TestCase
             ->with($request_data['main_image'], $request_data['preview_image'])
             ->willReturn(['image1_hash.png', 'image2_hash.png']);
 
-        $profiler_mock->expects($this->at(1))
+        $profiler_mock->expects($this->at(3))
             ->method('deleteImage')
             ->with('image1_hash.png')
             ->willReturn(true);
 
-        $profiler_mock->expects($this->at(2))
+        $profiler_mock->expects($this->at(4))
             ->method('deleteImage')
             ->with('image2_hash.png')
             ->willReturn(true);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $this->instance(
             ImageProfilerInterface::class,
@@ -372,13 +421,21 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['deleteImage'])
+            ->onlyMethods(['deleteImage', 'disk', 'directory'])
             ->getMock();
 
         $profiler_mock->expects($this->once())
             ->method('deleteImage')
             ->with($product->main_image)
             ->willReturn(true);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $this->instance(
             ProductRepositoryInterface::class,
@@ -454,13 +511,21 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['deleteImage'])
+            ->onlyMethods(['deleteImage', 'disk', 'directory'])
             ->getMock();
 
         $profiler_mock->expects($this->once())
             ->method('deleteImage')
             ->with($product->main_image)
             ->willReturn(false);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $this->instance(
             ProductRepositoryInterface::class,
@@ -498,18 +563,26 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['deleteImage'])
+            ->onlyMethods(['deleteImage', 'disk', 'directory'])
             ->getMock();
 
-        $profiler_mock->expects($this->at(0))
+        $profiler_mock->expects($this->at(2))
             ->method('deleteImage')
             ->with($product->main_image)
             ->willReturn(true);
 
-        $profiler_mock->expects($this->at(1))
+        $profiler_mock->expects($this->at(3))
             ->method('deleteImage')
             ->with($product->preview_image)
             ->willReturn(true);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $this->instance(
             ProductRepositoryInterface::class,
@@ -547,18 +620,26 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['deleteImage'])
+            ->onlyMethods(['deleteImage', 'disk', 'directory'])
             ->getMock();
 
-        $profiler_mock->expects($this->at(0))
+        $profiler_mock->expects($this->at(2))
             ->method('deleteImage')
             ->with($product->main_image)
             ->willReturn(false);
 
-        $profiler_mock->expects($this->at(1))
+        $profiler_mock->expects($this->at(3))
             ->method('deleteImage')
             ->with($product->preview_image)
             ->willReturn(true);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $this->instance(
             ProductRepositoryInterface::class,
@@ -596,18 +677,26 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['deleteImage'])
+            ->onlyMethods(['deleteImage', 'disk', 'directory'])
             ->getMock();
 
-        $profiler_mock->expects($this->at(0))
+        $profiler_mock->expects($this->at(2))
             ->method('deleteImage')
             ->with($product->main_image)
             ->willReturn(true);
 
-        $profiler_mock->expects($this->at(1))
+        $profiler_mock->expects($this->at(3))
             ->method('deleteImage')
             ->with($product->preview_image)
             ->willReturn(false);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $this->instance(
             ProductRepositoryInterface::class,
@@ -746,7 +835,7 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['saveImage', 'deleteImage'])
+            ->onlyMethods(['saveImage', 'deleteImage', 'disk', 'directory'])
             ->getMock();
 
         $profiler_mock->expects($this->once())
@@ -758,6 +847,14 @@ class ProductControllerTest extends TestCase
             ->method('deleteImage')
             ->with($product->main_image)
             ->willReturn(true);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
@@ -811,7 +908,7 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['saveImage', 'deleteImage'])
+            ->onlyMethods(['saveImage', 'deleteImage', 'disk', 'directory'])
             ->getMock();
 
         $profiler_mock->expects($this->once())
@@ -823,6 +920,14 @@ class ProductControllerTest extends TestCase
             ->method('deleteImage')
             ->with('new_image_hash.png')
             ->willReturn(false);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $model_mock = $this->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
@@ -881,7 +986,7 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['saveImage', 'deleteImage'])
+            ->onlyMethods(['saveImage', 'deleteImage', 'disk', 'directory'])
             ->getMock();
 
         $profiler_mock->expects($this->once())
@@ -893,6 +998,14 @@ class ProductControllerTest extends TestCase
             ->method('deleteImage')
             ->with($product['main_image'])
             ->willReturn(false);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
@@ -946,13 +1059,21 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['saveImage'])
+            ->onlyMethods(['saveImage', 'disk', 'directory'])
             ->getMock();
 
         $profiler_mock->expects($this->once())
             ->method('saveImage')
             ->with($data['main_image'])
             ->willReturn(false);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
@@ -1004,7 +1125,7 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['saveImage', 'deleteImage'])
+            ->onlyMethods(['saveImage', 'deleteImage', 'disk', 'directory'])
             ->getMock();
 
         $profiler_mock->expects($this->once())
@@ -1016,6 +1137,14 @@ class ProductControllerTest extends TestCase
             ->method('deleteImage')
             ->with($product->preview_image)
             ->willReturn(true);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
@@ -1069,7 +1198,7 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['saveImage', 'deleteImage'])
+            ->onlyMethods(['saveImage', 'deleteImage', 'disk', 'directory'])
             ->getMock();
 
         $profiler_mock->expects($this->once())
@@ -1081,6 +1210,14 @@ class ProductControllerTest extends TestCase
             ->method('deleteImage')
             ->with('new_image_hash.png')
             ->willReturn(false);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $model_mock = $this->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
@@ -1139,7 +1276,7 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['saveImage', 'deleteImage'])
+            ->onlyMethods(['saveImage', 'deleteImage', 'disk', 'directory'])
             ->getMock();
 
         $profiler_mock->expects($this->once())
@@ -1151,6 +1288,14 @@ class ProductControllerTest extends TestCase
             ->method('deleteImage')
             ->with($product['preview_image'])
             ->willReturn(false);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
@@ -1204,13 +1349,21 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['saveImage'])
+            ->onlyMethods(['saveImage', 'disk', 'directory'])
             ->getMock();
 
         $profiler_mock->expects($this->once())
             ->method('saveImage')
             ->with($data['preview_image'])
             ->willReturn(false);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
@@ -1263,28 +1416,36 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['saveImage', 'deleteImage'])
+            ->onlyMethods(['saveImage', 'deleteImage', 'disk', 'directory'])
             ->getMock();
 
-        $profiler_mock->expects($this->at(0))
+        $profiler_mock->expects($this->at(2))
             ->method('saveImage')
             ->with($data['main_image'])
             ->willReturn('new_image_hash1.png');
 
-        $profiler_mock->expects($this->at(1))
+        $profiler_mock->expects($this->at(3))
             ->method('saveImage')
             ->with($data['preview_image'])
             ->willReturn('new_image_hash2.png');
 
-        $profiler_mock->expects($this->at(2))
+        $profiler_mock->expects($this->at(4))
             ->method('deleteImage')
             ->with($product->main_image)
             ->willReturn(true);
 
-        $profiler_mock->expects($this->at(3))
+        $profiler_mock->expects($this->at(5))
             ->method('deleteImage')
             ->with($product->preview_image)
             ->willReturn(true);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
@@ -1339,28 +1500,36 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['saveImage', 'deleteImage'])
+            ->onlyMethods(['saveImage', 'deleteImage', 'disk', 'directory'])
             ->getMock();
 
-        $profiler_mock->expects($this->at(0))
+        $profiler_mock->expects($this->at(2))
             ->method('saveImage')
             ->with($data['main_image'])
             ->willReturn('new_image_hash1.png');
 
-        $profiler_mock->expects($this->at(1))
+        $profiler_mock->expects($this->at(3))
             ->method('saveImage')
             ->with($data['preview_image'])
             ->willReturn('new_image_hash2.png');
 
-        $profiler_mock->expects($this->at(2))
+        $profiler_mock->expects($this->at(4))
             ->method('deleteImage')
             ->with('new_image_hash1.png')
             ->willReturn(false);
 
-        $profiler_mock->expects($this->at(3))
+        $profiler_mock->expects($this->at(5))
             ->method('deleteImage')
             ->with('new_image_hash2.png')
             ->willReturn(false);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $model_mock = $this->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
@@ -1420,28 +1589,36 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['saveImage', 'deleteImage'])
+            ->onlyMethods(['saveImage', 'deleteImage', 'disk', 'directory'])
             ->getMock();
 
-        $profiler_mock->expects($this->at(0))
+        $profiler_mock->expects($this->at(2))
             ->method('saveImage')
             ->with($data['main_image'])
             ->willReturn('new_image_hash1.png');
 
-        $profiler_mock->expects($this->at(1))
+        $profiler_mock->expects($this->at(3))
             ->method('saveImage')
             ->with($data['preview_image'])
             ->willReturn('new_image_hash2.png');
 
-        $profiler_mock->expects($this->at(2))
+        $profiler_mock->expects($this->at(4))
             ->method('deleteImage')
             ->with($product->main_image)
             ->willReturn(false);
 
-        $profiler_mock->expects($this->at(3))
+        $profiler_mock->expects($this->at(5))
             ->method('deleteImage')
             ->with($product->preview_image)
             ->willReturn(false);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
@@ -1496,15 +1673,15 @@ class ProductControllerTest extends TestCase
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['saveImage', 'deleteImage'])
+            ->onlyMethods(['saveImage', 'deleteImage', 'disk', 'directory'])
             ->getMock();
 
-        $profiler_mock->expects($this->at(0))
+        $profiler_mock->expects($this->at(2))
             ->method('saveImage')
             ->with($data['main_image'])
             ->willReturn('new_image_hash1.png');
 
-        $profiler_mock->expects($this->at(1))
+        $profiler_mock->expects($this->at(3))
             ->method('saveImage')
             ->with($data['preview_image'])
             ->willReturn(false);
@@ -1513,6 +1690,14 @@ class ProductControllerTest extends TestCase
             ->method('deleteImage')
             ->with('new_image_hash1.png')
             ->willReturn(false);
+
+        $profiler_mock->expects($this->once())
+            ->method('disk')
+            ->willReturn($profiler_mock);
+
+        $profiler_mock->expects($this->once())
+            ->method('directory')
+            ->willReturn($profiler_mock);
 
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()

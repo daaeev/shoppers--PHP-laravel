@@ -19,18 +19,21 @@ class ProductController extends Controller
     /**
      * Создание продукта
      *
-     * @param ImageProfilerInterface $imgProfiller
+     * @param ImageProfilerInterface $imgProfiler
      * @param Product $model
      * @param CreateProduct $validate
      * @return mixed
      */
     public function createProduct(
-        ImageProfilerInterface $imgProfiller,
+        ImageProfilerInterface $imgProfiler,
         Product $model,
         CreateProduct $validate
     )
     {
         $data = $validate->validated();
+
+        // Установка хранилища и директории в нём для хранения изображений
+        $imgProfiler->disk('public')->directory('products_images');
 
         // Сохранение файлов изображений
         $main_image_name = null;
@@ -42,7 +45,7 @@ class ProductController extends Controller
         // Если переданно два изображения, использовать метод ImageProfilerInterface::saveTwoImages(),
         // иначе - ImageProfilerInterface::saveImage()
         if ($preview_image_file) {
-            $images = $imgProfiller->saveTwoImages($main_image_file, $preview_image_file);
+            $images = $imgProfiler->saveTwoImages($main_image_file, $preview_image_file);
 
             if (!$images) {
                 return $this->withRedirectAndFlash(
@@ -55,7 +58,7 @@ class ProductController extends Controller
 
             list($main_image_name, $preview_image_name) = $images;
         } else {
-            $main_image_name = $imgProfiller->saveImage($main_image_file);
+            $main_image_name = $imgProfiler->saveImage($main_image_file);
 
             if (!$main_image_name) {
                 return $this->withRedirectAndFlash(
@@ -76,15 +79,15 @@ class ProductController extends Controller
         if (!$model->save()) {
             $delete_fails = ' ';
             if ($preview_image_name) {
-                if (!$imgProfiller->deleteImage($main_image_name)) {
+                if (!$imgProfiler->deleteImage($main_image_name)) {
                     $delete_fails .= '| New main image delete failed (' . $main_image_name . ')';
                 }
 
-                if (!$imgProfiller->deleteImage($preview_image_name)) {
+                if (!$imgProfiler->deleteImage($preview_image_name)) {
                     $delete_fails .= '| New preview image delete failed (' . $preview_image_name . ')';
                 }
             } else {
-                if (!$imgProfiller->deleteImage($main_image_name)) {
+                if (!$imgProfiler->deleteImage($main_image_name)) {
                     $delete_fails .= '| New main image delete failed (' . $main_image_name . ')';
                 }
             }
@@ -109,13 +112,13 @@ class ProductController extends Controller
      * Удаление продукта
      *
      * @param ProductRepositoryInterface $productRepository
-     * @param ImageProfilerInterface $imgProfiller
+     * @param ImageProfilerInterface $imgProfiler
      * @param DeleteProduct $validate
      * @return mixed
      */
     public function deleteProduct(
         ProductRepositoryInterface $productRepository,
-        ImageProfilerInterface     $imgProfiller,
+        ImageProfilerInterface     $imgProfiler,
         DeleteProduct              $validate
     )
     {
@@ -134,11 +137,14 @@ class ProductController extends Controller
 
         $delete_fails = ' ';
 
-        if (!$imgProfiller->deleteImage($main_image_name)) {
+        // Установка хранилища и директории в нём для хранения изображений
+        $imgProfiler->disk('public')->directory('products_images');
+
+        if (!$imgProfiler->deleteImage($main_image_name)) {
             $delete_fails .= '| Main image delete failed (' . $main_image_name . ')';
         }
 
-        if ($preview_image_name && !$imgProfiller->deleteImage($preview_image_name)) {
+        if ($preview_image_name && !$imgProfiler->deleteImage($preview_image_name)) {
             $delete_fails .= '| Preview image delete failed (' . $preview_image_name . ')';
         }
 
@@ -169,6 +175,9 @@ class ProductController extends Controller
 
         $old_main_image = $model->main_image;
         $old_preview_image = $model->preview_image;
+
+        // Установка хранилища и директории в нём для хранения изображений
+        $imgProfiler->disk('public')->directory('products_images');
 
         // Создание новых изображений, если переданны, и занесение новых имен в $data
         if (isset($data['main_image'])) {

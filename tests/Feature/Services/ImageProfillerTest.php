@@ -13,11 +13,16 @@ class ImageProfillerTest extends TestCase
 {
     protected ImageProfilerInterface $profiler;
 
+    protected string $imager_dir = 'products_images';
+    protected string $disk = 'public';
+
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->profiler = app(ImageProfiler::class);
+        $this->profiler = (app(ImageProfiler::class))
+            ->disk($this->disk)
+            ->directory($this->imager_dir);
     }
 
     public function testSaveImageSuccess()
@@ -32,12 +37,12 @@ class ImageProfillerTest extends TestCase
             true
         );
 
-        Storage::fake('public');
+        Storage::fake($this->disk);
 
         $image_name = $this->profiler->saveImage($image);
 
         $this->assertNotFalse($image_name);
-        Storage::disk('public')->assertExists($this->profiler->image_store_dir . '/' . $image_name);
+        Storage::disk($this->disk)->assertExists($this->imager_dir . '/' . $image_name);
     }
 
     public function testSaveImageFailed()
@@ -71,20 +76,20 @@ class ImageProfillerTest extends TestCase
             true
         );
 
-        Storage::fake('public');
+        Storage::fake($this->disk);
 
         $image_name = $this->profiler->saveImage($image);
-        Storage::disk('public')->assertExists($this->profiler->image_store_dir . '/' . $image_name);
+        Storage::disk($this->disk)->assertExists($this->imager_dir . '/' . $image_name);
 
         $result = $this->profiler->deleteImage($image_name);
 
         $this->assertTrue($result);
-        Storage::disk('public')->assertMissing($this->profiler->image_store_dir . '/' . $image_name);
+        Storage::disk($this->disk)->assertMissing($this->imager_dir . '/' . $image_name);
     }
 
     public function testDeleteImageFailed()
     {
-        Storage::fake('public');
+        Storage::fake($this->disk);
         $result_wit_empty = $this->profiler->deleteImage('');
         $result_with_undefined_file = $this->profiler->deleteImage('undefined_file.error');
 
@@ -104,14 +109,14 @@ class ImageProfillerTest extends TestCase
             true
         );
 
-        Storage::fake('public');
+        Storage::fake($this->disk);
 
         $images = $this->profiler->saveTwoImages($image, $image);
 
         $this->assertIsArray($images);
         $this->assertCount(2, $images);
-        Storage::disk('public')->assertExists($this->profiler->image_store_dir . '/' . $images[0]);
-        Storage::disk('public')->assertExists($this->profiler->image_store_dir . '/' . $images[1]);
+        Storage::disk($this->disk)->assertExists($this->imager_dir . '/' . $images[0]);
+        Storage::disk($this->disk)->assertExists($this->imager_dir . '/' . $images[1]);
     }
 
     public function testSaveTwoImagesOneFailed()
@@ -139,7 +144,7 @@ class ImageProfillerTest extends TestCase
             true
         );
 
-        Storage::fake('public');
+        Storage::fake($this->disk);
 
         $result_first_failed = $this->profiler->saveTwoImages($file_mock, $image);
         $result_second_failed = $this->profiler->saveTwoImages($image, $file_mock);

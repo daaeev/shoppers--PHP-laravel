@@ -33,4 +33,21 @@ interface ImageProfilerInterface
      * @return bool
      */
     public function deleteImage(string $image_name): bool;
+
+    /**
+     * Метод устанавливает хранилище для сохраняемого изображения в свойство объекта.
+     *
+     * @param string $disk название хранилища
+     * @return self
+     */
+    public function disk(string $disk): self;
+
+    /**
+     * Метод устанавливает директорию относительно директории хранилища,
+     * в которую будет сохранено изображение, в свойство объекта.
+     *
+     * @param string $dir директория относительно директории хранилища
+     * @return self
+     */
+    public function directory(string $dir): self;
 }
