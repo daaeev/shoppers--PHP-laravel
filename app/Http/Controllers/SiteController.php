@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Services\Interfaces\FilterProcessingInterface;
 use App\Services\Interfaces\ProductRepositoryInterface;
+use App\Services\Interfaces\TeammatesRepositoryInterface;
 use App\Services\Interfaces\UserRepositoryInterface;
 use App\Services\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\Collection;
@@ -104,13 +105,16 @@ class SiteController extends Controller
     }
 
     /**
-     * Рендер страницы о нас
+     * Рендер страницы 'О нас'
      *
+     * @param TeammatesRepositoryInterface $teammatesRepository
      * @return mixed
      */
-    public function about()
+    public function about(TeammatesRepositoryInterface $teammatesRepository)
     {
-        return view('about');
+        $teammates = $teammatesRepository->getAll();
+
+        return view('about', compact('teammates'));
     }
 
     /**

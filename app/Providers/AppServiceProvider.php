@@ -12,12 +12,14 @@ use App\Services\Interfaces\FilterProcessingInterface;
 use App\Services\Interfaces\ImageProfilerInterface;
 use App\Services\Interfaces\ProductRepositoryInterface;
 use App\Services\Interfaces\SizeRepositoryInterface;
+use App\Services\Interfaces\TeammatesRepositoryInterface;
 use App\Services\Interfaces\UserRepositoryInterface;
 use App\Services\Repositories\CategoryRepository;
 use App\Services\Repositories\ColorRepository;
 use App\Services\Repositories\CouponsRepository;
 use App\Services\Repositories\ProductRepository;
 use App\Services\Repositories\SizeRepository;
+use App\Services\Repositories\TeammatesRepository;
 use App\Services\Repositories\UserRepository;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
@@ -34,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
         SizeRepositoryInterface::class => SizeRepository::class,
         ColorRepositoryInterface::class => ColorRepository::class,
         CouponsRepositoryInterface::class => CouponsRepository::class,
+        TeammatesRepositoryInterface::class => TeammatesRepository::class,
 
         // Services
         ImageProfilerInterface::class => ImageProfiler::class,
