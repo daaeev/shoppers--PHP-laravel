@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditFormTeammate;
 use App\Http\Requests\ProductEditForm;
 use App\Models\Product;
 use App\Services\Interfaces\CategoryRepositoryInterface;
@@ -9,6 +10,7 @@ use App\Services\Interfaces\ColorRepositoryInterface;
 use App\Services\Interfaces\CouponsRepositoryInterface;
 use App\Services\Interfaces\ProductRepositoryInterface;
 use App\Services\Interfaces\SizeRepositoryInterface;
+use App\Services\Interfaces\TeammatesRepositoryInterface;
 use App\Services\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use ViewComponents\ViewComponents\Input\InputSource;
@@ -151,5 +153,44 @@ class AdminController extends Controller
         $grid = $couponRepository->getAllUsingGrid($input);
 
         return view('admin.coupons', compact('grid'));
+    }
+
+    /**
+     * Метод отвечает за рендер страницы 'Team' админ панели
+     *
+     * @param TeammatesRepositoryInterface $teammatesRepository
+     * @return mixed
+     */
+    public function teamList(TeammatesRepositoryInterface $teammatesRepository)
+    {
+        $input = new InputSource($this->request->query());
+        $grid = $teammatesRepository->getAllUsingGrid($input);
+
+        return view('admin.team', compact('grid'));
+    }
+
+    /**
+     * Метод отвечает за рендер страницы с формой создания работника
+     *
+     * @return mixed
+     */
+    public function teamCreateForm()
+    {
+        return view('admin.team_create_form');
+    }
+
+    /**
+     * Метод отвечает за рендер страницы с формой редактирования работника
+     *
+     * @return mixed
+     */
+    public function teamEditForm(
+        TeammatesRepositoryInterface $teammatesRepository,
+        EditFormTeammate $validate
+    )
+    {
+        $model = $teammatesRepository->getFirstOrNull($validate->validated('id'));
+
+        return view('admin.team_edit_form', compact('model'));
     }
 }

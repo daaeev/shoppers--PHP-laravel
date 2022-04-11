@@ -25,6 +25,7 @@
             <a class="btn btn-primary mx-3" href="{{route('admin.categories')}}">Categories</a>
             <a class="btn btn-primary mx-3" href="{{route('admin.sizes')}}">Sizes</a>
             <a class="btn btn-primary mx-3" href="{{route('admin.colors')}}">Colors</a>
+            <a class="btn btn-primary mx-3" href="{{route('admin.team')}}">Team</a>
         </div>
     </nav>
 </header>

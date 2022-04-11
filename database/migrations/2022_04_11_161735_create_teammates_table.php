@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('teammates', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name', 30)->unique();
-            $table->string('position');
+            $table->string('full_name', 30);
+            $table->string('position', 30);
             $table->string('description');
             $table->string('image');
         });

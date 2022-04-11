@@ -56,8 +56,8 @@
                         <div class="block-38 text-center">
                           <div class="block-38-img">
                             <div class="block-38-header">
-                              <img src="{{asset('storage/teammates_images' . $teammate->image)}}" alt="Image placeholder" class="mb-4">
-                              <h3 class="block-38-heading h4">{{$teammate->name}}</h3>
+                              <img src="{{asset('storage/teammates_images/' . $teammate->image)}}" alt="Image placeholder" class="mb-4">
+                              <h3 class="block-38-heading h4">{{$teammate->full_name}}</h3>
                               <p class="block-38-subheading">{{$teammate->position}}</p>
                             </div>
                             <div class="block-38-body">

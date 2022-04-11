@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\CouponController;
 use App\Http\Controllers\ajax\CouponController as AjaxCouponController;
+use App\Http\Controllers\admin\TeammateController;
 
 
 Route::get('/', [SiteController::class, 'index'])->name('home');
@@ -54,6 +55,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/size/create', [SizeController::class, 'createSize'])->name('admin.size.create');
     Route::post('/size/delete', [SizeController::class, 'deleteSize'])->name('admin.size.delete');
 
+    Route::post('/team/create', [TeammateController::class, 'createTeammate'])->name('admin.team.create');
+    Route::post('/team/delete', [TeammateController::class, 'deleteTeammate'])->name('admin.team.delete');
+    Route::post('/team/edit', [TeammateController::class, 'editTeammate'])->name('admin.team.edit');
+
     // !!!CRUD ROUTES!!!
 
     Route::get('/users', [AdminController::class, 'usersList'])->name('admin.users');
@@ -64,6 +69,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/categories', [AdminController::class, 'categoriesList'])->name('admin.categories');
     Route::get('/colors', [AdminController::class, 'colorsList'])->name('admin.colors');
     Route::get('/sizes', [AdminController::class, 'sizesList'])->name('admin.sizes');
+    Route::get('/team', [AdminController::class, 'teamList'])->name('admin.team');
+    Route::get('/team/create/form', [AdminController::class, 'teamCreateForm'])->name('admin.team.create.form');
+    Route::get('/team/edit/form', [AdminController::class, 'teamEditForm'])->name('admin.team.edit.form');
 });
 
 // !!!ADMIN ROUTES!!!
