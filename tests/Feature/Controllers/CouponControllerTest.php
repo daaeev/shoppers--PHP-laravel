@@ -28,47 +28,72 @@ class CouponControllerTest extends TestCase
     {
         $data = ['percent' => 25, 'token' => Str::random()];
 
-        $this->assertDatabaseMissing(Coupon::class, $data);
-
-        $response = $this->actingAs($this->user_admin)
-            ->post(route('admin.coupon.create'), $data)
-            ->assertRedirect(route('admin.coupons'));
-
-        $this->assertDatabaseHas(Coupon::class, $data);
-
-        $response->assertSessionDoesntHaveErrors();
-        $response->assertSessionHas('status_success');
-    }
-
-    public function testCreateFailedModelSave()
-    {
         $model_mock = $this->getMockBuilder(Coupon::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['save'])
+            ->onlyMethods(['save', 'setRawAttributes'])
             ->getMock();
 
         $model_mock->expects($this->once())
             ->method('save')
-            ->willReturn(false);
+            ->willReturn(true);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->with($data);
 
         $this->instance(
             Coupon::class,
             $model_mock
         );
 
+        $response = $this->actingAs($this->user_admin)
+            ->post(route('admin.coupon.create'), $data)
+            ->assertRedirect(route('admin.coupons'));
+
+        $response->assertSessionHas('status_success');
+    }
+
+    public function testCreateFailedModelSave()
+    {
         $data = ['percent' => 25, 'token' => Str::random()];
+
+        $model_mock = $this->getMockBuilder(Coupon::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save', 'setRawAttributes'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('save')
+            ->willReturn(false);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->with($data);
+
+        $this->instance(
+            Coupon::class,
+            $model_mock
+        );
 
         $response = $this->actingAs($this->user_admin)
             ->post(route('admin.coupon.create'), $data)
             ->assertRedirect(route('admin.coupons'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
     }
 
     public function testDeleteSuccess()
     {
         $coupon = Coupon::factory()->createOne();
+
+        $model_mock = $this->getMockBuilder(Coupon::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['delete'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('delete')
+            ->willReturn(true);
 
         $rep_mock = $this->getMockBuilder(CouponsRepository::class)
             ->disableOriginalConstructor()
@@ -78,7 +103,7 @@ class CouponControllerTest extends TestCase
         $rep_mock->expects($this->once())
             ->method('getFirstOrNull')
             ->with($coupon->id)
-            ->willReturn($coupon);
+            ->willReturn($model_mock);
 
         $this->instance(
             CouponsRepositoryInterface::class,
@@ -91,9 +116,6 @@ class CouponControllerTest extends TestCase
             ->post(route('admin.coupon.delete'), $data)
             ->assertRedirect(route('admin.coupons'));
 
-        $this->assertDatabaseMissing(Coupon::class, $coupon->attributesToArray());
-
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_success');
     }
 
@@ -131,7 +153,6 @@ class CouponControllerTest extends TestCase
             ->post(route('admin.coupon.delete'), $data)
             ->assertRedirect(route('admin.coupons'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
     }
 }

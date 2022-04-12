@@ -4,6 +4,7 @@ namespace Tests\Feature\Requests;
 
 use App\Http\Requests\CreateColor;
 use App\Models\Color;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
@@ -22,6 +23,24 @@ class CreateColorTest extends TestCase
         Route::post($this->route, function (CreateColor $validate) {
             return true;
         });
+
+        $this->user_admin = User::factory()->createOne(['status' => User::$status_admin]);
+    }
+
+    public function testIfNotAuth()
+    {
+        $response = $this->post($this->route)->assertForbidden();
+
+        $response->assertSessionHasNoErrors();
+    }
+
+    public function testIfUserNotAdmin()
+    {
+        $user = User::factory()->createOne();
+
+        $response = $this->actingAs($user)->post($this->route)->assertForbidden();
+
+        $response->assertSessionHasNoErrors();
     }
 
     public function testSuccessData()
@@ -29,7 +48,7 @@ class CreateColorTest extends TestCase
         $name = Str::random();
         $hex = '#000000';
 
-        $response = $this->post($this->route, [
+        $response = $this->actingAs($this->user_admin)->post($this->route, [
             'name' => $name,
             'hex' => $hex,
         ])->assertOk();
@@ -42,7 +61,7 @@ class CreateColorTest extends TestCase
         $data = $this->failedData();
 
         foreach ($data as list($name, $hex)) {
-            $response = $this->post($this->route, [
+            $response = $this->actingAs($this->user_admin)->post($this->route, [
                 'name' => $name,
                 'hex' => $hex,
             ])->assertRedirect(route('home'));

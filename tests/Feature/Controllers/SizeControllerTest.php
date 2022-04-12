@@ -25,47 +25,72 @@ class SizeControllerTest extends TestCase
     {
         $data = ['name' => Str::random()];
 
-        $this->assertDatabaseMissing(Size::class, $data);
-
-        $response = $this->actingAs($this->user_admin)
-            ->post(route('admin.size.create'), $data)
-            ->assertRedirect(route('admin.sizes'));
-
-        $this->assertDatabaseHas(Size::class, $data);
-
-        $response->assertSessionDoesntHaveErrors();
-        $response->assertSessionHas('status_success');
-    }
-
-    public function testCreateFailedModelSave()
-    {
         $model_mock = $this->getMockBuilder(Size::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['save'])
+            ->onlyMethods(['save', 'setRawAttributes'])
             ->getMock();
 
         $model_mock->expects($this->once())
             ->method('save')
-            ->willReturn(false);
+            ->willReturn(true);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->with($data);
 
         $this->instance(
             Size::class,
             $model_mock
         );
 
+        $response = $this->actingAs($this->user_admin)
+            ->post(route('admin.size.create'), $data)
+            ->assertRedirect(route('admin.sizes'));
+
+        $response->assertSessionHas('status_success');
+    }
+
+    public function testCreateFailedModelSave()
+    {
         $data = ['name' => Str::random()];
+
+        $model_mock = $this->getMockBuilder(Size::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save', 'setRawAttributes'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('save')
+            ->willReturn(false);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->with($data);
+
+        $this->instance(
+            Size::class,
+            $model_mock
+        );
 
         $response = $this->actingAs($this->user_admin)
             ->post(route('admin.size.create'), $data)
             ->assertRedirect(route('admin.sizes'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
     }
 
     public function testDeleteSuccess()
     {
         $size = Size::factory()->createOne();
+
+        $model_mock = $this->getMockBuilder(Size::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['delete'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('delete')
+            ->willReturn(true);
 
         $rep_mock = $this->getMockBuilder(SizeRepository::class)
             ->disableOriginalConstructor()
@@ -75,7 +100,7 @@ class SizeControllerTest extends TestCase
         $rep_mock->expects($this->once())
             ->method('getFirstOrNull')
             ->with($size->id)
-            ->willReturn($size);
+            ->willReturn($model_mock);
 
         $this->instance(
             SizeRepositoryInterface::class,
@@ -88,9 +113,6 @@ class SizeControllerTest extends TestCase
             ->post(route('admin.size.delete'), $data)
             ->assertRedirect(route('admin.sizes'));
 
-        $this->assertDatabaseMissing(Size::class, $size->attributesToArray());
-
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_success');
     }
 
@@ -128,7 +150,6 @@ class SizeControllerTest extends TestCase
             ->post(route('admin.size.delete'), $data)
             ->assertRedirect(route('admin.sizes'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
     }
 }

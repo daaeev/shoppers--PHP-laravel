@@ -21,6 +21,24 @@ class SetRoleTest extends TestCase
         Route::post($this->route, function (UserSetRole $validation) {
             return true;
         });
+
+        $this->user_admin = User::factory()->createOne(['status' => User::$status_admin]);
+    }
+
+    public function testIfNotAuth()
+    {
+        $response = $this->post($this->route)->assertForbidden();
+
+        $response->assertSessionHasNoErrors();
+    }
+
+    public function testIfUserNotAdmin()
+    {
+        $user = User::factory()->createOne();
+
+        $response = $this->actingAs($user)->post($this->route)->assertForbidden();
+
+        $response->assertSessionHasNoErrors();
     }
 
     public function testPostDataValidationFailed()
@@ -28,7 +46,7 @@ class SetRoleTest extends TestCase
         $data = $this->postFailedDataProvider();
 
         foreach ($data as list($id, $role)) {
-            $response = $this->post($this->route, [
+            $response = $this->actingAs($this->user_admin)->post($this->route, [
                 'id' => $id,
                 'role' => $role,
             ])
@@ -60,7 +78,7 @@ class SetRoleTest extends TestCase
         $id = User::factory()->createOne()->id;
         $role = User::$status_banned;
 
-        $response = $this->post($this->route, [
+        $response = $this->actingAs($this->user_admin)->post($this->route, [
             'id' => $id,
             'role' => $role,
         ])->assertOk();

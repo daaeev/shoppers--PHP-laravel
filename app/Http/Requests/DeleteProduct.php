@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Services\Interfaces\UserRepositoryInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DeleteProduct extends FormRequest
@@ -11,9 +12,13 @@ class DeleteProduct extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(UserRepositoryInterface $userRepository)
     {
-        return true;
+        if ($userRepository->getAuthenticated()?->isAdmin()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

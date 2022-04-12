@@ -6,6 +6,7 @@ use App\Http\Requests\CreateProduct;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\Size;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,24 @@ class CreateProductTest extends TestCase
         $this->cat = Category::factory()->createOne()->id;
         $this->col = Color::factory()->createOne()->id;
         $this->size = Size::factory()->createOne()->id;
+
+        $this->user_admin = User::factory()->createOne(['status' => User::$status_admin]);
+    }
+
+    public function testIfNotAuth()
+    {
+        $response = $this->post($this->route)->assertForbidden();
+
+        $response->assertSessionHasNoErrors();
+    }
+
+    public function testIfUserNotAdmin()
+    {
+        $user = User::factory()->createOne();
+
+        $response = $this->actingAs($user)->post($this->route)->assertForbidden();
+
+        $response->assertSessionHasNoErrors();
     }
 
     public function testSuccessData()
@@ -52,7 +71,7 @@ class CreateProductTest extends TestCase
         $data = $this->getSuccessData();
 
         foreach ($data as $req_data) {
-            $response = $this->post($this->route, $req_data)
+            $response = $this->actingAs($this->user_admin)->post($this->route, $req_data)
                 ->assertOk();
 
             $response->assertSessionHasNoErrors();
@@ -64,7 +83,7 @@ class CreateProductTest extends TestCase
         $data = $this->getFailedData();
 
         foreach ($data as $req_data) {
-            $response = $this->post($this->route, $req_data)
+            $response = $this->actingAs($this->user_admin)->post($this->route, $req_data)
                 ->assertRedirect();
 
             $response->assertSessionHasErrors();

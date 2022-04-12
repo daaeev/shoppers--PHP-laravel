@@ -25,35 +25,52 @@ class CategoryControllerTest extends TestCase
     {
         $data = ['name' => Str::random()];
 
-        $this->assertDatabaseMissing(Category::class, $data);
-
-        $response = $this->actingAs($this->user_admin)
-            ->post(route('admin.category.create'), $data)
-            ->assertRedirect(route('admin.categories'));
-
-        $this->assertDatabaseHas(Category::class, $data);
-
-        $response->assertSessionDoesntHaveErrors();
-        $response->assertSessionHas('status_success');
-    }
-
-    public function testCreateFailedModelSave()
-    {
         $model_mock = $this->getMockBuilder(Category::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['save'])
+            ->onlyMethods(['save', 'setRawAttributes'])
             ->getMock();
 
         $model_mock->expects($this->once())
             ->method('save')
-            ->willReturn(false);
+            ->willReturn(true);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->with($data);
 
         $this->instance(
             Category::class,
             $model_mock
         );
 
+        $response = $this->actingAs($this->user_admin)
+            ->post(route('admin.category.create'), $data)
+            ->assertRedirect(route('admin.categories'));
+
+        $response->assertSessionHas('status_success');
+    }
+
+    public function testCreateFailedModelSave()
+    {
         $data = ['name' => Str::random()];
+
+        $model_mock = $this->getMockBuilder(Category::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save', 'setRawAttributes'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('save')
+            ->willReturn(false);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->with($data);
+
+        $this->instance(
+            Category::class,
+            $model_mock
+        );
 
         $response = $this->actingAs($this->user_admin)
             ->post(route('admin.category.create'), $data)
@@ -67,6 +84,15 @@ class CategoryControllerTest extends TestCase
     {
         $cat = Category::factory()->createOne();
 
+        $model_mock = $this->getMockBuilder(Category::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['delete'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('delete')
+            ->willReturn(true);
+
         $rep_mock = $this->getMockBuilder(CategoryRepository::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['getFirstOrNull'])
@@ -75,7 +101,7 @@ class CategoryControllerTest extends TestCase
         $rep_mock->expects($this->once())
             ->method('getFirstOrNull')
             ->with($cat->id)
-            ->willReturn($cat);
+            ->willReturn($model_mock);
 
         $this->instance(
             CategoryRepositoryInterface::class,
@@ -88,9 +114,6 @@ class CategoryControllerTest extends TestCase
             ->post(route('admin.category.delete'), $data)
             ->assertRedirect(route('admin.categories'));
 
-        $this->assertDatabaseMissing(Category::class, $cat->attributesToArray());
-
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_success');
     }
 

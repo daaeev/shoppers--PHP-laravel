@@ -4,6 +4,7 @@ namespace Tests\Feature\Requests;
 
 use App\Http\Requests\CreateCoupon;
 use App\Models\Coupon;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
@@ -22,11 +23,29 @@ class CreateCouponTest extends TestCase
         Route::post($this->route, function (CreateCoupon $validate) {
             return true;
         });
+
+        $this->user_admin = User::factory()->createOne(['status' => User::$status_admin]);
+    }
+
+    public function testIfNotAuth()
+    {
+        $response = $this->post($this->route)->assertForbidden();
+
+        $response->assertSessionHasNoErrors();
+    }
+
+    public function testIfUserNotAdmin()
+    {
+        $user = User::factory()->createOne();
+
+        $response = $this->actingAs($user)->post($this->route)->assertForbidden();
+
+        $response->assertSessionHasNoErrors();
     }
 
     public function testSuccessData()
     {
-        $response = $this->post($this->route, [
+        $response = $this->actingAs($this->user_admin)->post($this->route, [
             'percent' => 70,
             'token' => Str::random()
         ])->assertOk();
@@ -39,7 +58,7 @@ class CreateCouponTest extends TestCase
         $data = $this->getFailedData();
 
         foreach ($data as $attributes) {
-            $response = $this->post($this->route, $attributes)->assertRedirect(route('home'));
+            $response = $this->actingAs($this->user_admin)->post($this->route, $attributes)->assertRedirect(route('home'));
 
             $response->assertSessionHasErrors();
         }

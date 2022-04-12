@@ -88,15 +88,41 @@ class ProductControllerTest extends TestCase
             $profiler_mock
         );
 
+        $model_mock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save', 'setRawAttributes'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('save')
+            ->willReturn(true);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->with([
+                'name' => 'name',
+                'subname' => 'sub',
+                'description' => 'descr',
+                'category_id' => $category->id,
+                'color_id' => $color->id,
+                'size_id' => $size->id, 'currency' => 'UAH',
+                'price' => '120',
+                'discount_price' => null,
+                'count' => 2,
+                'main_image' => 'image_hash.png',
+                'preview_image' => null
+            ]);
+
+        $this->instance(
+            Product::class,
+            $model_mock
+        );
+
         $response = $this->actingAs($this->user_admin)
             ->post(route('admin.product.create'), $request_data)
             ->assertRedirect(route('admin.products'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_success');
-
-        $request_data['main_image'] = 'image_hash.png';
-        $this->assertDatabaseHas(Product::class, $request_data);
     }
 
     public function testCreateProductSuccessTwoImages()
@@ -142,16 +168,41 @@ class ProductControllerTest extends TestCase
             $profiler_mock
         );
 
+        $model_mock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save', 'setRawAttributes'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('save')
+            ->willReturn(true);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->with([
+                'name' => 'name',
+                'subname' => 'sub',
+                'description' => 'descr',
+                'category_id' => $category->id,
+                'color_id' => $color->id,
+                'size_id' => $size->id, 'currency' => 'UAH',
+                'price' => '120',
+                'discount_price' => null,
+                'count' => 2,
+                'main_image' => 'image1_hash.png',
+                'preview_image' => 'image2_hash.png',
+            ]);
+
+        $this->instance(
+            Product::class,
+            $model_mock
+        );
+
         $response = $this->actingAs($this->user_admin)
             ->post(route('admin.product.create'), $request_data)
             ->assertRedirect(route('admin.products'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_success');
-
-        $request_data['main_image'] = 'image1_hash.png';
-        $request_data['preview_image'] = 'image2_hash.png';
-        $this->assertDatabaseHas(Product::class, $request_data);
     }
 
     public function testCreateProductTwoImagesFailedImageSave()
@@ -201,7 +252,6 @@ class ProductControllerTest extends TestCase
             ->post(route('admin.product.create'), $request_data)
             ->assertRedirect(route('admin.product.create.form'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
     }
 
@@ -251,7 +301,6 @@ class ProductControllerTest extends TestCase
             ->post(route('admin.product.create'), $request_data)
             ->assertRedirect(route('admin.product.create.form'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
     }
 
@@ -303,12 +352,28 @@ class ProductControllerTest extends TestCase
 
         $model_mock = $this->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['save'])
+            ->onlyMethods(['save', 'setRawAttributes'])
             ->getMock();
 
         $model_mock->expects($this->once())
             ->method('save')
             ->willReturn(false);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->with([
+                'name' => 'name',
+                'subname' => 'sub',
+                'description' => 'descr',
+                'category_id' => $category->id,
+                'color_id' => $color->id,
+                'size_id' => $size->id, 'currency' => 'UAH',
+                'price' => '120',
+                'discount_price' => null,
+                'count' => 2,
+                'main_image' => 'image_hash.png',
+                'preview_image' => null
+            ]);
 
         $this->instance(
             Product::class,
@@ -319,11 +384,7 @@ class ProductControllerTest extends TestCase
             ->post(route('admin.product.create'), $request_data)
             ->assertRedirect(route('admin.product.create.form'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
-
-        $request_data['main_image'] = 'image_hash.png';
-        $this->assertDatabaseMissing(Product::class, $request_data);
     }
 
     public function testCreateProductFailedModelSave()
@@ -381,12 +442,28 @@ class ProductControllerTest extends TestCase
 
         $model_mock = $this->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['save'])
+            ->onlyMethods(['save', 'setRawAttributes'])
             ->getMock();
 
         $model_mock->expects($this->once())
             ->method('save')
             ->willReturn(false);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->with([
+                'name' => 'name',
+                'subname' => 'sub',
+                'description' => 'descr',
+                'category_id' => $category->id,
+                'color_id' => $color->id,
+                'size_id' => $size->id, 'currency' => 'UAH',
+                'price' => '120',
+                'discount_price' => null,
+                'count' => 2,
+                'main_image' => 'image1_hash.png',
+                'preview_image' => 'image2_hash.png',
+            ]);
 
         $this->instance(
             Product::class,
@@ -397,17 +474,24 @@ class ProductControllerTest extends TestCase
             ->post(route('admin.product.create'), $request_data)
             ->assertRedirect(route('admin.product.create.form'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
-
-        $request_data['main_image'] = 'image1_hash.png';
-        $request_data['preview_image'] = 'image2_hash.png';
-        $this->assertDatabaseMissing(Product::class, $request_data);
     }
 
     public function testDeleteProductSuccessWithOneModelImage()
     {
         $product = Product::factory()->createOne(['main_image' => 'image.png']);
+
+        $model_mock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['delete'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('delete')
+            ->willReturn(true);
+
+        $model_mock->id = $product->id;
+        $model_mock->main_image = $product->main_image;
 
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
@@ -417,7 +501,7 @@ class ProductControllerTest extends TestCase
         $rep_mock->expects($this->once())
             ->method('getFirstOrNull')
             ->with($product->id)
-            ->willReturn($product);
+            ->willReturn($model_mock);
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
@@ -451,10 +535,7 @@ class ProductControllerTest extends TestCase
             ->post(route('admin.product.delete'), ['id' => $product->id])
             ->assertRedirect(route('admin.products'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_success');
-
-        $this->assertDatabaseMissing(Product::class, $product->attributesToArray());
     }
 
     public function testDeleteProductModelDeleteFailed()
@@ -469,6 +550,8 @@ class ProductControllerTest extends TestCase
         $model_mock->expects($this->once())
             ->method('delete')
             ->willReturn(false);
+
+        $model_mock->id = $product->id;
 
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
@@ -489,16 +572,25 @@ class ProductControllerTest extends TestCase
             ->post(route('admin.product.delete'), ['id' => $product->id])
             ->assertRedirect(route('admin.products'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
-
-        $this->assertDatabaseHas(Product::class, $product->attributesToArray());
     }
 
     public function testDeleteProductWithOneImageImageDeleteFailed()
     {
         $product = Product::factory()->createOne(['main_image' => 'image.png']);
 
+        $model_mock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['delete'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('delete')
+            ->willReturn(true);
+
+        $model_mock->id = $product->id;
+        $model_mock->main_image = $product->main_image;
+
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['getFirstOrNull'])
@@ -507,7 +599,7 @@ class ProductControllerTest extends TestCase
         $rep_mock->expects($this->once())
             ->method('getFirstOrNull')
             ->with($product->id)
-            ->willReturn($product);
+            ->willReturn($model_mock);
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
@@ -541,16 +633,26 @@ class ProductControllerTest extends TestCase
             ->post(route('admin.product.delete'), ['id' => $product->id])
             ->assertRedirect(route('admin.products'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_warning');
-
-        $this->assertDatabaseMissing(Product::class, $product->attributesToArray());
     }
 
     public function testDeleteProductSuccessWithTwoModelImage()
     {
         $product = Product::factory()->createOne(['main_image' => 'image1.png', 'preview_image' => 'image2.png']);
 
+        $model_mock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['delete'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('delete')
+            ->willReturn(true);
+
+        $model_mock->id = $product->id;
+        $model_mock->main_image = $product->main_image;
+        $model_mock->preview_image = $product->preview_image;
+
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['getFirstOrNull'])
@@ -559,7 +661,7 @@ class ProductControllerTest extends TestCase
         $rep_mock->expects($this->once())
             ->method('getFirstOrNull')
             ->with($product->id)
-            ->willReturn($product);
+            ->willReturn($model_mock);
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
@@ -598,16 +700,26 @@ class ProductControllerTest extends TestCase
             ->post(route('admin.product.delete'), ['id' => $product->id])
             ->assertRedirect(route('admin.products'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_success');
-
-        $this->assertDatabaseMissing(Product::class, $product->attributesToArray());
     }
 
     public function testDeleteProductWithTwoImagesFirstImageDeleteFailed()
     {
         $product = Product::factory()->createOne(['main_image' => 'image.png', 'preview_image' => 'image2.png']);
 
+        $model_mock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['delete'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('delete')
+            ->willReturn(true);
+
+        $model_mock->id = $product->id;
+        $model_mock->main_image = $product->main_image;
+        $model_mock->preview_image = $product->preview_image;
+
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['getFirstOrNull'])
@@ -616,7 +728,7 @@ class ProductControllerTest extends TestCase
         $rep_mock->expects($this->once())
             ->method('getFirstOrNull')
             ->with($product->id)
-            ->willReturn($product);
+            ->willReturn($model_mock);
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
@@ -655,16 +767,26 @@ class ProductControllerTest extends TestCase
             ->post(route('admin.product.delete'), ['id' => $product->id])
             ->assertRedirect(route('admin.products'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_warning');
-
-        $this->assertDatabaseMissing(Product::class, $product->attributesToArray());
     }
 
     public function testDeleteProductWithTwoImagesSecondImageDeleteFailed()
     {
         $product = Product::factory()->createOne(['main_image' => 'image.png', 'preview_image' => 'image2.png']);
 
+        $model_mock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['delete'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('delete')
+            ->willReturn(true);
+
+        $model_mock->id = $product->id;
+        $model_mock->main_image = $product->main_image;
+        $model_mock->preview_image = $product->preview_image;
+
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['getFirstOrNull'])
@@ -673,7 +795,7 @@ class ProductControllerTest extends TestCase
         $rep_mock->expects($this->once())
             ->method('getFirstOrNull')
             ->with($product->id)
-            ->willReturn($product);
+            ->willReturn($model_mock);
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
@@ -712,10 +834,7 @@ class ProductControllerTest extends TestCase
             ->post(route('admin.product.delete'), ['id' => $product->id])
             ->assertRedirect(route('admin.products'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_warning');
-
-        $this->assertDatabaseMissing(Product::class, $product->attributesToArray());
     }
 
     public function testEditProductDataSuccessWithoutEditImages()
@@ -738,6 +857,21 @@ class ProductControllerTest extends TestCase
             'count' => 1,
         ];
 
+        $model_mock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save', 'setRawAttributes'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('save')
+            ->willReturn(true);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->with($data);
+
+        $model_mock->id = $product->id;
+        $model_mock->main_image = $product->main_image;
 
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
@@ -747,7 +881,7 @@ class ProductControllerTest extends TestCase
         $rep_mock->expects($this->once())
             ->method('getFirstOrNull')
             ->with($product->id)
-            ->willReturn($product);
+            ->willReturn($model_mock);
 
         $this->instance(
             ProductRepositoryInterface::class,
@@ -760,10 +894,7 @@ class ProductControllerTest extends TestCase
             ->post(route('admin.product.edit'), $data)
             ->assertRedirect(route('admin.products'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_success');
-
-        $this->assertDatabaseHas(Product::class, $data);
     }
 
     public function testEditDataWithoutEditImagesModelSaveFailed()
@@ -785,12 +916,19 @@ class ProductControllerTest extends TestCase
 
         $model_mock = $this->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['save'])
+            ->onlyMethods(['save', 'setRawAttributes'])
             ->getMock();
 
         $model_mock->expects($this->once())
             ->method('save')
             ->willReturn(false);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->with($data);
+
+        $model_mock->id = $product->id;
+        $model_mock->main_image = $product->main_image;
 
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
@@ -811,7 +949,6 @@ class ProductControllerTest extends TestCase
             ->post(route('admin.product.edit'), $data)
             ->assertRedirect(route('admin.product.edit.form', ['id' => $product->id]));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
     }
 
@@ -832,6 +969,34 @@ class ProductControllerTest extends TestCase
             'count' => 1,
             'main_image' => $this->image,
         ];
+
+        $model_mock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save', 'setRawAttributes'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('save')
+            ->willReturn(true);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->with([
+                'id' => $product->id,
+                'name' => 'edited',
+                'subname' => 'edited',
+                'description' => 'edited',
+                'category_id' => $product->category_id,
+                'color_id' => $product->color_id,
+                'size_id' => $product->size_id,
+                'price' => 125, 'currency' => 'UAH',
+                'discount_price' => 110,
+                'count' => 1,
+                'main_image' => 'new_image_hash.png',
+            ]);
+
+        $model_mock->id = $product->id;
+        $model_mock->main_image = $product->main_image;
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
@@ -864,7 +1029,7 @@ class ProductControllerTest extends TestCase
         $rep_mock->expects($this->once())
             ->method('getFirstOrNull')
             ->with($product->id)
-            ->willReturn($product);
+            ->willReturn($model_mock);
 
         $this->instance(
             ProductRepositoryInterface::class,
@@ -876,16 +1041,11 @@ class ProductControllerTest extends TestCase
             $profiler_mock
         );
 
-        $this->assertDatabaseMissing(Product::class, ['main_image' => 'new_image_hash.png']);
-
         $response = $this->actingAs($this->user_admin)
             ->post(route('admin.product.edit'), $data)
             ->assertRedirect(route('admin.products'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_success');
-
-        $this->assertDatabaseHas(Product::class, ['main_image' => 'new_image_hash.png']);
     }
 
     public function testEditDataWithMainImageNewImageDeleteFailedIfModelSaveFailed()
@@ -905,6 +1065,34 @@ class ProductControllerTest extends TestCase
             'count' => 1,
             'main_image' => $this->image,
         ];
+
+        $model_mock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save', 'setRawAttributes'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('save')
+            ->willReturn(false);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->willReturn([
+                'id' => $product->id,
+                'name' => 'edited',
+                'subname' => 'edited',
+                'description' => 'edited',
+                'category_id' => $product->category_id,
+                'color_id' => $product->color_id,
+                'size_id' => $product->size_id,
+                'price' => 125, 'currency' => 'UAH',
+                'discount_price' => 110,
+                'count' => 1,
+                'main_image' => 'new_image_hash.png',
+            ]);
+
+        $model_mock->id = $product->id;
+        $model_mock->main_image = $product->main_image;
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
@@ -929,15 +1117,6 @@ class ProductControllerTest extends TestCase
             ->method('directory')
             ->willReturn($profiler_mock);
 
-        $model_mock = $this->getMockBuilder(Product::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['save'])
-            ->getMock();
-
-        $model_mock->expects($this->once())
-            ->method('save')
-            ->willReturn(false);
-
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['getFirstOrNull'])
@@ -962,7 +1141,6 @@ class ProductControllerTest extends TestCase
             ->post(route('admin.product.edit'), $data)
             ->assertRedirect(route('admin.product.edit.form', ['id' => $product->id]));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
     }
 
@@ -983,6 +1161,34 @@ class ProductControllerTest extends TestCase
             'count' => 1,
             'main_image' => $this->image,
         ];
+
+        $model_mock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save', 'setRawAttributes'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('save')
+            ->willReturn(true);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->willReturn([
+                'id' => $product->id,
+                'name' => 'edited',
+                'subname' => 'edited',
+                'description' => 'edited',
+                'category_id' => $product->category_id,
+                'color_id' => $product->color_id,
+                'size_id' => $product->size_id,
+                'price' => 125, 'currency' => 'UAH',
+                'discount_price' => 110,
+                'count' => 1,
+                'main_image' => 'new_image_hash.png',
+            ]);
+
+        $model_mock->id = $product->id;
+        $model_mock->main_image = $product->main_image;
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
@@ -1015,7 +1221,7 @@ class ProductControllerTest extends TestCase
         $rep_mock->expects($this->once())
             ->method('getFirstOrNull')
             ->with($product->id)
-            ->willReturn($product);
+            ->willReturn($model_mock);
 
         $this->instance(
             ProductRepositoryInterface::class,
@@ -1027,16 +1233,11 @@ class ProductControllerTest extends TestCase
             $profiler_mock
         );
 
-        $this->assertDatabaseMissing(Product::class, ['main_image' => 'new_image_hash.png']);
-
         $response = $this->actingAs($this->user_admin)
             ->post(route('admin.product.edit'), $data)
             ->assertRedirect(route('admin.products'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_warning');
-
-        $this->assertDatabaseHas(Product::class, ['main_image' => 'new_image_hash.png']);
     }
 
     public function testEditDataWithMainImageNewImageSaveFailed()
@@ -1099,15 +1300,55 @@ class ProductControllerTest extends TestCase
             ->post(route('admin.product.edit'), $data)
             ->assertRedirect(route('admin.product.edit.form', ['id' => $product->id]));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
-
-        $this->assertDatabaseHas(Product::class, ['main_image' => 'image1.png']);
     }
 
     public function testEditDataSuccessWithEditPreviewImage()
     {
         $product = Product::factory()->createOne(['main_image' => 'image1.png', 'preview_image' => 'image2.png']);
+
+        $data = [
+            'id' => $product->id,
+            'name' => 'edited',
+            'subname' => 'edited',
+            'description' => 'edited',
+            'category_id' => $product->category_id,
+            'color_id' => $product->color_id,
+            'size_id' => $product->size_id,
+            'price' => 125, 'currency' => 'UAH',
+            'discount_price' => 110,
+            'count' => 1,
+            'preview_image' => $this->image,
+        ];
+
+        $model_mock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save', 'setRawAttributes'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('save')
+            ->willReturn(true);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->willReturn([
+                'id' => $product->id,
+                'name' => 'edited',
+                'subname' => 'edited',
+                'description' => 'edited',
+                'category_id' => $product->category_id,
+                'color_id' => $product->color_id,
+                'size_id' => $product->size_id,
+                'price' => 125, 'currency' => 'UAH',
+                'discount_price' => 110,
+                'count' => 1,
+                'preview_image' => 'new_image_hash.png',
+            ]);
+
+        $model_mock->id = $product->id;
+        $model_mock->main_image = $product->main_image;
+        $model_mock->preview_image = $product->preview_image;
 
         $data = [
             'id' => $product->id,
@@ -1154,7 +1395,7 @@ class ProductControllerTest extends TestCase
         $rep_mock->expects($this->once())
             ->method('getFirstOrNull')
             ->with($product->id)
-            ->willReturn($product);
+            ->willReturn($model_mock);
 
         $this->instance(
             ProductRepositoryInterface::class,
@@ -1166,16 +1407,11 @@ class ProductControllerTest extends TestCase
             $profiler_mock
         );
 
-        $this->assertDatabaseMissing(Product::class, ['preview_image' => 'new_image_hash.png']);
-
         $response = $this->actingAs($this->user_admin)
             ->post(route('admin.product.edit'), $data)
             ->assertRedirect(route('admin.products'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_success');
-
-        $this->assertDatabaseHas(Product::class, ['preview_image' => 'new_image_hash.png']);
     }
 
     public function testEditDataWithPreviewImageNewImageDeleteFailedIfModelSaveFailed()
@@ -1195,6 +1431,35 @@ class ProductControllerTest extends TestCase
             'count' => 1,
             'preview_image' => $this->image,
         ];
+
+        $model_mock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save', 'setRawAttributes'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('save')
+            ->willReturn(false);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->willReturn([
+                'id' => $product->id,
+                'name' => 'edited',
+                'subname' => 'edited',
+                'description' => 'edited',
+                'category_id' => $product->category_id,
+                'color_id' => $product->color_id,
+                'size_id' => $product->size_id,
+                'price' => 125, 'currency' => 'UAH',
+                'discount_price' => 110,
+                'count' => 1,
+                'preview_image' => 'new_image_hash.png',
+            ]);
+
+        $model_mock->id = $product->id;
+        $model_mock->main_image = $product->main_image;
+        $model_mock->preview_image = $product->preview_image;
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
@@ -1218,15 +1483,6 @@ class ProductControllerTest extends TestCase
         $profiler_mock->expects($this->once())
             ->method('directory')
             ->willReturn($profiler_mock);
-
-        $model_mock = $this->getMockBuilder(Product::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['save'])
-            ->getMock();
-
-        $model_mock->expects($this->once())
-            ->method('save')
-            ->willReturn(false);
 
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
@@ -1252,7 +1508,6 @@ class ProductControllerTest extends TestCase
             ->post(route('admin.product.edit'), $data)
             ->assertRedirect(route('admin.product.edit.form', ['id' => $product->id]));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
     }
 
@@ -1273,6 +1528,35 @@ class ProductControllerTest extends TestCase
             'count' => 1,
             'preview_image' => $this->image,
         ];
+
+        $model_mock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save', 'setRawAttributes'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('save')
+            ->willReturn(true);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->willReturn([
+                'id' => $product->id,
+                'name' => 'edited',
+                'subname' => 'edited',
+                'description' => 'edited',
+                'category_id' => $product->category_id,
+                'color_id' => $product->color_id,
+                'size_id' => $product->size_id,
+                'price' => 125, 'currency' => 'UAH',
+                'discount_price' => 110,
+                'count' => 1,
+                'preview_image' => 'new_image_hash.png',
+            ]);
+
+        $model_mock->id = $product->id;
+        $model_mock->main_image = $product->main_image;
+        $model_mock->preview_image = $product->preview_image;
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
@@ -1305,7 +1589,7 @@ class ProductControllerTest extends TestCase
         $rep_mock->expects($this->once())
             ->method('getFirstOrNull')
             ->with($product->id)
-            ->willReturn($product);
+            ->willReturn($model_mock);
 
         $this->instance(
             ProductRepositoryInterface::class,
@@ -1317,16 +1601,11 @@ class ProductControllerTest extends TestCase
             $profiler_mock
         );
 
-        $this->assertDatabaseMissing(Product::class, ['preview_image' => 'new_image_hash.png']);
-
         $response = $this->actingAs($this->user_admin)
             ->post(route('admin.product.edit'), $data)
             ->assertRedirect(route('admin.products'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_warning');
-
-        $this->assertDatabaseHas(Product::class, ['preview_image' => 'new_image_hash.png']);
     }
 
     public function testEditDataWithPreviewImageNewImageSaveFailed()
@@ -1389,10 +1668,7 @@ class ProductControllerTest extends TestCase
             ->post(route('admin.product.edit'), $data)
             ->assertRedirect(route('admin.product.edit.form', ['id' => $product->id]));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
-
-        $this->assertDatabaseHas(Product::class, ['preview_image' => 'image2.png']);
     }
 
     public function testEditDataSuccessWithEditTwoImages()
@@ -1413,6 +1689,36 @@ class ProductControllerTest extends TestCase
             'main_image' => $this->image,
             'preview_image' => $this->image,
         ];
+
+        $model_mock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save', 'setRawAttributes'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('save')
+            ->willReturn(true);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->willReturn([
+                'id' => $product->id,
+                'name' => 'edited',
+                'subname' => 'edited',
+                'description' => 'edited',
+                'category_id' => $product->category_id,
+                'color_id' => $product->color_id,
+                'size_id' => $product->size_id,
+                'price' => 125, 'currency' => 'UAH',
+                'discount_price' => 110,
+                'count' => 1,
+                'main_image' => 'new_image_hash1.png',
+                'preview_image' => 'new_image_hash2.png',
+            ]);
+
+        $model_mock->id = $product->id;
+        $model_mock->main_image = $product->main_image;
+        $model_mock->preview_image = $product->preview_image;
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
@@ -1455,7 +1761,7 @@ class ProductControllerTest extends TestCase
         $rep_mock->expects($this->once())
             ->method('getFirstOrNull')
             ->with($product->id)
-            ->willReturn($product);
+            ->willReturn($model_mock);
 
         $this->instance(
             ProductRepositoryInterface::class,
@@ -1467,16 +1773,11 @@ class ProductControllerTest extends TestCase
             $profiler_mock
         );
 
-        $this->assertDatabaseMissing(Product::class, ['main_image' => 'new_image_hash1.png', 'preview_image' => 'new_image_hash2.png']);
-
         $response = $this->actingAs($this->user_admin)
             ->post(route('admin.product.edit'), $data)
             ->assertRedirect(route('admin.products'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_success');
-
-        $this->assertDatabaseHas(Product::class, ['main_image' => 'new_image_hash1.png', 'preview_image' => 'new_image_hash2.png']);
     }
 
     public function testEditDataWithTwoImagesNewImagesDeleteFailedIfModelSaveFailed()
@@ -1497,6 +1798,36 @@ class ProductControllerTest extends TestCase
             'main_image' => $this->image,
             'preview_image' => $this->image,
         ];
+
+        $model_mock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save', 'setRawAttributes'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('save')
+            ->willReturn(false);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->willReturn([
+                'id' => $product->id,
+                'name' => 'edited',
+                'subname' => 'edited',
+                'description' => 'edited',
+                'category_id' => $product->category_id,
+                'color_id' => $product->color_id,
+                'size_id' => $product->size_id,
+                'price' => 125, 'currency' => 'UAH',
+                'discount_price' => 110,
+                'count' => 1,
+                'main_image' => 'new_image_hash1.png',
+                'preview_image' => 'new_image_hash2.png',
+            ]);
+
+        $model_mock->id = $product->id;
+        $model_mock->main_image = $product->main_image;
+        $model_mock->preview_image = $product->preview_image;
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
@@ -1531,15 +1862,6 @@ class ProductControllerTest extends TestCase
             ->method('directory')
             ->willReturn($profiler_mock);
 
-        $model_mock = $this->getMockBuilder(Product::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['save'])
-            ->getMock();
-
-        $model_mock->expects($this->once())
-            ->method('save')
-            ->willReturn(false);
-
         $rep_mock = $this->getMockBuilder(ProductRepository::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['getFirstOrNull'])
@@ -1564,7 +1886,6 @@ class ProductControllerTest extends TestCase
             ->post(route('admin.product.edit'), $data)
             ->assertRedirect(route('admin.product.edit.form', ['id' => $product->id]));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
     }
 
@@ -1586,6 +1907,36 @@ class ProductControllerTest extends TestCase
             'main_image' => $this->image,
             'preview_image' => $this->image,
         ];
+
+        $model_mock = $this->getMockBuilder(Product::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save', 'setRawAttributes'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('save')
+            ->willReturn(true);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->willReturn([
+                'id' => $product->id,
+                'name' => 'edited',
+                'subname' => 'edited',
+                'description' => 'edited',
+                'category_id' => $product->category_id,
+                'color_id' => $product->color_id,
+                'size_id' => $product->size_id,
+                'price' => 125, 'currency' => 'UAH',
+                'discount_price' => 110,
+                'count' => 1,
+                'main_image' => 'new_image_hash1.png',
+                'preview_image' => 'new_image_hash2.png',
+            ]);
+
+        $model_mock->id = $product->id;
+        $model_mock->main_image = $product->main_image;
+        $model_mock->preview_image = $product->preview_image;
 
         $profiler_mock = $this->getMockBuilder(ImageProfiler::class)
             ->disableOriginalConstructor()
@@ -1628,7 +1979,7 @@ class ProductControllerTest extends TestCase
         $rep_mock->expects($this->once())
             ->method('getFirstOrNull')
             ->with($product->id)
-            ->willReturn($product);
+            ->willReturn($model_mock);
 
         $this->instance(
             ProductRepositoryInterface::class,
@@ -1640,16 +1991,11 @@ class ProductControllerTest extends TestCase
             $profiler_mock
         );
 
-        $this->assertDatabaseMissing(Product::class, ['main_image' => 'new_image_hash1.png', 'preview_image' => 'new_image_hash2.png']);
-
         $response = $this->actingAs($this->user_admin)
             ->post(route('admin.product.edit'), $data)
             ->assertRedirect(route('admin.products'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_warning');
-
-        $this->assertDatabaseHas(Product::class, ['main_image' => 'new_image_hash1.png', 'preview_image' => 'new_image_hash2.png']);
     }
 
     public function testEditDataWithTwoImagesPreviewSaveFailed()
@@ -1723,9 +2069,6 @@ class ProductControllerTest extends TestCase
             ->post(route('admin.product.edit'), $data)
             ->assertRedirect(route('admin.product.edit.form', ['id' => $product->id]));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
-
-        $this->assertDatabaseHas(Product::class, ['main_image' => 'image1.png', 'preview_image' => 'image2.png']);
     }
 }

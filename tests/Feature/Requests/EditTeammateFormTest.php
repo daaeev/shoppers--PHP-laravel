@@ -2,31 +2,26 @@
 
 namespace Tests\Feature\Requests;
 
-use App\Http\Requests\EditProduct;
-use App\Http\Requests\ProductEditForm;
-use App\Models\Product;
+use App\Http\Requests\EditFormTeammate;
+use App\Models\Teammate;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
-class EditProductFormTest extends TestCase
+class EditTeammateFormTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected string $route = '/check-edit-product-form-validation-route';
-    protected int $id;
+    protected string $route = '/check-edit-form-teammate-validation-route';
 
     public function setUp(): void
     {
         parent::setUp();
 
-        Route::post($this->route, function (ProductEditForm $validation) {
+        Route::post($this->route, function (EditFormTeammate $validate) {
             return true;
         });
-
-        $this->id = Product::factory()->createOne()->id;
 
         $this->user_admin = User::factory()->createOne(['status' => User::$status_admin]);
     }
@@ -49,40 +44,37 @@ class EditProductFormTest extends TestCase
 
     public function testSuccessData()
     {
-        $data = $this->getSuccessData();
+        $team = Teammate::factory()->createOne();
 
-        foreach ($data as $req_data) {
-            $response = $this->actingAs($this->user_admin)->post($this->route, $req_data)
-                ->assertOk();
+        $data = [
+            'id' => $team->id,
+        ];
 
-            $response->assertSessionHasNoErrors();
-        }
+        $response = $this->actingAs($this->user_admin)
+            ->post($this->route, $data)
+            ->assertOk();
+
+        $response->assertSessionHasNoErrors();
     }
 
     /**
-     * @dataProvider getFailedData
+     * @dataProvider failedData
      */
     public function testFailedData($id)
     {
-        $response = $this->actingAs($this->user_admin)->post($this->route, ['id' => $id])
-            ->assertRedirect();
+        $response = $this->actingAs($this->user_admin)
+            ->post($this->route, ['id' => $id])
+            ->assertRedirect(route('home'));
 
         $response->assertSessionHasErrors();
     }
 
-    protected function getSuccessData()
+    public function failedData()
     {
         return [
-            ['id' => $this->id],
-        ];
-    }
-
-    public function getFailedData()
-    {
-        return [
-            [123],
-            ['string'],
             [null],
+            ['string'],
+            [123],
         ];
     }
 }

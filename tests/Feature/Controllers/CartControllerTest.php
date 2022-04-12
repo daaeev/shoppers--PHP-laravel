@@ -10,9 +10,9 @@ class CartControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    // ТЕСТЫ НЕ РАБОТАЮТ! В КОНТРОЛЛЕРЕ НЕТ ДОСТУПА К КУКАМ, ПЕРЕДАННЫХ В МЕТОД $this->withCookie()
+    // ТЕСТЫ НЕ РАБОТАЮТ! ИЗМЕНЕНИЯ КУК В КОНТРОЛЛЕРЕ НЕ ДОХОДИТ ДО $response
 
-/*    public function testAddToCart()
+/*z    public function testAddToCart()
     {
         $product = Product::factory()->createOne();
 

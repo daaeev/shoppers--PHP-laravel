@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
+use App\Services\Interfaces\UserRepositoryInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserSetRole extends FormRequest
@@ -12,9 +13,13 @@ class UserSetRole extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(UserRepositoryInterface $userRepository)
     {
-        return true;
+        if ($userRepository->getAuthenticated()?->isAdmin()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

@@ -25,47 +25,72 @@ class ColorControllerTest extends TestCase
     {
         $data = ['name' => Str::random(), 'hex' => '#' . Str::random(6)];
 
-        $this->assertDatabaseMissing(Color::class, $data);
-
-        $response = $this->actingAs($this->user_admin)
-            ->post(route('admin.color.create'), $data)
-            ->assertRedirect(route('admin.colors'));
-
-        $this->assertDatabaseHas(Color::class, $data);
-
-        $response->assertSessionDoesntHaveErrors();
-        $response->assertSessionHas('status_success');
-    }
-
-    public function testCreateFailedModelSave()
-    {
         $model_mock = $this->getMockBuilder(Color::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['save'])
+            ->onlyMethods(['save', 'setRawAttributes'])
             ->getMock();
 
         $model_mock->expects($this->once())
             ->method('save')
-            ->willReturn(false);
+            ->willReturn(true);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->with($data);
 
         $this->instance(
             Color::class,
             $model_mock
         );
 
+        $response = $this->actingAs($this->user_admin)
+            ->post(route('admin.color.create'), $data)
+            ->assertRedirect(route('admin.colors'));
+
+        $response->assertSessionHas('status_success');
+    }
+
+    public function testCreateFailedModelSave()
+    {
         $data = ['name' => Str::random(), 'hex' => '#' . Str::random(6)];
+
+        $model_mock = $this->getMockBuilder(Color::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['save', 'setRawAttributes'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('save')
+            ->willReturn(false);
+
+        $model_mock->expects($this->once())
+            ->method('setRawAttributes')
+            ->with($data);
+
+        $this->instance(
+            Color::class,
+            $model_mock
+        );
 
         $response = $this->actingAs($this->user_admin)
             ->post(route('admin.color.create'), $data)
             ->assertRedirect(route('admin.colors'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
     }
 
     public function testDeleteSuccess()
     {
         $col = Color::factory()->createOne();
+
+        $model_mock = $this->getMockBuilder(Color::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['delete'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('delete')
+            ->willReturn(true);
 
         $rep_mock = $this->getMockBuilder(ColorRepository::class)
             ->disableOriginalConstructor()
@@ -75,7 +100,7 @@ class ColorControllerTest extends TestCase
         $rep_mock->expects($this->once())
             ->method('getFirstOrNull')
             ->with($col->id)
-            ->willReturn($col);
+            ->willReturn($model_mock);
 
         $this->instance(
             ColorRepositoryInterface::class,
@@ -88,9 +113,6 @@ class ColorControllerTest extends TestCase
             ->post(route('admin.color.delete'), $data)
             ->assertRedirect(route('admin.colors'));
 
-        $this->assertDatabaseMissing(Color::class, $col->attributesToArray());
-
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_success');
     }
 
@@ -128,7 +150,6 @@ class ColorControllerTest extends TestCase
             ->post(route('admin.color.delete'), $data)
             ->assertRedirect(route('admin.colors'));
 
-        $response->assertSessionDoesntHaveErrors();
         $response->assertSessionHas('status_failed');
     }
 }

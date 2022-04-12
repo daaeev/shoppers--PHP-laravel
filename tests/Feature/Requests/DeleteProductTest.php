@@ -4,6 +4,7 @@ namespace Tests\Feature\Requests;
 
 use App\Http\Requests\DeleteProduct;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
@@ -21,13 +22,31 @@ class DeleteProductTest extends TestCase
         Route::post($this->route, function (DeleteProduct $validation) {
             return true;
         });
+
+        $this->user_admin = User::factory()->createOne(['status' => User::$status_admin]);
+    }
+
+    public function testIfNotAuth()
+    {
+        $response = $this->post($this->route)->assertForbidden();
+
+        $response->assertSessionHasNoErrors();
+    }
+
+    public function testIfUserNotAdmin()
+    {
+        $user = User::factory()->createOne();
+
+        $response = $this->actingAs($user)->post($this->route)->assertForbidden();
+
+        $response->assertSessionHasNoErrors();
     }
 
     public function testSuccessData()
     {
         $id = Product::factory()->createOne()->id;
 
-        $response = $this->post($this->route, [
+        $response = $this->actingAs($this->user_admin)->post($this->route, [
             'id' => $id,
         ])->assertOk();
 
@@ -39,7 +58,7 @@ class DeleteProductTest extends TestCase
      */
     public function testFailedData($id)
     {
-        $response = $this->post($this->route, [
+        $response = $this->actingAs($this->user_admin)->post($this->route, [
             'id' => $id,
         ])->assertRedirect(route('home'));
 

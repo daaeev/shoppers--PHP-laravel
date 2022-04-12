@@ -130,11 +130,12 @@ class TeammateController extends Controller
     {
         $data = $validate->validated();
         $model = $teammatesRepository->getFirstOrNull($data['id']);
+        $old_model_image = $model->image;
 
         $imageProfiler->disk('public')->directory('teammates_images');
 
-        // Если переданно новое изображение - создать новое и удалить старое.
-        // При ошибке создания/удаления выполнить редирект
+        // Если переданно новое изображение - создать новое.
+        // При ошибке создания выполнить редирект
         if (isset($data['image'])) {
             $new_image = $imageProfiler->saveImage($data['image']);
 
@@ -147,25 +148,39 @@ class TeammateController extends Controller
                 );
             }
 
-            if (!$imageProfiler->deleteImage($model->image)) {
-                return $this->withRedirectAndFlash(
-                    'status_failed',
-                    'Old image delete failed',
-                    route('admin.team.edit.form', ['id' => $model->id]),
-                    $this->request
-                );
-            }
-
             $data['image'] = $new_image;
         }
 
         $model->setRawAttributes($data);
 
         if (!$model->save()) {
+
+            // Если сохранение модели прошло неуспешно, а новое изображение было переданно и создано,
+            // то удалить новосозданное изображение. При ошибке удаления выполнить редирект
+            if (isset($data['image']) && !$imageProfiler->deleteImage($data['image'])) {
+                return $this->withRedirectAndFlash(
+                    'status_failed',
+                    'Nem image delete failed (' . $old_model_image . ') and teammate edit failed',
+                    route('admin.team.edit.form', ['id' => $model->id]),
+                    $this->request
+                );
+            }
+
             return $this->withRedirectAndFlash(
                 'status_failed',
-                'Teammate save failed',
+                'Teammate edit failed',
                 route('admin.team.edit.form', ['id' => $model->id]),
+                $this->request
+            );
+        }
+
+        // При успешном сохранении модели, если было переданно новое изображение,
+        // то удалить старое. При ошибке удаления выполнить редирект
+        if (isset($data['image']) && !$imageProfiler->deleteImage($old_model_image)) {
+            return $this->withRedirectAndFlash(
+                'status_warning',
+                'Old image delete failed (' . $old_model_image . '), but teammate edit success',
+                route('admin.team'),
                 $this->request
             );
         }

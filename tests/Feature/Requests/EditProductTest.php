@@ -4,6 +4,7 @@ namespace Tests\Feature\Requests;
 
 use App\Http\Requests\EditProduct;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,24 @@ class EditProductTest extends TestCase
         $this->col = $product->color_id;
         $this->cat = $product->category_id;
         $this->size = $product->size_id;
+
+        $this->user_admin = User::factory()->createOne(['status' => User::$status_admin]);
+    }
+
+    public function testIfNotAuth()
+    {
+        $response = $this->post($this->route)->assertForbidden();
+
+        $response->assertSessionHasNoErrors();
+    }
+
+    public function testIfUserNotAdmin()
+    {
+        $user = User::factory()->createOne();
+
+        $response = $this->actingAs($user)->post($this->route)->assertForbidden();
+
+        $response->assertSessionHasNoErrors();
     }
 
     public function testSuccessData()
@@ -53,7 +72,7 @@ class EditProductTest extends TestCase
         $data = $this->getSuccessData();
 
         foreach ($data as $req_data) {
-            $response = $this->post($this->route, $req_data)
+            $response = $this->actingAs($this->user_admin)->post($this->route, $req_data)
                 ->assertOk();
 
             $response->assertSessionHasNoErrors();
@@ -65,7 +84,7 @@ class EditProductTest extends TestCase
         $data = $this->getFailedData();
 
         foreach ($data as $req_data) {
-            $response = $this->post($this->route, $req_data)
+            $response = $this->actingAs($this->user_admin)->post($this->route, $req_data)
                 ->assertRedirect();
 
             $response->assertSessionHasErrors();

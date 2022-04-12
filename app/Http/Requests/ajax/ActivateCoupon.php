@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\ajax;
 
+use App\Services\Interfaces\UserRepositoryInterface;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -13,9 +14,13 @@ class ActivateCoupon extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(UserRepositoryInterface $userRepository)
     {
-        return true;
+        if ($userRepository->getAuthenticated()) {
+            return true;
+        }
+
+        throw new HttpException(401);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Tests\Feature\Requests;
 
 use App\Http\Requests\CreateSize;
 use App\Models\Size;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
@@ -22,13 +23,31 @@ class CreateSizeTest extends TestCase
         Route::post($this->route, function (CreateSize $validate) {
             return true;
         });
+
+        $this->user_admin = User::factory()->createOne(['status' => User::$status_admin]);
+    }
+
+    public function testIfNotAuth()
+    {
+        $response = $this->post($this->route)->assertForbidden();
+
+        $response->assertSessionHasNoErrors();
+    }
+
+    public function testIfUserNotAdmin()
+    {
+        $user = User::factory()->createOne();
+
+        $response = $this->actingAs($user)->post($this->route)->assertForbidden();
+
+        $response->assertSessionHasNoErrors();
     }
 
     public function testSuccessData()
     {
         $name = Str::random();
 
-        $response = $this->post($this->route, [
+        $response = $this->actingAs($this->user_admin)->post($this->route, [
             'name' => $name,
         ])->assertOk();
 
@@ -40,7 +59,7 @@ class CreateSizeTest extends TestCase
         $data = $this->failedData();
 
         foreach ($data as $name_el) {
-            $response = $this->post($this->route, [
+            $response = $this->actingAs($this->user_admin)->post($this->route, [
                 'name' => $name_el,
             ])
                 ->assertRedirect(route('home'));

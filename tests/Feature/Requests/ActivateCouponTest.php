@@ -4,6 +4,7 @@ namespace Tests\Feature\Requests;
 
 use App\Http\Requests\ajax\ActivateCoupon;
 use App\Models\Coupon;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
@@ -22,25 +23,35 @@ class ActivateCouponTest extends TestCase
         Route::post($this->route, function (ActivateCoupon $validate) {
             return true;
         });
+
+        $this->user = User::factory()->createOne();
     }
 
     public function testSuccessData()
     {
         $coupon = Coupon::factory()->createOne();
 
-        $response = $this->post($this->route, [
+        $response = $this->actingAs($this->user)->post($this->route, [
             'token' => $coupon->token,
         ])->assertOk();
 
         $response->assertSessionHasNoErrors();
     }
 
+    public function testIfNotAuth()
+    {
+        $response = $this->post($this->route)->assertUnauthorized();
+
+        $response->assertSessionHasNoErrors();
+    }
+
+
     /**
      * @dataProvider failedData
      */
     public function testFailedData($token)
     {
-        $this->post($this->route, [
+        $this->actingAs($this->user)->post($this->route, [
             'token' => $token,
         ])->assertNotFound();
     }
