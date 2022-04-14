@@ -35,7 +35,8 @@
       </div>
     </div>
 
-    <div class="site-section block-3 site-blocks-2 bg-light">
+    @if(!empty($similar->all())))
+        <div class="site-section block-3 site-blocks-2 bg-light">
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-md-7 site-section-heading text-center pt-4">
@@ -46,7 +47,6 @@
           <div class="col-md-12">
             <div class="nonloop-block-3 owl-carousel">
 
-              @if(!empty($similar->all())))
                   @foreach($similar as $item)
                       <div class="item">
                         <div class="block-4 text-center">
@@ -65,13 +65,11 @@
                         </div>
                       </div>
                     @endforeach
-                @else
-                    <h3 class="pt-3 w-100 text-center">Empty</h3>
-                @endif
 
             </div>
           </div>
         </div>
       </div>
     </div>
+    @endif
 @endsection
