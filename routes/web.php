@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\CouponController;
 use App\Http\Controllers\ajax\CouponController as AjaxCouponController;
 use App\Http\Controllers\admin\TeammateController;
+use App\Http\Controllers\ajax\SubscribeController;
 
 
 Route::get('/', [SiteController::class, 'index'])->name('home');
@@ -24,6 +25,8 @@ Route::get('/catalog/{product:slug}', [SiteController::class, 'single'])->name('
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [SiteController::class, 'profile'])->name('profile');
+
+    Route::post('/news/subscribe', [SubscribeController::class, 'createSub'])->name('news.sub');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

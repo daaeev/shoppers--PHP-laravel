@@ -64,4 +64,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Coupon::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function news_subscribe()
+    {
+        return $this->hasOne(Subscribe::class);
+    }
 }

@@ -144,14 +144,14 @@
                         </ul>
                     </div>
 
-                    <div class="block-7">
-                        <form action="#" method="post">
+                    <div class="block-7 email-sub-block">
+
                             <label for="email_subscribe" class="footer-heading">Subscribe</label>
                             <div class="form-group">
-                                <input type="text" class="form-control py-4" id="email_subscribe" placeholder="Email">
-                                <input type="submit" class="btn btn-sm btn-primary" value="Send">
+                                <input type="text" class="form-control py-4" id="email-subscribe-input" placeholder="Email">
+                                <button class="btn btn-sm btn-primary" id="news-sub-btn" data-href="{{route('news.sub')}}">Send</button>
                             </div>
-                        </form>
+
                     </div>
                 </div>
             </div>
@@ -178,6 +178,7 @@
 <script src="{{asset('js/aos.js')}}"></script>
 <script src="{{asset('js/main.js')}}"></script>
 <script src="{{asset('js/cart-btns.js')}}"></script>
+<script src="{{asset('js/news-subscribe-btn.js')}}"></script>
 
 </body>
 </html>

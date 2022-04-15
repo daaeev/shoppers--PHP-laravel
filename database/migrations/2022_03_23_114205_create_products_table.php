@@ -58,6 +58,7 @@ return new class extends Migration
             $table->dropForeign('fk-products-size_id');
             $table->dropForeign('fk-products-color_id');
         });
+
         Schema::dropIfExists('products');
     }
 };
