@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Services\Interfaces\CategoryRepositoryInterface;
 use App\Services\Interfaces\ColorRepositoryInterface;
 use App\Services\Interfaces\CouponsRepositoryInterface;
+use App\Services\Interfaces\NewsRepositoryInterface;
 use App\Services\Interfaces\ProductRepositoryInterface;
 use App\Services\Interfaces\SizeRepositoryInterface;
 use App\Services\Interfaces\TeammatesRepositoryInterface;
@@ -192,5 +193,28 @@ class AdminController extends Controller
         $model = $teammatesRepository->getFirstOrNull($validate->validated('id'));
 
         return view('admin.team_edit_form', compact('model'));
+    }
+
+    /**
+     * Метод отвечает за рендер 'news' админ панели
+     *
+     * @return mixed
+     */
+    public function newsList(NewsRepositoryInterface $newsRepository)
+    {
+        $input = new InputSource($this->request->query());
+        $grid = $newsRepository->getAllUsingGrid($input);
+
+        return view('admin.news', compact('grid'));
+    }
+
+    /**
+     * Метод отвечает за рендер страницы с формой создания новости
+     *
+     * @return mixed
+     */
+    public function newsCreateForm()
+    {
+        return view('admin.news_create_form');
     }
 }

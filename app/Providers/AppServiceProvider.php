@@ -10,15 +10,19 @@ use App\Services\Interfaces\ColorRepositoryInterface;
 use App\Services\Interfaces\CouponsRepositoryInterface;
 use App\Services\Interfaces\FilterProcessingInterface;
 use App\Services\Interfaces\ImageProfilerInterface;
+use App\Services\Interfaces\NewsRepositoryInterface;
 use App\Services\Interfaces\ProductRepositoryInterface;
 use App\Services\Interfaces\SizeRepositoryInterface;
+use App\Services\Interfaces\SubscribeRepositoryInterface;
 use App\Services\Interfaces\TeammatesRepositoryInterface;
 use App\Services\Interfaces\UserRepositoryInterface;
 use App\Services\Repositories\CategoryRepository;
 use App\Services\Repositories\ColorRepository;
 use App\Services\Repositories\CouponsRepository;
+use App\Services\Repositories\NewsRepository;
 use App\Services\Repositories\ProductRepository;
 use App\Services\Repositories\SizeRepository;
+use App\Services\Repositories\SubscribeRepository;
 use App\Services\Repositories\TeammatesRepository;
 use App\Services\Repositories\UserRepository;
 use Illuminate\Pagination\Paginator;
@@ -37,6 +41,8 @@ class AppServiceProvider extends ServiceProvider
         ColorRepositoryInterface::class => ColorRepository::class,
         CouponsRepositoryInterface::class => CouponsRepository::class,
         TeammatesRepositoryInterface::class => TeammatesRepository::class,
+        NewsRepositoryInterface::class => NewsRepository::class,
+        SubscribeRepositoryInterface::class => SubscribeRepository::class,
 
         // Services
         ImageProfilerInterface::class => ImageProfiler::class,

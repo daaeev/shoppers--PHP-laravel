@@ -14,6 +14,7 @@ use App\Http\Controllers\admin\CouponController;
 use App\Http\Controllers\ajax\CouponController as AjaxCouponController;
 use App\Http\Controllers\admin\TeammateController;
 use App\Http\Controllers\ajax\SubscribeController;
+use App\Http\Controllers\admin\NewsController;
 
 
 Route::get('/', [SiteController::class, 'index'])->name('home');
@@ -62,6 +63,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/team/delete', [TeammateController::class, 'deleteTeammate'])->name('admin.team.delete');
     Route::post('/team/edit', [TeammateController::class, 'editTeammate'])->name('admin.team.edit');
 
+    Route::post('/news/create', [NewsController::class, 'createNews'])->name('admin.news.create');
+    Route::post('/news/send', [NewsController::class, 'sendNews'])->name('admin.news.send');
+
+
     // !!!CRUD ROUTES!!!
 
     Route::get('/users', [AdminController::class, 'usersList'])->name('admin.users');
@@ -75,6 +80,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/team', [AdminController::class, 'teamList'])->name('admin.team');
     Route::get('/team/create/form', [AdminController::class, 'teamCreateForm'])->name('admin.team.create.form');
     Route::get('/team/edit/form', [AdminController::class, 'teamEditForm'])->name('admin.team.edit.form');
+    Route::get('/news', [AdminController::class, 'newsList'])->name('admin.news');
+    Route::get('/news/create/form', [AdminController::class, 'newsCreateForm'])->name('admin.news.create.form');
+
 });
 
 // !!!ADMIN ROUTES!!!
