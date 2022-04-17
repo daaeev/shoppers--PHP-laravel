@@ -31,8 +31,8 @@ class ProductFactory extends Factory
             'color_id' => Color::factory(),
             'size_id' => Size::factory(),
             'count' => $this->faker->numberBetween(1, 10),
-            'main_image' => $this->faker->image(public_path('storage/products_images'), 640, 480, null, false),
-            'preview_image' => $this->faker->image(public_path('storage/products_images'), 640, 480, null, false),
+            'main_image' => 'test_main_image.png',
+            'preview_image' => 'test_preview_image.png',
         ];
     }
 }

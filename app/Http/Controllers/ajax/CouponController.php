@@ -26,6 +26,11 @@ class CouponController
     )
     {
         $user = $userRepository->getAuthenticated();
+
+        if ($user->coupon_id) {
+            throw new HttpException(404);
+        }
+
         $coupon = $couponRepository->getFirstNotActivatedByTokenOrNull($validate->validated('token'));
 
         if (!$coupon) {
@@ -33,8 +38,8 @@ class CouponController
         }
 
         DB::transaction(function () use ($user, $coupon){
-            $user->coupon_id = $coupon->id;
-            $coupon->activated = true;
+            $user->setAttribute('coupon_id', $coupon->id);
+            $coupon->setAttribute('activated', true);
 
             if (!$user->save() || !$coupon->save()) {
                 throw new HttpException(500);

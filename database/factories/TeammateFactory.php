@@ -21,7 +21,7 @@ class TeammateFactory extends Factory
             'full_name' => Str::random(30),
             'position' => Str::random(30),
             'description' => Str::random(255),
-            'image' => $this->faker->image(public_path('storage/teammates_images'), 640, 480, null, false),
+            'image' => 'test_teammate_image.png',
         ];
     }
 }

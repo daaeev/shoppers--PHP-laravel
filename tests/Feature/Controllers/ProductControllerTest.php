@@ -479,7 +479,7 @@ class ProductControllerTest extends TestCase
 
     public function testDeleteProductSuccessWithOneModelImage()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image.png']);
+        $product = Product::factory()->createOne();
 
         $model_mock = $this->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
@@ -577,7 +577,7 @@ class ProductControllerTest extends TestCase
 
     public function testDeleteProductWithOneImageImageDeleteFailed()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image.png']);
+        $product = Product::factory()->createOne();
 
         $model_mock = $this->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
@@ -638,7 +638,7 @@ class ProductControllerTest extends TestCase
 
     public function testDeleteProductSuccessWithTwoModelImage()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image1.png', 'preview_image' => 'image2.png']);
+        $product = Product::factory()->createOne();
 
         $model_mock = $this->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
@@ -705,7 +705,7 @@ class ProductControllerTest extends TestCase
 
     public function testDeleteProductWithTwoImagesFirstImageDeleteFailed()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image.png', 'preview_image' => 'image2.png']);
+        $product = Product::factory()->createOne();
 
         $model_mock = $this->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
@@ -772,7 +772,7 @@ class ProductControllerTest extends TestCase
 
     public function testDeleteProductWithTwoImagesSecondImageDeleteFailed()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image.png', 'preview_image' => 'image2.png']);
+        $product = Product::factory()->createOne();
 
         $model_mock = $this->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
@@ -839,7 +839,7 @@ class ProductControllerTest extends TestCase
 
     public function testEditProductDataSuccessWithoutEditImages()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image1.png', 'preview_image' => null]);
+        $product = Product::factory()->createOne();
         $category_edited_id = Category::factory()->createOne()->id;
         $color_edited_id = Color::factory()->createOne()->id;
         $size_edited_id = Size::factory()->createOne()->id;
@@ -899,7 +899,7 @@ class ProductControllerTest extends TestCase
 
     public function testEditDataWithoutEditImagesModelSaveFailed()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image1.png', 'preview_image' => null]);
+        $product = Product::factory()->createOne();
 
         $data = [
             'id' => $product->id,
@@ -954,7 +954,7 @@ class ProductControllerTest extends TestCase
 
     public function testEditDataSuccessWithEditMainImage()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image1.png', 'preview_image' => null]);
+        $product = Product::factory()->createOne();
 
         $data = [
             'id' => $product->id,
@@ -1050,7 +1050,7 @@ class ProductControllerTest extends TestCase
 
     public function testEditDataWithMainImageNewImageDeleteFailedIfModelSaveFailed()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image1.png', 'preview_image' => null]);
+        $product = Product::factory()->createOne();
 
         $data = [
             'id' => $product->id,
@@ -1146,7 +1146,7 @@ class ProductControllerTest extends TestCase
 
     public function testEditDataWithMainImageOldImageDeleteFailed()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image1.png', 'preview_image' => null]);
+        $product = Product::factory()->createOne();
 
         $data = [
             'id' => $product->id,
@@ -1242,7 +1242,7 @@ class ProductControllerTest extends TestCase
 
     public function testEditDataWithMainImageNewImageSaveFailed()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image1.png', 'preview_image' => null]);
+        $product = Product::factory()->createOne();
 
         $data = [
             'id' => $product->id,
@@ -1305,7 +1305,7 @@ class ProductControllerTest extends TestCase
 
     public function testEditDataSuccessWithEditPreviewImage()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image1.png', 'preview_image' => 'image2.png']);
+        $product = Product::factory()->createOne();
 
         $data = [
             'id' => $product->id,
@@ -1416,7 +1416,7 @@ class ProductControllerTest extends TestCase
 
     public function testEditDataWithPreviewImageNewImageDeleteFailedIfModelSaveFailed()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image1.png', 'preview_image' => 'image2.png']);
+        $product = Product::factory()->createOne();
 
         $data = [
             'id' => $product->id,
@@ -1513,7 +1513,7 @@ class ProductControllerTest extends TestCase
 
     public function testEditDataWithPreviewImageOldImageDeleteFailed()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image1.png', 'preview_image' => 'image2.png']);
+        $product = Product::factory()->createOne();
 
         $data = [
             'id' => $product->id,
@@ -1610,7 +1610,7 @@ class ProductControllerTest extends TestCase
 
     public function testEditDataWithPreviewImageNewImageSaveFailed()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image1.png', 'preview_image' => 'image2.png']);
+        $product = Product::factory()->createOne();
 
         $data = [
             'id' => $product->id,
@@ -1673,7 +1673,7 @@ class ProductControllerTest extends TestCase
 
     public function testEditDataSuccessWithEditTwoImages()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image1.png', 'preview_image' => 'image2.png']);
+        $product = Product::factory()->createOne();
 
         $data = [
             'id' => $product->id,
@@ -1782,7 +1782,7 @@ class ProductControllerTest extends TestCase
 
     public function testEditDataWithTwoImagesNewImagesDeleteFailedIfModelSaveFailed()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image1.png', 'preview_image' => 'image2.png']);
+        $product = Product::factory()->createOne();
 
         $data = [
             'id' => $product->id,
@@ -1891,7 +1891,7 @@ class ProductControllerTest extends TestCase
 
     public function testEditDataWithTwoImagesOldImagesDeleteFailed()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image1.png', 'preview_image' => 'image2.png']);
+        $product = Product::factory()->createOne();
 
         $data = [
             'id' => $product->id,
@@ -2000,7 +2000,7 @@ class ProductControllerTest extends TestCase
 
     public function testEditDataWithTwoImagesPreviewSaveFailed()
     {
-        $product = Product::factory()->createOne(['main_image' => 'image1.png', 'preview_image' => 'image2.png']);
+        $product = Product::factory()->createOne();
 
         $data = [
             'id' => $product->id,

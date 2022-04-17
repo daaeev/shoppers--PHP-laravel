@@ -61,7 +61,7 @@ class AjaxCouponControllerTest extends TestCase
         $this->assertDatabaseHas(Coupon::class, ['id' => $coupon->id, 'activated' => true]);
     }
 
-    public function testActivateIfCouponAlreadyActivated()
+    public function testActivateIfCouponNotExistOrAlredyActivated()
     {
         $user = User::factory()->createOne();
         $coupon = Coupon::factory()->createOne(['activated' => true]);
@@ -203,5 +203,33 @@ class AjaxCouponControllerTest extends TestCase
             ->assertStatus(500);
 
         $this->assertDatabaseMissing(User::class, ['id' => $user->id, 'coupon_id' => $coupon->id]);
+    }
+
+    public function testActivateIfUserAlreadyHaveCoupon()
+    {
+        $user = User::factory()->createOne();
+        $coupon = Coupon::factory()->createOne(['activated' => true]);
+
+        $user->coupon_id = $coupon->id;
+
+        $rep_user_mock = $this->getMockBuilder(UserRepository::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getAuthenticated'])
+            ->getMock();
+
+        $rep_user_mock->expects($this->any())
+            ->method('getAuthenticated')
+            ->willReturn($user);
+
+        $this->instance(
+            UserRepositoryInterface::class,
+            $rep_user_mock
+        );
+
+        $data = ['token' => $coupon->token];
+
+        $response = $this->actingAs($user)
+            ->post(route('ajax.coupon.activate'), $data)
+            ->assertNotFound();
     }
 }
