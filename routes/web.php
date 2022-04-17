@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [SiteController::class, 'profile'])->name('profile');
 
     Route::post('/news/subscribe', [SubscribeController::class, 'createSub'])->name('news.sub');
+    Route::get('/news/unsubscribe', [SubscribeController::class, 'unsubUser'])->name('news.unsub');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

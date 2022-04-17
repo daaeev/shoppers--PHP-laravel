@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ajax;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ajax\CreateSub;
 use App\Models\Subscribe;
+use App\Services\Interfaces\SubscribeRepositoryInterface;
 use App\Services\Interfaces\UserRepositoryInterface;
 use App\Services\traits\ReturnWithRedirectAndFlash;
 use Illuminate\Http\Request;
@@ -46,5 +47,23 @@ class SubscribeController extends Controller
         }
 
         return new Response('You have subscribed to our news');
+    }
+
+    /**
+     * @param UserRepositoryInterface $userRepository
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function unsubUser(UserRepositoryInterface $userRepository)
+    {
+        $user = $userRepository->getAuthenticated();
+        $sub = $user->news_subscribe;
+
+        if (!$sub) {
+            return redirect(route('home'));
+        }
+
+        $sub->delete();
+
+        return redirect(route('home'));
     }
 }

@@ -4,7 +4,9 @@ namespace Tests\Feature\Controllers;
 
 use App\Models\Subscribe;
 use App\Models\User;
+use App\Services\Interfaces\SubscribeRepositoryInterface;
 use App\Services\Interfaces\UserRepositoryInterface;
+use App\Services\Repositories\SubscribeRepository;
 use App\Services\Repositories\UserRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -119,5 +121,25 @@ class SubscribeControllerTest extends TestCase
         $this->actingAs($this->user)
             ->post(route('news.sub'), ['email' => 'test@gmail.com'])
             ->assertStatus(500);
+    }
+
+    public function testUnsubUserSuccess()
+    {
+        $sub = Subscribe::factory()->createOne(['user_id' => $this->user->id]);
+
+        $this->assertDatabaseHas(Subscribe::class, ['id' => $sub->id]);
+
+        $this->actingAs($this->user)
+            ->get(route('news.unsub'))
+            ->assertRedirect(route('home'));
+
+        $this->assertDatabaseMissing(Subscribe::class, ['id' => $sub->id]);
+    }
+
+    public function testUnsubUserIfUserNotSub()
+    {
+        $this->actingAs($this->user)
+            ->get(route('news.unsub'))
+            ->assertRedirect(route('home'));
     }
 }
