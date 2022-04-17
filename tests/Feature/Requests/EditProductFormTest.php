@@ -34,8 +34,6 @@ class EditProductFormTest extends TestCase
     public function testIfNotAuth()
     {
         $response = $this->post($this->route)->assertForbidden();
-
-        $response->assertSessionHasNoErrors();
     }
 
     public function testIfUserNotAdmin()
@@ -43,8 +41,6 @@ class EditProductFormTest extends TestCase
         $user = User::factory()->createOne();
 
         $response = $this->actingAs($user)->post($this->route)->assertForbidden();
-
-        $response->assertSessionHasNoErrors();
     }
 
     public function testSuccessData()

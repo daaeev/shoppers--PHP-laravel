@@ -2,24 +2,24 @@
 
 namespace Tests\Feature\Requests;
 
-use App\Http\Requests\DeleteColor;
-use App\Models\Color;
+use App\Http\Requests\SendNews;
+use App\Models\News;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
-class DeleteColorTest extends TestCase
+class SendNewsTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected string $route = '/check-delete-color-validation-route';
+    protected string $route = '/check-send-news-validation-route';
 
     public function setUp(): void
     {
         parent::setUp();
 
-        Route::post($this->route, function (DeleteColor $validate) {
+        Route::post($this->route, function (SendNews $validate) {
             return true;
         });
 
@@ -40,11 +40,13 @@ class DeleteColorTest extends TestCase
 
     public function testSuccessData()
     {
-        $category = Color::factory()->createOne();
+        $news = News::factory()->createOne();
 
-        $response = $this->actingAs($this->user_admin)->post($this->route, [
-            'id' => $category->id,
-        ])->assertOk();
+        $data = ['id' => $news->id];
+
+        $response = $this->actingAs($this->user_admin)
+            ->post($this->route, $data)
+            ->assertOk();
 
         $response->assertSessionHasNoErrors();
     }
@@ -52,11 +54,13 @@ class DeleteColorTest extends TestCase
     /**
      * @dataProvider failedData
      */
-    public function testFailedData($id)
+    public function testfailedData($id)
     {
-        $response = $this->actingAs($this->user_admin)->post($this->route, [
-            'id' => $id,
-        ])->assertRedirect(route('home'));
+        $data = ['id' => $id];
+
+        $response = $this->actingAs($this->user_admin)
+            ->post($this->route, $data)
+            ->assertRedirect(route('home'));
 
         $response->assertSessionHasErrors();
     }
@@ -64,11 +68,9 @@ class DeleteColorTest extends TestCase
     public function failedData()
     {
         return [
-            [1.2],
-            [-1],
             [123],
             ['string'],
-            [null],
+            [null]
         ];
     }
 }

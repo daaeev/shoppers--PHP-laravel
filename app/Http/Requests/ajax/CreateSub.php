@@ -3,6 +3,7 @@
 namespace App\Http\Requests\ajax;
 
 use App\Services\Interfaces\UserRepositoryInterface;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -32,5 +33,10 @@ class CreateSub extends FormRequest
         return [
             'email' => 'bail|required|email:filter',
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpException(403);
     }
 }

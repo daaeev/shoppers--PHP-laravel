@@ -8,6 +8,8 @@ use App\Services\Repositories\SizeRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use ViewComponents\Grids\Grid;
+use ViewComponents\ViewComponents\Input\InputSource;
 
 class SizeRepositoryTest extends TestCase
 {
@@ -20,6 +22,14 @@ class SizeRepositoryTest extends TestCase
         parent::setUp();
 
         $this->repository = app(SizeRepository::class);
+    }
+
+    public function testGetAllUsingGrid()
+    {
+        $input = new InputSource([]);
+        $result = $this->repository->getAllUsingGrid($input);
+
+        $this->assertInstanceOf(Grid::class, $result);
     }
 
     public function testFirstOrNullIfNotExist()

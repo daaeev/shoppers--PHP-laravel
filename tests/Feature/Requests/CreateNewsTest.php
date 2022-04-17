@@ -2,24 +2,23 @@
 
 namespace Tests\Feature\Requests;
 
-use App\Http\Requests\DeleteColor;
-use App\Models\Color;
+use App\Http\Requests\CreateNews;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
-class DeleteColorTest extends TestCase
+class CreateNewsTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected string $route = '/check-delete-color-validation-route';
+    protected string $route = '/check-create-news-validation-route';
 
     public function setUp(): void
     {
         parent::setUp();
 
-        Route::post($this->route, function (DeleteColor $validate) {
+        Route::post($this->route, function (CreateNews $validate) {
             return true;
         });
 
@@ -40,23 +39,31 @@ class DeleteColorTest extends TestCase
 
     public function testSuccessData()
     {
-        $category = Color::factory()->createOne();
+        $data = [
+            'title' => 'Some title',
+            'content' => 'Some content'
+        ];
 
-        $response = $this->actingAs($this->user_admin)->post($this->route, [
-            'id' => $category->id,
-        ])->assertOk();
+        $response = $this->actingAs($this->user_admin)
+            ->post($this->route, $data)
+            ->assertOk();
 
-        $response->assertSessionHasNoErrors();
+        $response->assertSessionDoesntHaveErrors();
     }
 
     /**
      * @dataProvider failedData
      */
-    public function testFailedData($id)
+    public function testFailedData($title, $content)
     {
-        $response = $this->actingAs($this->user_admin)->post($this->route, [
-            'id' => $id,
-        ])->assertRedirect(route('home'));
+        $data = [
+            'title' => $title,
+            'content' => $content
+        ];
+
+        $response = $this->actingAs($this->user_admin)
+            ->post($this->route, $data)
+            ->assertRedirect(route('home'));
 
         $response->assertSessionHasErrors();
     }
@@ -64,11 +71,10 @@ class DeleteColorTest extends TestCase
     public function failedData()
     {
         return [
-            [1.2],
-            [-1],
-            [123],
-            ['string'],
-            [null],
+            ['', 'Content'],
+            ['Title', ''],
+            [123, 'Content'],
+            ['Title', 123],
         ];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Events\NewsCreate;
+use App\Events\NewsSend;
 use App\Listeners\NewsEmailSend;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -19,7 +19,7 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        NewsCreate::class => [
+        NewsSend::class => [
             NewsEmailSend::class,
         ],
     ];

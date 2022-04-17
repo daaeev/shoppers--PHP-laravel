@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\NewsCreate;
+use App\Events\NewsSend;
 use App\Mail\News;
 use App\Services\Interfaces\SubscribeRepositoryInterface;
 use Illuminate\Support\Facades\Mail;
@@ -17,10 +17,10 @@ class NewsEmailSend
     /**
      * Handle the event.
      *
-     * @param  NewsCreate $event
+     * @param  NewsSend $event
      * @return void
      */
-    public function handle(NewsCreate $event,)
+    public function handle(NewsSend $event)
     {
         $mail = app(News::class, ['news' => $event->news]);
         $emails = $this->subscribeRepository->getEmails();

@@ -37,6 +37,6 @@ class ActivateCoupon extends FormRequest
 
     public function failedValidation(Validator $validator)
     {
-        throw new HttpException(404);
+        throw new HttpException(403);
     }
 }

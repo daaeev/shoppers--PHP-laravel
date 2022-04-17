@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Events\NewsCreate;
+use App\Events\NewsSend;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateNews;
 use App\Http\Requests\SendNews;
 use App\Models\News;
 use App\Services\Interfaces\NewsRepositoryInterface;
 use App\Services\traits\ReturnWithRedirectAndFlash;
-use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
@@ -53,7 +52,7 @@ class NewsController extends Controller
     )
     {
         $model = $newsRepository->getFirstOrNull($validate->validated('id'));
-        NewsCreate::dispatch($model);
+        NewsSend::dispatch($model);
 
         $model->setAttribute('sent', true);
 

@@ -44,5 +44,7 @@ class SubscribeController extends Controller
         if (!$model->save()) {
             throw new HttpException(500, 'An error occurred on the server');
         }
+
+        return new Response('You have subscribed to our news');
     }
 }

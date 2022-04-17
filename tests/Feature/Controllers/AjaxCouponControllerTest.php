@@ -25,7 +25,7 @@ class AjaxCouponControllerTest extends TestCase
             ->onlyMethods(['getAuthenticated'])
             ->getMock();
 
-        $rep_user_mock->expects($this->exactly(2))
+        $rep_user_mock->expects($this->any())
             ->method('getAuthenticated')
             ->willReturn($user);
 
@@ -71,7 +71,7 @@ class AjaxCouponControllerTest extends TestCase
             ->onlyMethods(['getAuthenticated'])
             ->getMock();
 
-        $rep_user_mock->expects($this->exactly(2))
+        $rep_user_mock->expects($this->any())
             ->method('getAuthenticated')
             ->willReturn($user);
 
@@ -120,7 +120,7 @@ class AjaxCouponControllerTest extends TestCase
             ->onlyMethods(['getAuthenticated'])
             ->getMock();
 
-        $rep_user_mock->expects($this->exactly(2))
+        $rep_user_mock->expects($this->any())
             ->method('getAuthenticated')
             ->willReturn($user_mock);
 
@@ -172,7 +172,7 @@ class AjaxCouponControllerTest extends TestCase
             ->onlyMethods(['getAuthenticated'])
             ->getMock();
 
-        $rep_user_mock->expects($this->exactly(2))
+        $rep_user_mock->expects($this->any())
             ->method('getAuthenticated')
             ->willReturn($user);
 

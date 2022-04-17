@@ -5,7 +5,7 @@ namespace App\Events;
 use App\Models\News;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class NewsCreate
+class NewsSend
 {
     use Dispatchable;
 

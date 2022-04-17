@@ -31,8 +31,6 @@ class EditTeammateTest extends TestCase
     public function testIfNotAuth()
     {
         $response = $this->post($this->route)->assertForbidden();
-
-        $response->assertSessionHasNoErrors();
     }
 
     public function testIfUserNotAdmin()
@@ -40,8 +38,6 @@ class EditTeammateTest extends TestCase
         $user = User::factory()->createOne();
 
         $response = $this->actingAs($user)->post($this->route)->assertForbidden();
-
-        $response->assertSessionHasNoErrors();
     }
 
     public function testSuccessData()

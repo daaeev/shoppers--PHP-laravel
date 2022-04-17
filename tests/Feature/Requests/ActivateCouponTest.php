@@ -41,8 +41,6 @@ class ActivateCouponTest extends TestCase
     public function testIfNotAuth()
     {
         $response = $this->post($this->route)->assertUnauthorized();
-
-        $response->assertSessionHasNoErrors();
     }
 
 
@@ -53,7 +51,7 @@ class ActivateCouponTest extends TestCase
     {
         $this->actingAs($this->user)->post($this->route, [
             'token' => $token,
-        ])->assertNotFound();
+        ])->assertForbidden();
     }
 
     public function failedData()

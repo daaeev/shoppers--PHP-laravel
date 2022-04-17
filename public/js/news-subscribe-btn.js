@@ -37,7 +37,7 @@ $('#news-sub-btn').click(function () {
         beforeSend: function () {
             button.attr('disabled', true);
         },
-        success: function(success_msg = null) {
+        success: function(success_msg) {
             if ($('.email-sub-input-error').length > 0) {
                 $('.email-sub-input-error').remove();
             }
@@ -46,13 +46,9 @@ $('#news-sub-btn').click(function () {
                 $('.email-sub-input-success').remove();
             }
 
-            if (success_msg) {
-                $('.email-sub-block').append('<label class="text-success email-sub-input-success">' + success_msg + '</label>');
-            } else {
-                $('.email-sub-block').append('<label class="text-success email-sub-input-success">You have subscribed to our news</label>');
-            }
+            $('.email-sub-block').append('<label class="text-success email-sub-input-success">' + success_msg + '</label>');
         },
-        error: function (error) {
+        error: function (error = null) {
             if ($('.email-sub-input-error').length > 0) {
                 $('.email-sub-input-error').remove();
             }
@@ -61,10 +57,9 @@ $('#news-sub-btn').click(function () {
                 $('.email-sub-input-success').remove();
             }
 
+            error = JSON.parse(error.responseText).message;
             if (error) {
-                let msg = JSON.parse(error.responseText);
-
-                $('.email-sub-block').append('<label class="text-danger email-sub-input-error">' + msg.message + '</label>');
+                $('.email-sub-block').append('<label class="text-danger email-sub-input-error">' + error + '</label>');
             } else {
                 $('.email-sub-block').append('<label class="text-danger email-sub-input-error">Something went wrong! <a href="/login">Log in</a> and try again</label>');
 

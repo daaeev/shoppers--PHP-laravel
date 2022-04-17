@@ -7,6 +7,8 @@ use App\Services\Interfaces\UserRepositoryInterface;
 use App\Services\Repositories\UserRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use ViewComponents\Grids\Grid;
+use ViewComponents\ViewComponents\Input\InputSource;
 
 class UserRepositoryTest extends TestCase
 {
@@ -36,6 +38,14 @@ class UserRepositoryTest extends TestCase
         $this->assertNotNull($user_found);
         $this->assertInstanceOf(User::class, $user_found);
         $this->assertEquals($user_created->id, $user_found->id);
+    }
+
+    public function testGetAllUsingGrid()
+    {
+        $input = new InputSource([]);
+        $result = $this->repository->getAllUsingGrid($input);
+
+        $this->assertInstanceOf(Grid::class, $result);
     }
 
     public function testGetAuthenticatedIfAuth()
