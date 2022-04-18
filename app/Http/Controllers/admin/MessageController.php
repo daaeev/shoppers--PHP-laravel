@@ -27,7 +27,7 @@ class MessageController extends Controller
     {
         $model = $messageRepository->getFirstOrNull($validate->validated('id'));
 
-        $model->answered = true;
+        $model->setAttribute('answered', true);
 
         if (!$model->save()) {
             return $this->withRedirectAndFlash(
@@ -49,11 +49,12 @@ class MessageController extends Controller
     /**
      * Удаление всех сообщений со статусом 'Отмечено'
      *
+     * @param Message $model
      * @return void
      */
-    public function deleteAnswered()
+    public function deleteAnswered(Message $model)
     {
-        if (!Message::where('answered', true)->delete()) {
+        if (!$model->where('answered', true)->delete()) {
             return $this->withRedirectAndFlash(
                 'status_failed',
                 'Messages delete failed',

@@ -21,7 +21,7 @@
           </div>
           <div class="col-md-7">
 
-            <form action="{{route('admin.message.create')}}" method="post">
+            <form action="{{route('message.create')}}" method="post">
                 @csrf
 
               <div class="p-3 p-lg-5 border">

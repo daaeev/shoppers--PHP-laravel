@@ -53,19 +53,40 @@ class SubscribeController extends Controller
      * Отписка пользователя от рассылки
      *
      * @param UserRepositoryInterface $userRepository
+     * @param Subscribe $model
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function unsubUser(UserRepositoryInterface $userRepository)
+    public function unsubUser(
+        UserRepositoryInterface $userRepository,
+        Subscribe $model
+    )
     {
         $user = $userRepository->getAuthenticated();
-        $sub = $user->news_subscribe;
+        $sub = $model->where('user_id', $user->id)->first();
 
         if (!$sub) {
-            return redirect(route('home'));
+            return $this->withRedirectAndFlash(
+                'status_warning',
+                'You are not subscribed to the newsletter',
+                route('profile'),
+                $this->request
+            );
         }
 
-        $sub->delete();
+        if (!$sub->delete()) {
+            return $this->withRedirectAndFlash(
+                'status_failed',
+                'An error occurred on the server',
+                route('profile'),
+                $this->request
+            );
+        }
 
-        return redirect(route('home'));
+        return $this->withRedirectAndFlash(
+            'status_success',
+            'You have unsubscribed from the newsletter',
+            route('profile'),
+            $this->request
+        );
     }
 }

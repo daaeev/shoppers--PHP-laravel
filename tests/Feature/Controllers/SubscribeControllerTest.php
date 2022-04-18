@@ -8,6 +8,7 @@ use App\Services\Interfaces\SubscribeRepositoryInterface;
 use App\Services\Interfaces\UserRepositoryInterface;
 use App\Services\Repositories\SubscribeRepository;
 use App\Services\Repositories\UserRepository;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -125,21 +126,118 @@ class SubscribeControllerTest extends TestCase
 
     public function testUnsubUserSuccess()
     {
-        $sub = Subscribe::factory()->createOne(['user_id' => $this->user->id]);
+        $model_mock = $this->getMockBuilder(Subscribe::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['delete'])
+            ->getMock();
 
-        $this->assertDatabaseHas(Subscribe::class, ['id' => $sub->id]);
+        $model_mock->expects($this->once())
+            ->method('delete')
+            ->willReturn(true);
 
-        $this->actingAs($this->user)
+        $builder_mock = $this->getMockBuilder(Builder::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['first'])
+            ->getMock();
+
+        $builder_mock->expects($this->once())
+            ->method('first')
+            ->willReturn($model_mock);
+
+        $model_build_mock = $this->getMockBuilder(Subscribe::class)
+            ->disableOriginalConstructor()
+            ->addMethods(['where'])
+            ->getMock();
+
+        $model_build_mock->expects($this->once())
+            ->method('where')
+            ->willReturn($builder_mock);
+
+        $this->instance(
+            Subscribe::class,
+            $model_build_mock
+        );
+
+        $response = $this->actingAs($this->user)
             ->get(route('news.unsub'))
-            ->assertRedirect(route('home'));
+            ->assertRedirect(route('profile'));
 
-        $this->assertDatabaseMissing(Subscribe::class, ['id' => $sub->id]);
+        $response->assertSessionHas('status_success');
+        $response->assertSessionDoesntHaveErrors();
     }
 
     public function testUnsubUserIfUserNotSub()
     {
-        $this->actingAs($this->user)
+        $builder_mock = $this->getMockBuilder(Builder::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['first'])
+            ->getMock();
+
+        $builder_mock->expects($this->once())
+            ->method('first')
+            ->willReturn(null);
+
+        $model_build_mock = $this->getMockBuilder(Subscribe::class)
+            ->disableOriginalConstructor()
+            ->addMethods(['where'])
+            ->getMock();
+
+        $model_build_mock->expects($this->once())
+            ->method('where')
+            ->willReturn($builder_mock);
+
+        $this->instance(
+            Subscribe::class,
+            $model_build_mock
+        );
+
+        $response = $this->actingAs($this->user)
             ->get(route('news.unsub'))
-            ->assertRedirect(route('home'));
+            ->assertRedirect(route('profile'));
+
+        $response->assertSessionHas('status_warning');
+        $response->assertSessionDoesntHaveErrors();
+    }
+
+    public function testUnsubUserModelDeleteFailed()
+    {
+        $model_mock = $this->getMockBuilder(Subscribe::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['delete'])
+            ->getMock();
+
+        $model_mock->expects($this->once())
+            ->method('delete')
+            ->willReturn(false);
+
+        $builder_mock = $this->getMockBuilder(Builder::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['first'])
+            ->getMock();
+
+        $builder_mock->expects($this->once())
+            ->method('first')
+            ->willReturn($model_mock);
+
+        $model_build_mock = $this->getMockBuilder(Subscribe::class)
+            ->disableOriginalConstructor()
+            ->addMethods(['where'])
+            ->getMock();
+
+        $model_build_mock->expects($this->once())
+            ->method('where')
+            ->willReturn($builder_mock);
+
+        $this->instance(
+            Subscribe::class,
+            $model_build_mock
+        );
+
+        $response = $this->actingAs($this->user)
+            ->get(route('news.unsub'))
+            ->assertRedirect(route('profile'));
+
+        $response->assertSessionHas('status_failed');
+        $response->assertSessionDoesntHaveErrors();
     }
 }

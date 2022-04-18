@@ -34,6 +34,18 @@ return [
     */
 
     'connections' => [
+        'undefined_connection' => [
+            'driver' => '',
+            'url' => '',
+            'host' => '',
+            'port' => '',
+            'database' => '',
+            'username' => '',
+            'password' => '',
+            'charset' => '',
+            'prefix' => '',
+            'prefix_indexes' => '',
+        ],
 
         'sqlite' => [
             'driver' => 'sqlite',

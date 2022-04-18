@@ -9,6 +9,8 @@
     <div class="container py-md-5">
         <div class="row text-center">
             <div class="col-12">
+                @include('admin.errors')
+
                 <p><h2>{{$user->name}}</h2></p>
                 <p>
                     <strong>Email:</strong>

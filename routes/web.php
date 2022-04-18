@@ -32,7 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/news/subscribe', [SubscribeController::class, 'createSub'])->name('news.sub');
     Route::get('/news/unsubscribe', [SubscribeController::class, 'unsubUser'])->name('news.unsub');
 
-    Route::post('/message/send', [MessageController::class, 'createMessage'])->name('admin.message.create');
+    Route::post('/message/create', [MessageController::class, 'createMessage'])->name('message.create');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
