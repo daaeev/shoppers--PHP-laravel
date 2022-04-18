@@ -61,6 +61,7 @@ class SiteController extends Controller
     )
     {
         $user = $userRepository->getAuthenticated();
+
         $cart_array = unserialize($this->request->cookie('cart'));
         $products = $productRepository->getProductsByIds(array_keys($cart_array));
 
@@ -90,14 +91,25 @@ class SiteController extends Controller
         FilterProcessingInterface $filterProcessing
     )
     {
+        // GET-параметры запроса
         $get_params = $this->request->query();
+
+        // Массив коллекций из моделей, от которых зависит товар
         $filters_data = $productRepository->getFiltersData();
+
         $pageSize = 15;
         $catalog = new LengthAwarePaginator([], 0, $pageSize);
 
+        // Если в запросе имеются GET-параметры с 'зарезервированными' именами
         if ($filterProcessing->arrayHasFilters($this->request->query())) {
+
+            // Получить массив GET-параметров, которые относяться к фильтрам
             $filters = $filterProcessing->getFiltersFromArray($this->request->query());
+
+            // Парс массива фонфигураций
             $filters = $filterProcessing->processFiltersArray($filters);
+
+            // Поулчение товаров, используя фильтры
             $catalog = $productRepository->getCatalogWithPagAndFilters($filters, $pageSize);
         } else {
             $catalog = $productRepository->getCatalogWithPag($pageSize);
