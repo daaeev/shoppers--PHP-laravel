@@ -50,6 +50,8 @@ class SubscribeController extends Controller
     }
 
     /**
+     * Отписка пользователя от рассылки
+     *
      * @param UserRepositoryInterface $userRepository
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */

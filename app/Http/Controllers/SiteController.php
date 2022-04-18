@@ -74,7 +74,8 @@ class SiteController extends Controller
      */
     public function contact()
     {
-        return view('contact');
+        $request = $this->request;
+        return view('contact', compact('request'));
     }
 
     /**

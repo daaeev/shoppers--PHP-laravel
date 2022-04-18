@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Services\Interfaces\CategoryRepositoryInterface;
 use App\Services\Interfaces\ColorRepositoryInterface;
 use App\Services\Interfaces\CouponsRepositoryInterface;
+use App\Services\Interfaces\MessageRepositoryInterface;
 use App\Services\Interfaces\NewsRepositoryInterface;
 use App\Services\Interfaces\ProductRepositoryInterface;
 use App\Services\Interfaces\SizeRepositoryInterface;
@@ -198,6 +199,7 @@ class AdminController extends Controller
     /**
      * Метод отвечает за рендер 'news' админ панели
      *
+     * @param NewsRepositoryInterface $newsRepository
      * @return mixed
      */
     public function newsList(NewsRepositoryInterface $newsRepository)
@@ -216,5 +218,19 @@ class AdminController extends Controller
     public function newsCreateForm()
     {
         return view('admin.news_create_form');
+    }
+
+    /**
+     * Метод отвечает за рендер 'messages' админ панели
+     *
+     * @param MessageRepositoryInterface $messageRepository
+     * @return mixed
+     */
+    public function messagesList(MessageRepositoryInterface $messageRepository)
+    {
+        $input = new InputSource($this->request->query());
+        $grid = $messageRepository->getAllUsingGrid($input);
+
+        return view('admin.messages', compact('grid'));
     }
 }

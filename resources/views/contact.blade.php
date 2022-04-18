@@ -21,36 +21,39 @@
           </div>
           <div class="col-md-7">
 
-            <form action="#" method="post">
+            <form action="{{route('admin.message.create')}}" method="post">
+                @csrf
 
               <div class="p-3 p-lg-5 border">
+                  @include('admin.errors')
+
                 <div class="form-group row">
                   <div class="col-md-6">
                     <label for="c_fname" class="text-black">First Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="c_fname" name="c_fname">
+                    <input type="text" class="form-control" id="first_name" name="first_name" value="{{$request->query('first_name')}}">
                   </div>
                   <div class="col-md-6">
                     <label for="c_lname" class="text-black">Last Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="c_lname" name="c_lname">
+                    <input type="text" class="form-control" id="last_name" name="last_name" value="{{$request->query('last_name')}}">
                   </div>
                 </div>
                 <div class="form-group row">
                   <div class="col-md-12">
                     <label for="c_email" class="text-black">Email <span class="text-danger">*</span></label>
-                    <input type="email" class="form-control" id="c_email" name="c_email" placeholder="">
+                    <input type="email" class="form-control" id="user_email" name="email" placeholder="" value="{{$request->query('email')}}">
                   </div>
                 </div>
                 <div class="form-group row">
                   <div class="col-md-12">
                     <label for="c_subject" class="text-black">Subject </label>
-                    <input type="text" class="form-control" id="c_subject" name="c_subject">
+                    <input type="text" class="form-control" id="title" name="title" value="{{$request->query('title')}}">
                   </div>
                 </div>
 
                 <div class="form-group row">
                   <div class="col-md-12">
                     <label for="c_message" class="text-black">Message </label>
-                    <textarea name="c_message" id="c_message" cols="30" rows="7" class="form-control"></textarea>
+                    <textarea name="content" id="text" cols="30" rows="7" class="form-control">{{$request->query('content')}}</textarea>
                   </div>
                 </div>
                 <div class="form-group row">

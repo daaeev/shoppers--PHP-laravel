@@ -15,6 +15,8 @@ use App\Http\Controllers\ajax\CouponController as AjaxCouponController;
 use App\Http\Controllers\admin\TeammateController;
 use App\Http\Controllers\ajax\SubscribeController;
 use App\Http\Controllers\admin\NewsController;
+use App\Http\Controllers\users\MessageController;
+use App\Http\Controllers\admin\MessageController as AdminMessageController;
 
 
 Route::get('/', [SiteController::class, 'index'])->name('home');
@@ -29,6 +31,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/news/subscribe', [SubscribeController::class, 'createSub'])->name('news.sub');
     Route::get('/news/unsubscribe', [SubscribeController::class, 'unsubUser'])->name('news.unsub');
+
+    Route::post('/message/send', [MessageController::class, 'createMessage'])->name('admin.message.create');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -67,6 +71,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/news/create', [NewsController::class, 'createNews'])->name('admin.news.create');
     Route::post('/news/send', [NewsController::class, 'sendNews'])->name('admin.news.send');
 
+    Route::post('/message/set-status/answered', [AdminMessageController::class, 'setAnsweredStatus'])->name('admin.message.status-answered');
+    Route::get('/messages/clear', [AdminMessageController::class, 'deleteAnswered'])->name('admin.messages.clear');
+
 
     // !!!CRUD ROUTES!!!
 
@@ -83,6 +90,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/team/edit/form', [AdminController::class, 'teamEditForm'])->name('admin.team.edit.form');
     Route::get('/news', [AdminController::class, 'newsList'])->name('admin.news');
     Route::get('/news/create/form', [AdminController::class, 'newsCreateForm'])->name('admin.news.create.form');
+    Route::get('/messages', [AdminController::class, 'messagesList'])->name('admin.messages');
 
 });
 

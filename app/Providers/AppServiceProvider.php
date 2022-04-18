@@ -10,6 +10,7 @@ use App\Services\Interfaces\ColorRepositoryInterface;
 use App\Services\Interfaces\CouponsRepositoryInterface;
 use App\Services\Interfaces\FilterProcessingInterface;
 use App\Services\Interfaces\ImageProfilerInterface;
+use App\Services\Interfaces\MessageRepositoryInterface;
 use App\Services\Interfaces\NewsRepositoryInterface;
 use App\Services\Interfaces\ProductRepositoryInterface;
 use App\Services\Interfaces\SizeRepositoryInterface;
@@ -19,6 +20,7 @@ use App\Services\Interfaces\UserRepositoryInterface;
 use App\Services\Repositories\CategoryRepository;
 use App\Services\Repositories\ColorRepository;
 use App\Services\Repositories\CouponsRepository;
+use App\Services\Repositories\MessageRepository;
 use App\Services\Repositories\NewsRepository;
 use App\Services\Repositories\ProductRepository;
 use App\Services\Repositories\SizeRepository;
@@ -43,6 +45,7 @@ class AppServiceProvider extends ServiceProvider
         TeammatesRepositoryInterface::class => TeammatesRepository::class,
         NewsRepositoryInterface::class => NewsRepository::class,
         SubscribeRepositoryInterface::class => SubscribeRepository::class,
+        MessageRepositoryInterface::class => MessageRepository::class,
 
         // Services
         ImageProfilerInterface::class => ImageProfiler::class,

@@ -46,6 +46,13 @@ class NewsController extends Controller
         );
     }
 
+    /**
+     * Рассылка новости
+     *
+     * @param NewsRepositoryInterface $newsRepository
+     * @param SendNews $validate
+     * @return mixed
+     */
     public function sendNews(
         NewsRepositoryInterface $newsRepository,
         SendNews $validate
