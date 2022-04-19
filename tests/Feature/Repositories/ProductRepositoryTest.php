@@ -169,6 +169,23 @@ class ProductRepositoryTest extends TestCase
         $data = $this->repository->getCatalogWithPagAndFilters([]);
 
         $this->assertCount(2, $data->items());
+
+        // LIKE CLAUSE
+
+        $filters = ['like' => 'some name but not exists'];
+        $data = $this->repository->getCatalogWithPagAndFilters($filters);
+        $this->assertEmpty($data->items());
+
+        $filters = ['like' => ''];
+        $data = $this->repository->getCatalogWithPagAndFilters($filters);
+        $this->assertCount(2, $data->items());
+        $this->assertEquals($products[0]->id, ($data->items())[0]->id);
+        $this->assertEquals($products[1]->id, ($data->items())[1]->id);
+
+        $filters = ['like' => $products[0]->name];
+        $data = $this->repository->getCatalogWithPagAndFilters($filters);
+        $this->assertCount(1, $data->items());
+        $this->assertEquals($products[0]->id, ($data->items())[0]->id);
     }
 
     public function testGetCategoriesFiltersData()
