@@ -11,7 +11,8 @@ class FiltersProcessing implements Interfaces\FilterProcessingInterface
         'filt_category',
         'filt_color',
         'filt_size',
-        'order'
+        'order',
+        'search'
     ];
 
     /**
@@ -57,6 +58,8 @@ class FiltersProcessing implements Interfaces\FilterProcessingInterface
                 $result['where'][$new_key_name] = $value;
             } else if ($key == 'order') {
                 list($result[$key]['column'], $result[$key]['sort']) = explode('_', $value);
+            } else if ($key == 'search') {
+                $result['like'] = $value;
             }
         }
 

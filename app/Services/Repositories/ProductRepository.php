@@ -70,6 +70,10 @@ class ProductRepository implements \App\Services\Interfaces\ProductRepositoryInt
             }
         }
 
+        if (isset($filters['like'])) {
+            $query->where('name', 'like', '%' . $filters['like'] . '%');
+        }
+
         if (isset($filters['order'])) {
             $query->orderBy($filters['order']['column'], $filters['order']['sort']);
         }
