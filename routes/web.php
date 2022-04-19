@@ -43,7 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // ---ADMIN ROUTES---
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+Route::middleware(['can:isAdmin'])->prefix('admin')->group(function () {
     // ---CRUD ROUTES---
 
     Route::post('/user/role', [UserController::class, 'setRole'])->name('admin.users.role');

@@ -2,7 +2,6 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\AdminAccess;
 use App\Http\Middleware\GetCookieCartCount;
 use App\Http\Middleware\ProductsInCartMustExist;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -69,7 +68,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
-        'admin' => AdminAccess::class,
         'haveProductsInCart' => ProductsInCartMustExist::class,
     ];
 }

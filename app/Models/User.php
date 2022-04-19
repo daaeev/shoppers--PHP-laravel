@@ -17,8 +17,6 @@ class User extends Authenticatable
         'status' => 0,
     ];
 
-    protected $guarded = ['status'];
-
     /**
      * The attributes that are mass assignable.
      *
