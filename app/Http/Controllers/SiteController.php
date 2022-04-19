@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\UpdateExchangeRates;
 use App\Models\Product;
 use App\Services\Interfaces\FilterProcessingInterface;
 use App\Services\Interfaces\ProductRepositoryInterface;

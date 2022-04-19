@@ -25,6 +25,8 @@ class NewsEmailSend
         $mail = app(News::class, ['news' => $event->news]);
         $emails = $this->subscribeRepository->getEmails();
 
-        Mail::to($emails)->queue($mail);
+        if (!empty($emails->all())) {
+            Mail::to($emails)->queue($mail);
+        }
     }
 }

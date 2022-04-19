@@ -29,7 +29,7 @@ class NewsEmailSendTest extends TestCase
         Event::assertListening(NewsSend::class,NewsEmailSend::class);
     }
 
-    public function testListenerFunctional()
+    public function testListenerFunctionalIfEmailExist()
     {
         Mail::fake();
 
@@ -69,5 +69,34 @@ class NewsEmailSendTest extends TestCase
         Mail::assertQueued(MailNews::class, function ($mail) use ($collection) {
             return $mail->hasTo($collection);
         });
+    }
+
+    public function testListenerFunctionalIfEmailsNotExists()
+    {
+        Mail::fake();
+
+        $news = $this->getMockBuilder(News::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $rep_mock = $this->getMockBuilder(SubscribeRepository::class)
+            ->onlyMethods(['getEmails'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $collection = Collection::make([]);
+
+        $rep_mock->expects($this->once())
+            ->method('getEmails')
+            ->willReturn($collection);
+
+        $this->instance(
+            SubscribeRepositoryInterface::class,
+            $rep_mock
+        );
+
+        NewsSend::dispatch($news);
+
+        Mail::assertNothingQueued();
     }
 }
