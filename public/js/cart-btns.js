@@ -16,17 +16,6 @@ function nullifySubtotal()
     subTotalPriceDOM.text('0.00');
 }
 
-function setTotal(totalCost)
-{
-    totalPriceDOM.text(totalCost);
-}
-
-function setSubtotal(totalCost, discountPercent)
-{
-    let cost = (totalCost - (totalCost / 100 * discountPercent)).toFixed(2);
-    subTotalPriceDOM.text(cost);
-}
-
 // Реализация кнопки добавления продукта в корзину
 $('#add-to-cart-btn').click(function () {
     let button = $(this);
@@ -64,17 +53,12 @@ $('.remove-from-cart-btn').click(function () {
                 nullifyTotal();
                 nullifySubtotal();
             } else {
-
-                // Установка цен
-                let totalCost = (Number(totalPriceDOM.text()) - Number($('#product-' + product_id + ' .product-price').text()) * Number($('#product-' + product_id + ' .product-count').val())).toFixed(2);
-                let discountPercent = (document.querySelector('.coupon-percent')) ? Number(document.querySelector('.coupon-percent').textContent) : 0;
-
-                setTotal(totalCost);
-                setSubtotal(totalCost, discountPercent);
-
                 // Форматирование страницы
                 $('#product-' + product_id).remove();
                 $('#cart-elements-count').text(Number(($('#cart-elements-count').text()) - 1));
+
+                // Установка цен
+                init();
             }
         },
         error: error
