@@ -30,9 +30,11 @@
 
         <label>Currency</label>
         <select class="form-control mb-2" name="currency" required>
-            <option value="UAH">UAH</option>
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
+
+            @foreach(config('exchange.currencies', ['UAH']) as $cur)
+                <option value="{{$cur}}" @if ($cur === config('exchange.base', 'UAH')) selected @endif>{{$cur}}</option>
+            @endforeach
+
         </select>
 
         <input name="price" type="number" step="any" min="0" placeholder="Price (grivna)" class="form-control mb-2" autocomplete="off" required value="{{old('price')}}">

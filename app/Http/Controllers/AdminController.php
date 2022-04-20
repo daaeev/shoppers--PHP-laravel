@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Services\Interfaces\CategoryRepositoryInterface;
 use App\Services\Interfaces\ColorRepositoryInterface;
 use App\Services\Interfaces\CouponsRepositoryInterface;
+use App\Services\Interfaces\ExchangeRepositoryInterface;
 use App\Services\Interfaces\MessageRepositoryInterface;
 use App\Services\Interfaces\NewsRepositoryInterface;
 use App\Services\Interfaces\ProductRepositoryInterface;
@@ -221,7 +222,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Метод отвечает за рендер 'messages' админ панели
+     * Метод отвечает за рендер 'Messages' админ панели
      *
      * @param MessageRepositoryInterface $messageRepository
      * @return mixed
@@ -232,5 +233,19 @@ class AdminController extends Controller
         $grid = $messageRepository->getAllUsingGrid($input);
 
         return view('admin.messages', compact('grid'));
+    }
+
+    /**
+     * Метод отвечает за рендер 'Exchange' админ панели
+     *
+     * @param ExchangeRepositoryInterface $exchangeRepository
+     * @return mixed
+     */
+    public function exchangeList(ExchangeRepositoryInterface $exchangeRepository)
+    {
+        $input = new InputSource($this->request->query());
+        $grid = $exchangeRepository->getAllUsingGrid($input);
+
+        return view('admin.exchange', compact('grid'));
     }
 }

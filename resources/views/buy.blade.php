@@ -223,25 +223,29 @@
                     </thead>
                     <tbody>
                     @foreach($products as $product)
-                      <tr class="cart-product">
+                      <tr class="cart-product" data-price="{{$product->discount_price ? $product->discount_price : $product->price}}" data-currency="{{$product->currency}}">
                         <td><a href="{{route('catalog.single', ['product' => $product->slug])}}">{{$product->name}}</a><strong class="mx-2">x</strong> <input type="hidden" class="product-count" value="{{$cart_array[$product->id]['count']}}"> {{$cart_array[$product->id]['count']}}</td>
 
                         @if($product->discount_price)
-                            <td><s>{{$product->price}} {{$product->currency}}</s> <span class="product-price">{{$product->discount_price}}</span> <span class="product-currency">{{$product->currency}}</span></td>
+                            <td><s>{{number_format($product->price, 2)}} {{$product->currency}}</s> {{number_format($product->discount_price, 2)}} {{$product->currency}}</td>
                         @else
-                              <td><span class="product-price">{{$product->price}}</span> <span class="product-currency">{{$product->currency}}</span></td>
+                              <td>{{number_format($product->price, 2)}} {{$product->currency}}</td>
                         @endif
 
                       </tr>
                     @endforeach
 
+                    @foreach(config('exchange.currencies', ['UAH']) as $cur)
+                        <input type="hidden" class="exchange-rate" data-code="{{$cur}}" data-sale="{{$exchange[$cur]}}">
+                    @endforeach
+
                       <tr>
                         <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
-                        <td class="text-black font-weight-bold"><span class="subtotal-price">0.00</span> UAH</td>
+                        <td class="text-black font-weight-bold"><span class="subtotal-price">0.00</span> {{config('exchange.base')}}</td>
                       </tr>
                       <tr>
                         <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
-                        <td class="text-black font-weight-bold"><span class="total-price">0.00</span> UAH</td>
+                        <td class="text-black font-weight-bold"><span class="total-price">0.00</span> {{config('exchange.base')}}</td>
                       </tr>
                     </tbody>
                   </table>

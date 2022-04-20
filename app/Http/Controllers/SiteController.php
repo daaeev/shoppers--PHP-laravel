@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\UpdateExchangeRates;
 use App\Models\Product;
+use App\Services\Interfaces\ExchangeRepositoryInterface;
 use App\Services\Interfaces\FilterProcessingInterface;
 use App\Services\Interfaces\ProductRepositoryInterface;
 use App\Services\Interfaces\TeammatesRepositoryInterface;
 use App\Services\Interfaces\UserRepositoryInterface;
-use App\Services\Repositories\SubscribeRepository;
 use App\Services\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -33,13 +32,16 @@ class SiteController extends Controller
      *
      * @param ProductRepositoryInterface $productRepository
      * @param UserRepositoryInterface $userRepository
+     * @param ExchangeRepositoryInterface $exchangeRepository
      * @return mixed
      */
     public function cart(
         ProductRepositoryInterface $productRepository,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        ExchangeRepositoryInterface $exchangeRepository
     )
     {
+        $exchange = $exchangeRepository->getExchangeInfo();
         $user = $userRepository->getAuthenticated();
         $products = new Collection();
         $cart_array = unserialize($this->request->cookie('cart'));
@@ -48,7 +50,7 @@ class SiteController extends Controller
             $products = $productRepository->getProductsByIds(array_keys($cart_array));
         }
 
-        return view('cart', compact('products', 'cart_array', 'user'));
+        return view('cart', compact('products', 'cart_array', 'user', 'exchange'));
     }
 
     /**
@@ -58,15 +60,17 @@ class SiteController extends Controller
      */
     public function buy(
         UserRepositoryInterface $userRepository,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        ExchangeRepositoryInterface $exchangeRepository
     )
     {
         $user = $userRepository->getAuthenticated();
 
         $cart_array = unserialize($this->request->cookie('cart'));
         $products = $productRepository->getProductsByIds(array_keys($cart_array));
+        $exchange = $exchangeRepository->getExchangeInfo();
 
-        return view('buy', compact('user', 'products', 'cart_array'));
+        return view('buy', compact('user', 'products', 'cart_array', 'exchange'));
     }
 
     /**

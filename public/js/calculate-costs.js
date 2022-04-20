@@ -1,20 +1,22 @@
 const init = () => {
     let totalCost = 0;
     let subtotalCost = 0;
+    let exchange = {};
 
-    // TODO: API для полуения курса валют ... к гривне
-    // заглушка
-    const exchange = {
-        'UAH': 1,
-        'USD': 28,
-        'EUR': 32,
-    };
+    // Формирования массива с данными курса валют
+    [...$('.exchange-rate')].forEach((exc) => {
+        const excJQ = $(exc);
 
+        exchange[excJQ.data('code')] = Number(excJQ.data('sale'));
+    });
+
+    // Проход по всем продуктам в корзине и расчёт итоговорой и подитоговой цены
     [...$('.cart-product')].forEach((product) => {
-        const product_currency = $(product).find('.product-currency').text();
-        let product_price = Number($(product).find('.product-price').text()) * exchange[product_currency];
+        const productJQ = $(product);
+        const product_currency = productJQ.data('currency');
+        const product_price = Number(productJQ.data('price')) * exchange[product_currency];
 
-        totalCost += product_price * Number($(product).find('.product-count').val());
+        totalCost += product_price * Number(productJQ.find('.product-count').val());
 
         discountPercent = ($('.coupon-percent')) ? Number($('.coupon-percent').text()) : 0;
         subtotalCost = totalCost - (totalCost / 100 * discountPercent);

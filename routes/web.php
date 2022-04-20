@@ -17,6 +17,7 @@ use App\Http\Controllers\ajax\SubscribeController;
 use App\Http\Controllers\admin\NewsController;
 use App\Http\Controllers\users\MessageController;
 use App\Http\Controllers\admin\MessageController as AdminMessageController;
+use App\Http\Controllers\admin\ExchangeController;
 
 
 Route::get('/', [SiteController::class, 'index'])->name('home');
@@ -74,6 +75,7 @@ Route::middleware(['can:isAdmin'])->prefix('admin')->group(function () {
     Route::post('/message/set-status/answered', [AdminMessageController::class, 'setAnsweredStatus'])->name('admin.message.status-answered');
     Route::get('/messages/clear', [AdminMessageController::class, 'deleteAnswered'])->name('admin.messages.clear');
 
+    Route::get('/exchange/update', [ExchangeController::class, 'updateExchangeRates'])->name('admin.exchange.update');
 
     // !!!CRUD ROUTES!!!
 
@@ -91,6 +93,7 @@ Route::middleware(['can:isAdmin'])->prefix('admin')->group(function () {
     Route::get('/news', [AdminController::class, 'newsList'])->name('admin.news');
     Route::get('/news/create/form', [AdminController::class, 'newsCreateForm'])->name('admin.news.create.form');
     Route::get('/messages', [AdminController::class, 'messagesList'])->name('admin.messages');
+    Route::get('/exchange', [AdminController::class, 'exchangeList'])->name('admin.exchange');
 
 });
 

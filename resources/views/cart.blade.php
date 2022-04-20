@@ -33,7 +33,7 @@
                     <tbody>
 
                     @foreach($products as $product)
-                      <tr id="product-{{$product->id}}" class="cart-product">
+                      <tr id="product-{{$product->id}}" class="cart-product" data-price="{{$product->discount_price ? $product->discount_price : $product->price}}" data-currency="{{$product->currency}}">
                         <td class="product-thumbnail">
                           <img src="{{asset('storage/products_images/' . ($product->preview_image ?? $product->main_image))}}" alt="Image" class="img-fluid">
                         </td>
@@ -54,9 +54,9 @@
                           </td>
                         <td>
                             @if($product->discount_price)
-                                <s>{{number_format($product->price, 2)}} {{$product->currency}}</s> <span class="product-price">{{number_format($product->discount_price, 2)}}</span> <span class="product-currency">{{$product->currency}}</span>
+                                <s>{{number_format($product->price, 2)}} {{$product->currency}}</s> {{number_format($product->discount_price, 2)}} {{$product->currency}}
                             @else
-                                <span class="product-price">{{number_format($product->price, 2)}}</span> <span class="product-currency">{{$product->currency}}</span>
+                                {{number_format($product->price, 2)}} {{$product->currency}}
                             @endif
                         </td>
                         <td><button data-href="{{route('ajax.cart.remove', ['product_id' => $product->id])}}" class="btn btn-primary btn-sm remove-from-cart-btn">X</button></td>
@@ -128,12 +128,17 @@
                     <h3 class="text-black h4 text-uppercase">Cart Totals</h3>
                   </div>
                 </div>
+
+                  @foreach(config('exchange.currencies', ['UAH']) as $cur)
+                      <input type="hidden" class="exchange-rate" data-code="{{$cur}}" data-sale="{{$exchange[$cur]}}">
+                  @endforeach
+
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <span class="text-black">Subtotal</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <strong class="text-black"><span class="subtotal-price">0.00</span> UAH</strong>
+                    <strong class="text-black"><span class="subtotal-price">0.00</span> {{config('exchange.base', 'UAH')}}</strong>
                   </div>
                 </div>
                 <div class="row mb-5">
@@ -141,7 +146,7 @@
                     <span class="text-black">Total</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <strong class="text-black"><span class="total-price">0.00</span> UAH</strong>
+                    <strong class="text-black"><span class="total-price">0.00</span> <span id="total-currency">{{config('exchange.base', 'UAH')}}</span></strong>
                   </div>
                 </div>
 

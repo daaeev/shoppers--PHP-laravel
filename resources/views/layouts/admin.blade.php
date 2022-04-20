@@ -28,6 +28,7 @@
             <a class="btn btn-primary mx-3" href="{{route('admin.team')}}">Team</a>
             <a class="btn btn-primary mx-3" href="{{route('admin.news')}}">News</a>
             <a class="btn btn-primary mx-3" href="{{route('admin.messages')}}">Messages</a>
+            <a class="btn btn-primary mx-3" href="{{route('admin.exchange')}}">Exchange</a>
         </div>
     </nav>
 </header>
