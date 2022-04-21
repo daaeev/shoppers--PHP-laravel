@@ -29,7 +29,7 @@ class ExchangeController extends Controller
             );
         }
 
-        UpdateExchangeRates::dispatch()->onQueue(config('exchange.queue_name'));
+        UpdateExchangeRates::dispatch()->onQueue(config('exchange.queue_name', 'default'));
 
         return $this->withRedirectAndFlash(
             'status_success',
@@ -48,8 +48,8 @@ class ExchangeController extends Controller
     {
         // Если в таблице 'Jobs' имеются задания UpdateExchangeRates,
         // и если при их удалении произошла ошибка, то вернуть falsr
-        if (DB::table('jobs')->where('queue', config('exchange.queue_name'))->exists()) {
-            if (!DB::table('jobs')->where('queue', config('exchange.queue_name'))->delete()) {
+        if (DB::table('jobs')->where('queue', config('exchange.queue_name', 'default'))->exists()) {
+            if (!DB::table('jobs')->where('queue', config('exchange.queue_name', 'default'))->delete()) {
                 return false;
             }
         }

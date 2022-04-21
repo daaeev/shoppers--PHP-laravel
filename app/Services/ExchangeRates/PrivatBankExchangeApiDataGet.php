@@ -4,13 +4,20 @@ namespace App\Services\ExchangeRates;
 
 use App\Services\Interfaces;
 
-class PrivatBankExchangeApiDataGet implements Interfaces\ExchangeApiDataGetInterface
+class PrivatBankExchangeApiDataGet extends Interfaces\ExchangeApiDataGetInterface
 {
     /**
      * @inheritDoc
      */
     public function getAPIExchangeData(): mixed
     {
-        return file_get_contents('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5');
+        $data = $this->fileGetContentsWrapper
+            ->file_get_contents('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5');
+
+        if (!$data) {
+            throw new \Exception('API data get failed');
+        }
+
+        return $data;
     }
 }
