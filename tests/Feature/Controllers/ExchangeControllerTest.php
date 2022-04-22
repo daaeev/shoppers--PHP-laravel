@@ -6,7 +6,9 @@ use App\Jobs\UpdateExchangeRates;
 use App\Models\User;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
 class ExchangeControllerTest extends TestCase
@@ -23,6 +25,8 @@ class ExchangeControllerTest extends TestCase
             ->getMock();
 
         $this->user = User::factory()->createOne(['status' => User::$status_admin]);
+
+        Queue::fake([UpdateExchangeRates::class]);
     }
 
     public function testUpdateExchangeSuccessIfJobsExists()
@@ -45,13 +49,22 @@ class ExchangeControllerTest extends TestCase
             ->with('jobs')
             ->andReturn($this->db);
 
-        $this->expectsJobs(UpdateExchangeRates::class);
+        $date = Carbon::createFromDate(2022, 1, 1);
+        Carbon::setTestNow($date);
 
         $response = $this->actingAs($this->user)
             ->get(route('admin.exchange.update'))
             ->assertRedirect(route('admin.exchange'));
 
         $response->assertSessionHas('status_success');
+
+        Queue::assertPushed(UpdateExchangeRates::class, function ($job) use ($date) {
+            if ($job->queue == config('exchange.queue_name', 'default')) {
+                return true;
+            }
+
+            return false;
+        });
     }
 
     public function testUpdateExchangeSuccessIfJobsNotExists()
@@ -70,13 +83,22 @@ class ExchangeControllerTest extends TestCase
             ->with('jobs')
             ->andReturn($this->db);
 
-        $this->expectsJobs(UpdateExchangeRates::class);
+        $date = Carbon::createFromDate(2022, 1, 1);
+        Carbon::setTestNow($date);
 
         $response = $this->actingAs($this->user)
             ->get(route('admin.exchange.update'))
             ->assertRedirect(route('admin.exchange'));
 
         $response->assertSessionHas('status_success');
+
+        Queue::assertPushed(UpdateExchangeRates::class, function ($job) use ($date) {
+            if ($job->queue == config('exchange.queue_name', 'default')) {
+                return true;
+            }
+
+            return false;
+        });
     }
 
     public function testUpdateExchangeIfJobsNotExistsAndJobsDeleteFailed()

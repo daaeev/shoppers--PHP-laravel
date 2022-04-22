@@ -5,6 +5,8 @@ namespace Tests\Feature\Jobs;
 use App\Jobs\UpdateExchangeRates;
 use App\Models\Exchange;
 use App\Services\ExchangeRates\PrivatBankExchangeRates;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
 class UpdateExchangeTest extends TestCase
@@ -28,6 +30,8 @@ class UpdateExchangeTest extends TestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['process'])
             ->getMock();
+
+        Queue::fake([UpdateExchangeRates::class]);
     }
 
     public function testUpdateIfRowInDbExistsSuccess()
@@ -50,11 +54,23 @@ class UpdateExchangeTest extends TestCase
             ->method('process')
             ->willReturn($exchange_data);
 
+        $date = Carbon::createFromDate(2022, 1, 1);
+        Carbon::setTestNow($date);
+
         $job = app(UpdateExchangeRates::class);
 
-        $this->expectsJobs(UpdateExchangeRates::class);
-
         $job->handle($this->builder_mock, $this->exchange_rates_mock);
+
+        Queue::assertPushed(UpdateExchangeRates::class, function ($job) use ($date) {
+            if (
+                $job->delay == $date->addMinutes(config('exchange.interval', 60))
+                && $job->queue == config('exchange.queue_name', 'default')
+            ) {
+                return true;
+            }
+
+            return false;
+        });
     }
 
     public function testUpdateIfRowInDbNotExistsSuccess()
@@ -77,11 +93,23 @@ class UpdateExchangeTest extends TestCase
             ->method('process')
             ->willReturn($exchange_data);
 
+        $date = Carbon::createFromDate(2022, 1, 1);
+        Carbon::setTestNow($date);
+
         $job = app(UpdateExchangeRates::class);
 
-        $this->expectsJobs(UpdateExchangeRates::class);
-
         $job->handle($this->builder_mock, $this->exchange_rates_mock);
+
+        Queue::assertPushed(UpdateExchangeRates::class, function ($job) use ($date) {
+            if (
+                $job->delay == $date->addMinutes(config('exchange.interval', 60))
+                && $job->queue == config('exchange.queue_name', 'default')
+            ) {
+                return true;
+            }
+
+            return false;
+        });
     }
 
     public function testUpdateModelSaveFailed()
@@ -104,12 +132,25 @@ class UpdateExchangeTest extends TestCase
             ->method('process')
             ->willReturn($exchange_data);
 
+        $date = Carbon::createFromDate(2022, 1, 1);
+        Carbon::setTestNow($date);
+
         $job = app(UpdateExchangeRates::class);
 
-        $this->expectsJobs(UpdateExchangeRates::class);
         $this->expectException(\Exception::class);
 
         $job->handle($this->builder_mock, $this->exchange_rates_mock);
+
+        Queue::assertPushed(UpdateExchangeRates::class, function ($job) use ($date) {
+            if (
+                $job->delay == $date->addMinutes(config('exchange.interval', 60))
+                && $job->queue == config('exchange.queue_name', 'default')
+            ) {
+                return true;
+            }
+
+            return false;
+        });
     }
 
     public function testUpdateBuilderModelSaveFailed()
@@ -132,11 +173,24 @@ class UpdateExchangeTest extends TestCase
             ->method('process')
             ->willReturn($exchange_data);
 
+        $date = Carbon::createFromDate(2022, 1, 1);
+        Carbon::setTestNow($date);
+
         $job = app(UpdateExchangeRates::class);
 
-        $this->expectsJobs(UpdateExchangeRates::class);
         $this->expectException(\Exception::class);
 
         $job->handle($this->builder_mock, $this->exchange_rates_mock);
+
+        Queue::assertPushed(UpdateExchangeRates::class, function ($job) use ($date) {
+            if (
+                $job->delay == $date->addMinutes(config('exchange.interval', 60))
+                && $job->queue == config('exchange.queue_name', 'default')
+            ) {
+                return true;
+            }
+
+            return false;
+        });
     }
 }

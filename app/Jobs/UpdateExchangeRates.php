@@ -24,7 +24,7 @@ class UpdateExchangeRates implements ShouldQueue
     public function handle(Exchange $builder, ExchangeRatesProcess $exchange)
     {
         dispatch(new self())->delay(now()->addMinutes(config('exchange.interval', 60)))
-            ->onQueue(config('exchange.queue_name'));
+            ->onQueue(config('exchange.queue_name', 'default'));
 
         $data = $exchange->process();
 
