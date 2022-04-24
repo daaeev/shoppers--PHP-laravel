@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./:/var/www/
+      - ./_docker/nginx/conf.d/:/etc/nginx/conf.d/
+    ports:
+      -  '80:80'
+    container_name: dl-nginx
+    depends_on:
+      - php
+
+  php:
+    build:
+        context: .
+        dockerfile: _docker/php/Dockerfile
+    volumes:
+      - ./:/var/www/
+    container_name: dl-php
+    depends_on:
+        -   mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: dl-mysql
+    restart: always
+    cap_add:
+        - SYS_NICE
+    volumes:
+        - ./tmp/db:/var/lib/mysql
+        - ./_docker/mysql/init/:/docker-entrypoint-initdb.d/
+    ports:
+        -   '3306:3306'
+    environment:
+        MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        MYSQL_DATABASE: shoppers
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: dl-phpmyadmin
+    environment:
+        - PMA_ARBITRARY=1
+    environment:
+        PMA_HOST: mysql
+    restart: always
+    ports:
+        - '8081:80'
+    networks:
+        - default
+
