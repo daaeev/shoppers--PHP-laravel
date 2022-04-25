@@ -1,3 +1,29 @@
+# Интернет магазин одежды на PHP с использованием Laravel
+
+### Для развёртывания проекта следует:
+- Выполнить команду `composer install`
+- Выполнить команду `npm install && npm run dev` (`npm install; npm run dev` при использовании PowerShell)
+- Создать файл конфигурации `.env`; В проекте имеется файл `.env.os` (при использовании openserver) и `.env.docker` (при использовании докера) на основе которых можно создать файл конфигурации для среды разработки
+- Заполнить нужные поля в файле `.env`
+- Выполнить команду `php artisan key:generate` для генерации ключа шифрования
+- Выполнить команду `php artisan migrate` для исполнения созданных миграций
+- Выполнить команду `php artisan storage:link`
+- Создать две папки в директории `/public/storage`: `products_images` и `teammates_images`
+- При необходимости, выполнить команды для кеширования элементов проекта: конфигурации, маршрутов...
+
+### После выполнения указанных действий приложение будет готово к работе.
+
+### Я освоил:
+- Базовые навыки работы с докером (написание несложного docker-compose.yml и Dockerfile)
+- Тестирование Laravel приложения с использованием PHPUnit
+- Работа со сторонним API (получение курса валют)
+- Использование Gates в Laravel
+- Работа с событиями Laravel
+
+  и многое другое...
+
+<hr>
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
