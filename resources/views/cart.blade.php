@@ -33,7 +33,7 @@
                     <tbody>
 
                     @foreach($products as $product)
-                      <tr id="product-{{$product->id}}" class="cart-product" data-price="{{$product->discount_price ? $product->discount_price : $product->price}}" data-currency="{{$product->currency}}">
+                      <tr id="product-{{$product->id}}" class="cart-product" data-price="{{$product->discount_price ? $product->discount_price : $product->price}}" data-currency="{{$product->currency}}" data-count="{{$product->count}}">
                         <td class="product-thumbnail">
                           <img src="{{asset('storage/products_images/' . ($product->preview_image ?? $product->main_image))}}" alt="Image" class="img-fluid">
                         </td>
@@ -41,11 +41,11 @@
                           <h2 class="h5 text-black"><a href="{{route('catalog.single', ['product' => $product->slug])}}">{{$product->name}} ({{$product->size->name}})</a></h2>
                         </td>
                           <td>
-                              <div class="input-group mx-auto mb-3" style="max-width: 120px;">
+                              <div class="input-group mx-auto mb-3 count-input-block" style="max-width: 120px;">
                                   <div class="input-group-prepend">
                                       <button class="btn btn-outline-primary js-btn-minus product-count-minus-btn" data-product="{{$product->id}}" data-href="{{route('ajax.cart.product.minus', ['product_id' => $product->id])}}" type="button">&minus;</button>
                                   </div>
-                                  <input type="text" class="form-control text-center product-count" value="{{$cart_array[$product->id]['count']}}" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                                  <input type="text" class="form-control text-center product-count" value="{{$cart_array[$product->id]['count']}}">
                                   <div class="input-group-append">
                                       <button class="btn btn-outline-primary js-btn-plus product-count-plus-btn" data-product="{{$product->id}}" data-href="{{route('ajax.cart.product.plus', ['product_id' => $product->id])}}" type="button">&plus;</button>
                                   </div>

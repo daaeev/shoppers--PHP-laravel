@@ -16,6 +16,36 @@ function nullifySubtotal()
     subTotalPriceDOM.text('0.00');
 }
 
+// Сравнение количества товара в корзине и количество на складе.
+// В зависимости от ситуации - заблокировать кнопки, либо временно отключить возможность нажатия
+function checkMaxAvailableCount(productDOM) {
+    productDOM.find('.product-count-plus-btn').attr('disabled', true);
+    productDOM.find('.product-count-minus-btn').attr('disabled', true);
+
+    if (productDOM.find('.product-count').val() > 1) {
+        setTimeout(() => productDOM.find('.product-count-minus-btn').attr('disabled', false), 3000);
+    }
+
+    if (productDOM.find('.product-count').val() < productDOM.data('count')) {
+        productDOM.find('.max-available-count-input-error').remove();
+        setTimeout(() => productDOM.find('.product-count-plus-btn').attr('disabled', false), 3000);
+
+        return;
+    } else if (productDOM.find('.product-count').val() == productDOM.data('count')) {
+        productDOM.find('.max-available-count-input-error').remove();
+        productDOM.find('.count-input-block').append('<small class="text-danger w-100 text-center max-available-count-input-error">max quantity</small>');
+
+        return;
+    }
+}
+
+// Проход по всем продуктам в корзине сравнение количества товара в корзине с количеством на складе
+[...$('.cart-product')].forEach((product) => {
+    const productJQ = $(product);
+
+    checkMaxAvailableCount(productJQ);
+});
+
 // Реализация кнопки добавления продукта в корзину
 $('#add-to-cart-btn').click(function () {
     let button = $(this);
@@ -95,16 +125,14 @@ $('.product-count-plus-btn').click(function () {
     $.ajax({
         url: button.data('href'),
         method: 'GET',
-        beforeSend: function () {
-            button.attr('disabled', true);
-            setTimeout(() => button.attr('disabled', false), 3000);
-        },
         success: function(product_count) {
 
             // Если значение в куках не равно значению в инпуте
             if (product_count != productDOM.find('.product-count').val()) {
                 error();
             }
+
+            checkMaxAvailableCount(productDOM);
 
             // Расчет цен
             init();
@@ -122,16 +150,14 @@ $('.product-count-minus-btn').click(function () {
     $.ajax({
         url: button.data('href'),
         method: 'GET',
-        beforeSend: function () {
-            button.attr('disabled', true);
-            setTimeout(() => button.attr('disabled', false), 3000);
-        },
         success: function(product_count) {
 
             // Если значение в куках не равно значению в инпуте
             if (product_count != productDOM.find('.product-count').val()) {
                 error();
             }
+
+            checkMaxAvailableCount(productDOM);
 
             // Расчет цен
             init();
