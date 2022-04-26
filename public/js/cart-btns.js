@@ -23,12 +23,12 @@ function checkMaxAvailableCount(productDOM) {
     productDOM.find('.product-count-minus-btn').attr('disabled', true);
 
     if (productDOM.find('.product-count').val() > 1) {
-        setTimeout(() => productDOM.find('.product-count-minus-btn').attr('disabled', false), 3000);
+        setTimeout(() => productDOM.find('.product-count-minus-btn').attr('disabled', false), 1000);
     }
 
     if (productDOM.find('.product-count').val() < productDOM.data('count')) {
         productDOM.find('.max-available-count-input-error').remove();
-        setTimeout(() => productDOM.find('.product-count-plus-btn').attr('disabled', false), 3000);
+        setTimeout(() => productDOM.find('.product-count-plus-btn').attr('disabled', false), 1000);
 
         return;
     } else if (productDOM.find('.product-count').val() == productDOM.data('count')) {
