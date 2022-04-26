@@ -1,7 +1,7 @@
 const init = () => {
     let totalCost = 0;
     let subtotalCost = 0;
-    let exchange = {};
+    let exchange = [];
 
     // Формирования массива с данными курса валют
     [...$('.exchange-rate')].forEach((exc) => {
