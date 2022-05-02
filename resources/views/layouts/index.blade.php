@@ -81,7 +81,16 @@
                     <li>
                         <a href="{{route('about')}}">About</a>
                     </li>
-                    <li><a href="{{route('catalog')}}">Shop</a></li>
+                    <li class="has-children">
+                        <a href="{{route('catalog')}}">Shop</a>
+                        <ul class="dropdown">
+                            @foreach($categories as $cat)
+                                <li>
+                                    <a href="{{route('catalog', ['filt_category' => $cat->id])}}">{{$cat->name}}</a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </li>
                     <li><a href="{{route('contact')}}">Contact</a></li>
 
                     @admin
