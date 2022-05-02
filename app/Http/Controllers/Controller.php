@@ -16,6 +16,8 @@ class Controller extends BaseController
 
     /**
      * @param Request $request
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @return void
      */
     public function __construct(
         protected Request $request,
