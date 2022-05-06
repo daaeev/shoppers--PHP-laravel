@@ -52,7 +52,7 @@
 
                 <div class="form-group row">
                   <div class="col-md-12">
-                    <label for="c_message" class="text-black">Message </label>
+                    <label for="c_message" class="text-black">Message </label> <span class="text-danger">*</span>
                     <textarea name="content" id="text" cols="30" rows="7" class="form-control">{{$request->query('content')}}</textarea>
                   </div>
                 </div>

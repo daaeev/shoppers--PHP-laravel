@@ -42,7 +42,10 @@
 
         <input name="count" type="number" min="0" placeholder="Count" class="form-control mb-2" autocomplete="off" required value="{{old('count')}}">
 
+        <label for="main_image">Main image</label>
         <input name="main_image" id="main_image" type="file" class="form-control mb-2" autocomplete="off" accept="image/*" required>
+
+        <label for="preview_image">Preview image</label>
         <input name="preview_image" id="preview_image" type="file" class="form-control mb-2" autocomplete="off" accept="image/*">
 
         <input type="submit" class="btn btn-success" value="Create">

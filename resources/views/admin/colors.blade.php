@@ -10,6 +10,7 @@
 
         <label>Add color</label>
         <input name="name" type="text" placeholder="Color name" class="form-control mb-2" autocomplete="off" maxlength="255">
+        <input name="hex" type="text" placeholder="Hex" class="form-control mb-2" autocomplete="off" maxlength="10">
 
         <input type="submit" class="btn btn-success" value="Add">
     </form>

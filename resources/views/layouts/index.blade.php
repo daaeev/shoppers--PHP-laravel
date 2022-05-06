@@ -72,10 +72,10 @@
                     <li>
                         <a href="{{route('about')}}">About</a>
                     </li>
-                    <li @if(!empty($categories->all())) class="has-children" @endif>
+                    <li @if(!empty(@$categories?->all())) class="has-children" @endif>
                         <a href="{{route('catalog')}}">Shop</a>
 
-                        @if(!empty($categories->all()))
+                        @if(!empty(@$categories?->all()))
                             <ul class="dropdown">
                                 @foreach($categories as $cat)
                                     <li>

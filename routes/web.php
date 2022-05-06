@@ -27,7 +27,7 @@ Route::get('/contact', [SiteController::class, 'contact'])->name('contact');
 Route::get('/catalog', [SiteController::class, 'catalog'])->name('catalog');
 Route::get('/catalog/{product:slug}', [SiteController::class, 'single'])->name('catalog.single');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'can:notBanned'])->group(function () {
     Route::get('/profile', [SiteController::class, 'profile'])->name('profile');
 
     Route::post('/news/subscribe', [SubscribeController::class, 'createSub'])->name('news.sub');
@@ -36,7 +36,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/message/create', [MessageController::class, 'createMessage'])->name('message.create');
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'can:notBanned', 'verified'])->group(function () {
     Route::get('/cart/buy', [SiteController::class, 'buy'])->middleware('haveProductsInCart')->name('cart.buy');
     Route::get('/payment/thanks', [SiteController::class, 'payThanks'])->name('pay.thanks');
     Route::get('/payment/error', [SiteController::class, 'payError'])->name('pay.error');
@@ -44,7 +44,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // ---ADMIN ROUTES---
 
-Route::middleware(['can:isAdmin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'can:isAdmin'])->prefix('admin')->group(function () {
     // ---CRUD ROUTES---
 
     Route::post('/user/role', [UserController::class, 'setRole'])->name('admin.users.role');
@@ -111,7 +111,7 @@ Route::group(['prefix' => 'ajax'], function () {
 
     Route::post('/coupon/activate', [AjaxCouponController::class, 'activateCoupon'])
         ->name('ajax.coupon.activate')
-        ->middleware(['auth']);
+        ->middleware(['auth', 'can:notBanned']);
 });
 
 // !!!AJAX!!!

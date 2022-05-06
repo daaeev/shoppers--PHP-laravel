@@ -75,7 +75,7 @@ class AppServiceProvider extends ServiceProvider
             return $userRepository->getAuthenticated()?->isAdmin();
         });
 
-        Blade::if('notbanned', function () use ($userRepository) {
+        Blade::if('usernotbanned', function () use ($userRepository) {
             return !($userRepository->getAuthenticated()?->isBanned());
         });
     }

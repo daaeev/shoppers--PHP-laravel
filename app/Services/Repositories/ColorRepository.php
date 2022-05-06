@@ -41,6 +41,7 @@ class ColorRepository implements \App\Services\Interfaces\ColorRepositoryInterfa
         $grid = new Grid($provider, [
             new Column('id'),
             new Column('name'),
+            new Column('hex'),
             new PaginationControl($input->option('page', 1), $pageSize),
             new FilterControl('id', FilterOperation::OPERATOR_LIKE, $input->option('filt_id')),
             new FilterControl('name', FilterOperation::OPERATOR_LIKE, $input->option('filt_name')),
