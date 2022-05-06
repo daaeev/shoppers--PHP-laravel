@@ -66,21 +66,25 @@
         <nav class="site-navigation text-right text-md-center" role="navigation">
             <div class="container">
                 <ul class="site-menu js-clone-nav d-none d-md-block">
-                    <li class="has-children">
+                    <li>
                         <a href="{{route('home')}}">Home</a>
                     </li>
                     <li>
                         <a href="{{route('about')}}">About</a>
                     </li>
-                    <li class="has-children">
+                    <li @if(!empty($categories->all())) class="has-children" @endif>
                         <a href="{{route('catalog')}}">Shop</a>
-                        <ul class="dropdown">
-                            @foreach($categories as $cat)
-                                <li>
-                                    <a href="{{route('catalog', ['filt_category' => $cat->id])}}">{{$cat->name}}</a>
-                                </li>
-                            @endforeach
-                        </ul>
+
+                        @if(!empty($categories->all()))
+                            <ul class="dropdown">
+                                @foreach($categories as $cat)
+                                    <li>
+                                        <a href="{{route('catalog', ['filt_category' => $cat->id])}}">{{$cat->name}}</a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
+
                     </li>
                     <li><a href="{{route('contact')}}">Contact</a></li>
 

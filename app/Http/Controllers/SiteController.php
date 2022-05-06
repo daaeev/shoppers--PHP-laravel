@@ -111,10 +111,10 @@ class SiteController extends Controller
             // Получить массив GET-параметров, которые относяться к фильтрам
             $filters = $filterProcessing->getFiltersFromArray($this->request->query());
 
-            // Парс массива фонфигураций
+            // Парс массива с фильтрами
             $filters = $filterProcessing->processFiltersArray($filters);
 
-            // Поулчение товаров, используя фильтры
+            // Получение товаров, используя фильтры
             $catalog = $productRepository->getCatalogWithPagAndFilters($filters, $pageSize);
         } else {
             $catalog = $productRepository->getCatalogWithPag($pageSize);

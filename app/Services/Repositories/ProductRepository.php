@@ -76,6 +76,7 @@ class ProductRepository implements \App\Services\Interfaces\ProductRepositoryInt
 
         if (isset($filters['order'])) {
             $query->orderBy($filters['order']['column'], $filters['order']['sort']);
+            // TODO: Сортировка по цене с учетом валюты
         }
 
         return $query->paginate($pageSize);
