@@ -33,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('notBanned', function (User $user) {
-            return !$user->isBanned();
+            return !($user->isBanned());
         });
     }
 }

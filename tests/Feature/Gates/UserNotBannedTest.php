@@ -1,17 +1,17 @@
 <?php
 
-namespace Gates;
+namespace Tests\Feature\Gates;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
-class AdminAccessTest extends TestCase
+class UserNotBannedTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected string $route = '/admin-gate-test-route';
+    protected string $route = '/not-banned-gate-test-route';
 
     public function setUp(): void
     {
@@ -19,21 +19,21 @@ class AdminAccessTest extends TestCase
 
         Route::get($this->route, function () {
             return true;
-        })->middleware('can:isAdmin');
+        })->middleware('can:notBanned');
     }
 
-    public function testIfAdmin()
+    public function testIfNotBanned()
     {
-        $user = User::factory()->createOne(['status' => User::$status_admin]);
+        $user = User::factory()->createOne();
 
         $this->actingAs($user)
             ->get($this->route)
             ->assertOk();
     }
 
-    public function testIfNotAdmin()
+    public function testIfBanned()
     {
-        $user = User::factory()->createOne();
+        $user = User::factory()->createOne(['status' => User::$status_banned]);
 
         $this->actingAs($user)
             ->get($this->route)
