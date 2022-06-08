@@ -29,7 +29,7 @@ services:
     cap_add:
         - SYS_NICE
     volumes:
-        - ./tmp/db:/var/lib/mysql
+        - ./_docker/tmp/db:/var/lib/mysql
         - ./_docker/mysql/init/:/docker-entrypoint-initdb.d/
     ports:
         -   '3306:3306'
@@ -43,8 +43,7 @@ services:
     container_name: dl-phpmyadmin
     environment:
         - PMA_ARBITRARY=1
-    environment:
-        PMA_HOST: mysql
+        - PMA_HOST=mysql   
     restart: always
     ports:
         - '8081:80'
