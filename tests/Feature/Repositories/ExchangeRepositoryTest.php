@@ -34,18 +34,18 @@ class ExchangeRepositoryTest extends TestCase
 
     public function testGetExchangeInfoIfNotExists()
     {
-        $this->expectException(ModelNotFoundException::class);
+        $this->expectException(\Exception::class);
 
         $this->repository->getExchangeInfo();
     }
 
     public function testGetExchangeSuccess()
     {
-        Exchange::factory()->createOne();
+        Exchange::factory()->createOne(['currency_code' => 'UAH']);
+        Exchange::factory()->createOne(['currency_code' => 'USD']);
+        Exchange::factory()->createOne(['currency_code' => 'EUR']);
 
         $data = $this->repository->getExchangeInfo();
-
-        $this->assertArrayNotHasKey('id', $data);
 
         $currs = config('exchange.currencies');
 

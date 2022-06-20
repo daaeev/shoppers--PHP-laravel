@@ -32,7 +32,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropForeign('fk-users-coupon_id');
-
+            $table->dropIndex('fk-users-coupon_id');
             $table->dropColumn('coupon_id');
         });
     }

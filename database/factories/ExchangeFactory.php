@@ -16,16 +16,9 @@ class ExchangeFactory extends Factory
      */
     public function definition()
     {
-        $def = [];
-        $def['UAH'] = 1;
-
-        $currs = config('exchange.currencies', [config('exchange.base', 'UAH')]);
-        unset($currs[config('exchange.base', 'UAH')]);
-
-        foreach ($currs as $cur) {
-            $def[$cur] = $this->faker->numberBetween(1, 50);
-        }
-
-        return $def;
+        return [
+            'currency_code' => $this->faker->unique()->currencyCode(),
+            'exchange' => 1
+        ];
     }
 }

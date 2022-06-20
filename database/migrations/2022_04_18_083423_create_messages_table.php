@@ -39,6 +39,7 @@ return new class extends Migration
     {
         Schema::table('messages', function (Blueprint $table) {
             $table->dropForeign('fk-messages-user_id');
+            $table->dropIndex('fk-messages-user_id');
         });
 
         Schema::dropIfExists('messages');

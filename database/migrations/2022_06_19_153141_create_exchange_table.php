@@ -14,10 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('exchange_rates', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedFloat('UAH');
-            $table->unsignedFloat('USD');
-            $table->unsignedFloat('EUR');
+            $table->string('currency_code', 10)->primary();
+            $table->float('exchange', 8, 2, true);
         });
     }
 

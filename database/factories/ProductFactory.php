@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Category;
 use App\Models\Color;
+use App\Models\Exchange;
 use App\Models\Size;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -24,7 +25,7 @@ class ProductFactory extends Factory
             'name' => Str::random(),
             'subname' => $this->faker->sentence(5),
             'description' => $this->faker->text(),
-            'currency' => 'UAH',
+            'currency' => Exchange::factory()->createOne()->currency_code,
             'price' => $this->faker->numberBetween(0, 100),
             'discount_price' => 0,
             'category_id' => Category::factory(),

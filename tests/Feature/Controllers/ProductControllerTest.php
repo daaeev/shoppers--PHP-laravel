@@ -4,6 +4,7 @@ namespace Tests\Feature\Controllers;
 
 use App\Models\Category;
 use App\Models\Color;
+use App\Models\Exchange;
 use App\Models\Product;
 use App\Models\Size;
 use App\Models\User;
@@ -51,6 +52,7 @@ class ProductControllerTest extends TestCase
         $category = Category::factory()->createOne();
         $color = Color::factory()->createOne();
         $size = Size::factory()->createOne();
+        $exc = Exchange::factory()->createOne()->currency_code;
 
         $request_data = [
             'name' => 'name',
@@ -58,7 +60,7 @@ class ProductControllerTest extends TestCase
             'description' => 'descr',
             'category_id' => $category->id,
             'color_id' => $color->id,
-            'size_id' => $size->id, 'currency' => 'UAH',
+            'size_id' => $size->id, 'currency' => $exc,
             'price' => '120',
             'discount_price' => null,
             'count' => 2,
@@ -105,7 +107,7 @@ class ProductControllerTest extends TestCase
                 'description' => 'descr',
                 'category_id' => $category->id,
                 'color_id' => $color->id,
-                'size_id' => $size->id, 'currency' => 'UAH',
+                'size_id' => $size->id, 'currency' => $exc,
                 'price' => '120',
                 'discount_price' => null,
                 'count' => 2,
@@ -130,6 +132,7 @@ class ProductControllerTest extends TestCase
         $category = Category::factory()->createOne();
         $color = Color::factory()->createOne();
         $size = Size::factory()->createOne();
+        $exc = Exchange::factory()->createOne()->currency_code;
 
         $request_data = [
             'name' => 'name',
@@ -137,7 +140,7 @@ class ProductControllerTest extends TestCase
             'description' => 'descr',
             'category_id' => $category->id,
             'color_id' => $color->id,
-            'size_id' => $size->id, 'currency' => 'UAH',
+            'size_id' => $size->id, 'currency' => $exc,
             'price' => '120',
             'discount_price' => null,
             'count' => 2,
@@ -185,7 +188,7 @@ class ProductControllerTest extends TestCase
                 'description' => 'descr',
                 'category_id' => $category->id,
                 'color_id' => $color->id,
-                'size_id' => $size->id, 'currency' => 'UAH',
+                'size_id' => $size->id, 'currency' => $exc,
                 'price' => '120',
                 'discount_price' => null,
                 'count' => 2,
@@ -210,6 +213,7 @@ class ProductControllerTest extends TestCase
         $category = Category::factory()->createOne();
         $color = Color::factory()->createOne();
         $size = Size::factory()->createOne();
+        $exc = Exchange::factory()->createOne()->currency_code;
 
         $request_data = [
             'name' => 'name',
@@ -217,7 +221,7 @@ class ProductControllerTest extends TestCase
             'description' => 'descr',
             'category_id' => $category->id,
             'color_id' => $color->id,
-            'size_id' => $size->id, 'currency' => 'UAH',
+            'size_id' => $size->id, 'currency' => $exc,
             'price' => '120',
             'discount_price' => null,
             'count' => 2,
@@ -260,6 +264,7 @@ class ProductControllerTest extends TestCase
         $category = Category::factory()->createOne();
         $color = Color::factory()->createOne();
         $size = Size::factory()->createOne();
+        $exc = Exchange::factory()->createOne()->currency_code;
 
         $request_data = [
             'name' => 'name',
@@ -267,7 +272,7 @@ class ProductControllerTest extends TestCase
             'description' => 'descr',
             'category_id' => $category->id,
             'color_id' => $color->id,
-            'size_id' => $size->id, 'currency' => 'UAH',
+            'size_id' => $size->id, 'currency' => $exc,
             'price' => '120',
             'discount_price' => null,
             'count' => 2,
@@ -309,6 +314,7 @@ class ProductControllerTest extends TestCase
         $category = Category::factory()->createOne();
         $color = Color::factory()->createOne();
         $size = Size::factory()->createOne();
+        $exc = Exchange::factory()->createOne()->currency_code;
 
         $request_data = [
             'name' => 'name',
@@ -316,7 +322,7 @@ class ProductControllerTest extends TestCase
             'description' => 'descr',
             'category_id' => $category->id,
             'color_id' => $color->id,
-            'size_id' => $size->id, 'currency' => 'UAH',
+            'size_id' => $size->id, 'currency' => $exc,
             'price' => '120',
             'discount_price' => null,
             'count' => 2,
@@ -367,7 +373,7 @@ class ProductControllerTest extends TestCase
                 'description' => 'descr',
                 'category_id' => $category->id,
                 'color_id' => $color->id,
-                'size_id' => $size->id, 'currency' => 'UAH',
+                'size_id' => $size->id, 'currency' => $exc,
                 'price' => '120',
                 'discount_price' => null,
                 'count' => 2,
@@ -392,6 +398,7 @@ class ProductControllerTest extends TestCase
         $category = Category::factory()->createOne();
         $color = Color::factory()->createOne();
         $size = Size::factory()->createOne();
+        $exc = Exchange::factory()->createOne()->currency_code;
 
         $request_data = [
             'name' => 'name',
@@ -399,7 +406,7 @@ class ProductControllerTest extends TestCase
             'description' => 'descr',
             'category_id' => $category->id,
             'color_id' => $color->id,
-            'size_id' => $size->id, 'currency' => 'UAH',
+            'size_id' => $size->id, 'currency' => $exc,
             'price' => '120',
             'discount_price' => null,
             'count' => 2,
@@ -457,7 +464,7 @@ class ProductControllerTest extends TestCase
                 'description' => 'descr',
                 'category_id' => $category->id,
                 'color_id' => $color->id,
-                'size_id' => $size->id, 'currency' => 'UAH',
+                'size_id' => $size->id, 'currency' => $exc,
                 'price' => '120',
                 'discount_price' => null,
                 'count' => 2,
@@ -852,7 +859,7 @@ class ProductControllerTest extends TestCase
             'category_id' => $category_edited_id,
             'color_id' => $color_edited_id,
             'size_id' => $size_edited_id,
-            'price' => 125, 'currency' => 'UAH',
+            'price' => 125, 'currency' => $product->currency,
             'discount_price' => 110,
             'count' => 1,
         ];
@@ -909,7 +916,7 @@ class ProductControllerTest extends TestCase
             'category_id' => $product->category_id,
             'color_id' => $product->color_id,
             'size_id' => $product->size_id,
-            'price' => 125, 'currency' => 'UAH',
+            'price' => 125, 'currency' => $product->currency,
             'discount_price' => 110,
             'count' => 1,
         ];
@@ -964,7 +971,7 @@ class ProductControllerTest extends TestCase
             'category_id' => $product->category_id,
             'color_id' => $product->color_id,
             'size_id' => $product->size_id,
-            'price' => 125, 'currency' => 'UAH',
+            'price' => 125, 'currency' => $product->currency,
             'discount_price' => 110,
             'count' => 1,
             'main_image' => $this->image,
@@ -989,7 +996,7 @@ class ProductControllerTest extends TestCase
                 'category_id' => $product->category_id,
                 'color_id' => $product->color_id,
                 'size_id' => $product->size_id,
-                'price' => 125, 'currency' => 'UAH',
+                'price' => 125, 'currency' => $product->currency,
                 'discount_price' => 110,
                 'count' => 1,
                 'main_image' => 'new_image_hash.png',
@@ -1060,7 +1067,7 @@ class ProductControllerTest extends TestCase
             'category_id' => $product->category_id,
             'color_id' => $product->color_id,
             'size_id' => $product->size_id,
-            'price' => 125, 'currency' => 'UAH',
+            'price' => 125, 'currency' => $product->currency,
             'discount_price' => 110,
             'count' => 1,
             'main_image' => $this->image,
@@ -1085,7 +1092,7 @@ class ProductControllerTest extends TestCase
                 'category_id' => $product->category_id,
                 'color_id' => $product->color_id,
                 'size_id' => $product->size_id,
-                'price' => 125, 'currency' => 'UAH',
+                'price' => 125, 'currency' => $product->currency,
                 'discount_price' => 110,
                 'count' => 1,
                 'main_image' => 'new_image_hash.png',
@@ -1156,7 +1163,7 @@ class ProductControllerTest extends TestCase
             'category_id' => $product->category_id,
             'color_id' => $product->color_id,
             'size_id' => $product->size_id,
-            'price' => 125, 'currency' => 'UAH',
+            'price' => 125, 'currency' => $product->currency,
             'discount_price' => 110,
             'count' => 1,
             'main_image' => $this->image,
@@ -1181,7 +1188,7 @@ class ProductControllerTest extends TestCase
                 'category_id' => $product->category_id,
                 'color_id' => $product->color_id,
                 'size_id' => $product->size_id,
-                'price' => 125, 'currency' => 'UAH',
+                'price' => 125, 'currency' => $product->currency,
                 'discount_price' => 110,
                 'count' => 1,
                 'main_image' => 'new_image_hash.png',
@@ -1252,7 +1259,7 @@ class ProductControllerTest extends TestCase
             'category_id' => $product->category_id,
             'color_id' => $product->color_id,
             'size_id' => $product->size_id,
-            'price' => 125, 'currency' => 'UAH',
+            'price' => 125, 'currency' => $product->currency,
             'discount_price' => 110,
             'count' => 1,
             'main_image' => $this->image,
@@ -1315,7 +1322,7 @@ class ProductControllerTest extends TestCase
             'category_id' => $product->category_id,
             'color_id' => $product->color_id,
             'size_id' => $product->size_id,
-            'price' => 125, 'currency' => 'UAH',
+            'price' => 125, 'currency' => $product->currency,
             'discount_price' => 110,
             'count' => 1,
             'preview_image' => $this->image,
@@ -1340,7 +1347,7 @@ class ProductControllerTest extends TestCase
                 'category_id' => $product->category_id,
                 'color_id' => $product->color_id,
                 'size_id' => $product->size_id,
-                'price' => 125, 'currency' => 'UAH',
+                'price' => 125, 'currency' => $product->currency,
                 'discount_price' => 110,
                 'count' => 1,
                 'preview_image' => 'new_image_hash.png',
@@ -1358,7 +1365,7 @@ class ProductControllerTest extends TestCase
             'category_id' => $product->category_id,
             'color_id' => $product->color_id,
             'size_id' => $product->size_id,
-            'price' => 125, 'currency' => 'UAH',
+            'price' => 125, 'currency' => $product->currency,
             'discount_price' => 110,
             'count' => 1,
             'preview_image' => $this->image,
@@ -1426,7 +1433,7 @@ class ProductControllerTest extends TestCase
             'category_id' => $product->category_id,
             'color_id' => $product->color_id,
             'size_id' => $product->size_id,
-            'price' => 125, 'currency' => 'UAH',
+            'price' => 125, 'currency' => $product->currency,
             'discount_price' => 110,
             'count' => 1,
             'preview_image' => $this->image,
@@ -1451,7 +1458,7 @@ class ProductControllerTest extends TestCase
                 'category_id' => $product->category_id,
                 'color_id' => $product->color_id,
                 'size_id' => $product->size_id,
-                'price' => 125, 'currency' => 'UAH',
+                'price' => 125, 'currency' => $product->currency,
                 'discount_price' => 110,
                 'count' => 1,
                 'preview_image' => 'new_image_hash.png',
@@ -1523,7 +1530,7 @@ class ProductControllerTest extends TestCase
             'category_id' => $product->category_id,
             'color_id' => $product->color_id,
             'size_id' => $product->size_id,
-            'price' => 125, 'currency' => 'UAH',
+            'price' => 125, 'currency' => $product->currency,
             'discount_price' => 110,
             'count' => 1,
             'preview_image' => $this->image,
@@ -1548,7 +1555,7 @@ class ProductControllerTest extends TestCase
                 'category_id' => $product->category_id,
                 'color_id' => $product->color_id,
                 'size_id' => $product->size_id,
-                'price' => 125, 'currency' => 'UAH',
+                'price' => 125, 'currency' => $product->currency,
                 'discount_price' => 110,
                 'count' => 1,
                 'preview_image' => 'new_image_hash.png',
@@ -1620,7 +1627,7 @@ class ProductControllerTest extends TestCase
             'category_id' => $product->category_id,
             'color_id' => $product->color_id,
             'size_id' => $product->size_id,
-            'price' => 125, 'currency' => 'UAH',
+            'price' => 125, 'currency' => $product->currency,
             'discount_price' => 110,
             'count' => 1,
             'preview_image' => $this->image,
@@ -1683,7 +1690,7 @@ class ProductControllerTest extends TestCase
             'category_id' => $product->category_id,
             'color_id' => $product->color_id,
             'size_id' => $product->size_id,
-            'price' => 125, 'currency' => 'UAH',
+            'price' => 125, 'currency' => $product->currency,
             'discount_price' => 110,
             'count' => 1,
             'main_image' => $this->image,
@@ -1709,7 +1716,7 @@ class ProductControllerTest extends TestCase
                 'category_id' => $product->category_id,
                 'color_id' => $product->color_id,
                 'size_id' => $product->size_id,
-                'price' => 125, 'currency' => 'UAH',
+                'price' => 125, 'currency' => $product->currency,
                 'discount_price' => 110,
                 'count' => 1,
                 'main_image' => 'new_image_hash1.png',
@@ -1792,7 +1799,7 @@ class ProductControllerTest extends TestCase
             'category_id' => $product->category_id,
             'color_id' => $product->color_id,
             'size_id' => $product->size_id,
-            'price' => 125, 'currency' => 'UAH',
+            'price' => 125, 'currency' => $product->currency,
             'discount_price' => 110,
             'count' => 1,
             'main_image' => $this->image,
@@ -1818,7 +1825,7 @@ class ProductControllerTest extends TestCase
                 'category_id' => $product->category_id,
                 'color_id' => $product->color_id,
                 'size_id' => $product->size_id,
-                'price' => 125, 'currency' => 'UAH',
+                'price' => 125, 'currency' => $product->currency,
                 'discount_price' => 110,
                 'count' => 1,
                 'main_image' => 'new_image_hash1.png',
@@ -1901,7 +1908,7 @@ class ProductControllerTest extends TestCase
             'category_id' => $product->category_id,
             'color_id' => $product->color_id,
             'size_id' => $product->size_id,
-            'price' => 125, 'currency' => 'UAH',
+            'price' => 125, 'currency' => $product->currency,
             'discount_price' => 110,
             'count' => 1,
             'main_image' => $this->image,
@@ -1927,7 +1934,7 @@ class ProductControllerTest extends TestCase
                 'category_id' => $product->category_id,
                 'color_id' => $product->color_id,
                 'size_id' => $product->size_id,
-                'price' => 125, 'currency' => 'UAH',
+                'price' => 125, 'currency' => $product->currency,
                 'discount_price' => 110,
                 'count' => 1,
                 'main_image' => 'new_image_hash1.png',
@@ -2010,7 +2017,7 @@ class ProductControllerTest extends TestCase
             'category_id' => $product->category_id,
             'color_id' => $product->color_id,
             'size_id' => $product->size_id,
-            'price' => 125, 'currency' => 'UAH',
+            'price' => 125, 'currency' => $product->currency,
             'discount_price' => 110,
             'count' => 1,
             'main_image' => $this->image,

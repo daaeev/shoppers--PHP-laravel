@@ -3,9 +3,11 @@
 namespace App\Services\Repositories;
 
 use App\Models\Exchange;
+use Exception;
 use ViewComponents\Eloquent\EloquentDataProvider;
 use ViewComponents\Grids\Component\Column;
 use ViewComponents\Grids\Grid;
+use ViewComponents\ViewComponents\Component\Control\PaginationControl;
 use ViewComponents\ViewComponents\Customization\CssFrameworks\BootstrapStyling;
 use ViewComponents\ViewComponents\Input\InputSource;
 
@@ -16,16 +18,19 @@ class ExchangeRepository implements \App\Services\Interfaces\ExchangeRepositoryI
      */
     public function getExchangeInfo(): array
     {
-        $data = Exchange::firstOrFail()->attributesToArray();
-        unset($data['id']);
+        $exchange = array_column(
+            Exchange::get()->toArray(),
+            'exchange',
+            'currency_code'
+        );
 
-        foreach (config('exchange.currencies', ['UAH']) as $cur) {
-            if (!array_key_exists($cur, $data)) {
-                throw new \Exception($cur . ' exchange rate not found');
+        foreach (config('exchange.currencies', [config('exchange.base')]) as $curr_code) {
+            if (!array_key_exists($curr_code, $exchange)) {
+                throw new Exception('Supported currency is not in the exchange rate', 404);
             }
         }
 
-        return $data;
+        return $exchange;
     }
 
     /**
@@ -35,13 +40,11 @@ class ExchangeRepository implements \App\Services\Interfaces\ExchangeRepositoryI
     {
         $provider = new EloquentDataProvider(Exchange::query());
 
-        $columns = [];
-
-        foreach (config('exchange.currencies', ['UAH']) as $cur) {
-            $columns[] = new Column($cur);
-        }
-
-        $grid = new Grid($provider, $columns);
+        $grid = new Grid($provider, [
+            new Column('currency_code'),
+            new Column('exchange'),
+            new PaginationControl($input->option('page', 1), $pageSize),
+        ]);
 
         $styles = new BootstrapStyling();
         $styles->apply($grid);

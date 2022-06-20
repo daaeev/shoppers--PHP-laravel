@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Exchange;
 use App\Services\Interfaces\ExchangeRatesProcess;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -26,33 +27,17 @@ class UpdateExchangeRates implements ShouldQueue
         dispatch(new self())->delay(now()->addMinutes(config('exchange.interval', 60)))
             ->onQueue(config('exchange.queue_name', 'default'));
 
-        $data = $exchange->process();
+        $exchange_rates = $exchange->process();
 
-        $model = $builder->first();
-
-        // Если запись найдена - изменить её,
-        // иначе создать новую
-        if ($model) {
-            $this->saveModel($model, $data);
+        if (!empty($exchange_rates)) {
+            foreach ($exchange_rates as $curr_code => $exc) {
+                $builder->updateOrCreate(
+                    ['currency_code' => $curr_code],
+                    ['exchange' => $exc]
+                );
+            }
         } else {
-            $this->saveModel($builder, $data);
-        }
-    }
-
-    /**
-     * Сохранение модели $model со свойствами $data
-     *
-     * @param Exchange $model экземпляр модели
-     * @param array $data свойства, устанавливаемые модели
-     * @return void
-     * @throws \Exception при возникновении ошибки сохранения данных
-     */
-    protected function saveModel(Exchange $model, array $data)
-    {
-        $model->setRawAttributes($data);
-
-        if (!$model->save()) {
-            throw new \Exception('Database error');
+            throw new Exception('Exchange API data is empty', 404);
         }
     }
 }

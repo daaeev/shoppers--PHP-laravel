@@ -9,7 +9,7 @@ class Exchange extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['*'];
+    protected $guarded = [];
 
     protected $table = 'exchange_rates';
 

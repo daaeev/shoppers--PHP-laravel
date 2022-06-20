@@ -75,8 +75,17 @@ class ProductRepository implements \App\Services\Interfaces\ProductRepositoryInt
         }
 
         if (isset($filters['order'])) {
-            $query->orderBy($filters['order']['column'], $filters['order']['sort']);
-            // TODO: Сортировка по цене с учетом валюты
+            if ($filters['order']['column'] == 'name') {
+                $query->orderBy($filters['order']['column'], $filters['order']['sort']);
+
+            } else if ($filters['order']['column'] == 'price') {
+                $query->join(
+                    'exchange_rates', 
+                    'exchange_rates.currency_code',
+                    '=',
+                    'products.currency'
+                )->orderByRaw('products.price * exchange_rates.exchange ' . $filters['order']['sort']);
+            }
         }
 
         return $query->paginate($pageSize);

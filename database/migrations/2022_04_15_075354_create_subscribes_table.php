@@ -34,6 +34,7 @@ return new class extends Migration
     {
         Schema::table('subscribes', function (Blueprint $table) {
             $table->dropForeign('fk-subscribes-user_id');
+            $table->dropIndex('fk-subscribes-user_id');
         });
 
         Schema::dropIfExists('subscribes');

@@ -3,6 +3,7 @@
 namespace Tests\Feature\Requests;
 
 use App\Http\Requests\EditProduct;
+use App\Models\Exchange;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -53,14 +54,14 @@ class EditProductTest extends TestCase
 
     public function testIfNotAuth()
     {
-        $response = $this->post($this->route)->assertForbidden();
+        $this->post($this->route)->assertForbidden();
     }
 
     public function testIfUserNotAdmin()
     {
         $user = User::factory()->createOne();
 
-        $response = $this->actingAs($user)->post($this->route)->assertForbidden();
+        $this->actingAs($user)->post($this->route)->assertForbidden();
     }
 
     public function testSuccessData()
@@ -89,6 +90,7 @@ class EditProductTest extends TestCase
 
     public function getSuccessData()
     {
+        $exc = Exchange::factory()->createOne()->currency_code;
         return [
             [
                 'id' => $this->id,
@@ -98,7 +100,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -113,7 +115,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -128,7 +130,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -142,7 +144,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -157,7 +159,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 122,
                 'discount_price' => null,
                 'count' => 2,
@@ -172,7 +174,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => 110,
                 'count' => 2,
@@ -187,7 +189,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 1,
@@ -202,7 +204,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -217,7 +219,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -229,6 +231,8 @@ class EditProductTest extends TestCase
 
     public function getFailedData()
     {
+        $exc = Exchange::factory()->createOne()->currency_code;
+
         return [
             [
                 'id' => 123,
@@ -238,7 +242,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -253,7 +257,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -268,7 +272,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -283,7 +287,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -298,7 +302,7 @@ class EditProductTest extends TestCase
                 'category_id' => 123,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -313,7 +317,7 @@ class EditProductTest extends TestCase
                 'category_id' => 'string',
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -329,7 +333,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => 123,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -344,7 +348,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => 'string',
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -389,7 +393,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => 123,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -404,7 +408,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => 'string',
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -419,7 +423,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => null,
                 'discount_price' => null,
                 'count' => 2,
@@ -434,7 +438,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 'string',
                 'discount_price' => null,
                 'count' => 2,
@@ -449,7 +453,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => -1,
                 'discount_price' => null,
                 'count' => 2,
@@ -464,7 +468,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => 'string',
                 'count' => 2,
@@ -479,7 +483,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => -1,
                 'count' => 2,
@@ -494,7 +498,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => 121,
                 'count' => 2,
@@ -509,7 +513,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 'string',
@@ -524,7 +528,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => -1,
@@ -539,7 +543,7 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -554,12 +558,42 @@ class EditProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
                 'main_image' => null,
                 'preview_image' => 'not file',
+            ],
+            [
+                'id' => $this->id,
+                'name' => 'name',
+                'subname' => 'sub',
+                'description' => 'descr',
+                'category_id' => $this->cat,
+                'color_id' => $this->col,
+                'size_id' => $this->size,
+                'currency' => 'unexist',
+                'price' => 120,
+                'discount_price' => null,
+                'count' => 2,
+                'main_image' => null,
+                'preview_image' => null,
+            ],
+            [
+                'id' => $this->id,
+                'name' => 'name',
+                'subname' => 'sub',
+                'description' => 'descr',
+                'category_id' => $this->cat,
+                'color_id' => $this->col,
+                'size_id' => $this->size,
+                'currency' => 'max10symbols',
+                'price' => 120,
+                'discount_price' => null,
+                'count' => 2,
+                'main_image' => null,
+                'preview_image' => null,
             ],
         ];
     }

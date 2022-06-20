@@ -55,8 +55,13 @@ return new class extends Migration
     {
         Schema::table('posts', function (Blueprint $table) {
             $table->dropForeign('fk-products-category_id');
+            $table->dropIndex('fk-products-category_id');
+
             $table->dropForeign('fk-products-size_id');
+            $table->dropIndex('fk-products-size_id');
+
             $table->dropForeign('fk-products-color_id');
+            $table->dropIndex('fk-products-color_id');
         });
 
         Schema::dropIfExists('products');

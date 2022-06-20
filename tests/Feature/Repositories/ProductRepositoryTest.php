@@ -28,6 +28,7 @@ class ProductRepositoryTest extends TestCase
         parent::setUp();
 
         $this->repository = app(ProductRepository::class);
+        
     }
 
     public function testGetAllUsingGrid()

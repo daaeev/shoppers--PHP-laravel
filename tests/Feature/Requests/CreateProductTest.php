@@ -5,6 +5,7 @@ namespace Tests\Feature\Requests;
 use App\Http\Requests\CreateProduct;
 use App\Models\Category;
 use App\Models\Color;
+use App\Models\Exchange;
 use App\Models\Size;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -88,6 +89,8 @@ class CreateProductTest extends TestCase
 
     protected function getSuccessData()
     {
+        $exc = Exchange::factory()->createOne()->currency_code;
+        
         return [
             [
                 'name' => 'name',
@@ -96,7 +99,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -110,7 +113,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 2,
@@ -124,7 +127,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'USD',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => 100,
                 'count' => 2,
@@ -136,6 +139,8 @@ class CreateProductTest extends TestCase
 
     protected function getFailedData()
     {
+        $exc = Exchange::factory()->createOne()->currency_code;
+
         return [
             [
                 'name' => null,
@@ -144,7 +149,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' =>$this->col,
                 'size_id' =>$this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => '120',
                 'discount_price' => null,
                 'count' => 2,
@@ -158,7 +163,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' =>$this->col,
                 'size_id' =>$this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => '120',
                 'discount_price' => null,
                 'count' => 2,
@@ -172,7 +177,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' =>$this->col,
                 'size_id' =>$this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => '120',
                 'discount_price' => null,
                 'count' => 2,
@@ -186,7 +191,7 @@ class CreateProductTest extends TestCase
                 'category_id' => null,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => '120',
                 'discount_price' => null,
                 'count' => 2,
@@ -200,7 +205,7 @@ class CreateProductTest extends TestCase
                 'category_id' => 123,
                 'color_id' => $this->col,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => '120',
                 'discount_price' => null,
                 'count' => 2,
@@ -214,7 +219,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => null,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => '120',
                 'discount_price' => null,
                 'count' => 2,
@@ -228,7 +233,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => 123,
                 'size_id' => $this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => '120',
                 'discount_price' => null,
                 'count' => 2,
@@ -242,7 +247,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => null,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => '120',
                 'discount_price' => null,
                 'count' => 2,
@@ -256,7 +261,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => 123,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => '120',
                 'discount_price' => null,
                 'count' => 2,
@@ -284,7 +289,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' => $this->col,
                 'size_id' => $this->cat,
-                'currency' => 'maxvalue5',
+                'currency' => 'maxvalue10__',
                 'price' => '120',
                 'discount_price' => null,
                 'count' => 2,
@@ -298,7 +303,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' =>$this->col,
                 'size_id' =>$this->size,
-                'currency' => 'UAH',
+                'currency' => 'unexist',
                 'price' => 'string',
                 'discount_price' => null,
                 'count' => 2,
@@ -312,7 +317,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' =>$this->col,
                 'size_id' =>$this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => -1,
                 'discount_price' => null,
                 'count' => 2,
@@ -326,7 +331,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' =>$this->col,
                 'size_id' =>$this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => -1,
                 'count' => 2,
@@ -340,7 +345,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' =>$this->col,
                 'size_id' =>$this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => 'string',
                 'count' => 2,
@@ -354,7 +359,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' =>$this->col,
                 'size_id' =>$this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => 121,
                 'count' => 2,
@@ -367,7 +372,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' =>$this->col,
                 'size_id' =>$this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => -1,
@@ -380,7 +385,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' =>$this->col,
                 'size_id' =>$this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 'string',
@@ -393,7 +398,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' =>$this->col,
                 'size_id' =>$this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 1,
@@ -406,7 +411,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' =>$this->col,
                 'size_id' =>$this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 1,
@@ -419,7 +424,7 @@ class CreateProductTest extends TestCase
                 'category_id' => $this->cat,
                 'color_id' =>$this->col,
                 'size_id' =>$this->size,
-                'currency' => 'UAH',
+                'currency' => $exc,
                 'price' => 120,
                 'discount_price' => null,
                 'count' => 1,
